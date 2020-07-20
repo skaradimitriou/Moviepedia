@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "692443685686",
+    "firebase_url": "https://moviepedia-cf80d.firebaseio.com",
+    "project_id": "moviepedia-cf80d",
+    "storage_bucket": "moviepedia-cf80d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692443685686:android:30724da62be4ecf8bb4997",
+        "android_client_info": {
+          "package_name": "com.stathis.moviepedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692443685686-3cpffk7jsvbth9s25dslc10hpg44bkku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stathis.moviepedia",
+            "certificate_hash": "fedaa2d0e72057298dc40ddfc0ebc615ce687a3e"
+          }
+        },
+        {
+          "client_id": "692443685686-9bitnu1m5kb4uab063ar1e8p81i422u8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8oD4si6595lDYnPKr5ZnZKyn2D0n-ca0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692443685686-9bitnu1m5kb4uab063ar1e8p81i422u8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

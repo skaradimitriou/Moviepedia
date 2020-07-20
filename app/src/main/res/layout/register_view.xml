@@ -49,6 +49,7 @@
                     android:id="@+id/registerEmailField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:drawableStart="@drawable/ic_mail_icon"
                     android:drawablePadding="15dp"
                     android:hint="E-mail" />
@@ -67,6 +68,7 @@
                     android:id="@+id/registerPasswordField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:drawableStart="@drawable/ic_password_icon"
                     android:drawablePadding="15dp"
                     android:hint="Password" />
@@ -85,6 +87,7 @@
                     android:id="@+id/registerPasswordConfirmField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:singleLine="true"
                     android:drawableStart="@drawable/ic_password_icon"
                     android:drawablePadding="15dp"
                     android:hint="Confirm password" />
