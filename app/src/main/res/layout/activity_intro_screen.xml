@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1d1d1d"
@@ -21,22 +22,23 @@
         android:id="@+id/appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif"
         android:lineSpacingExtra="5sp"
+        android:text="MoviePedia"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo"
-        tools:text="MoviePedia" />
+        app:layout_constraintTop_toBottomOf="@id/logo" />
 
     <TextView
+        android:id="@+id/app_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="31dp"
         android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
@@ -52,52 +54,53 @@
         android:id="@+id/login_btn"
         android:layout_width="298dp"
         android:layout_height="45dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginTop="90dp"
         android:background="@color/red"
         android:text="Login to your account"
         android:textAllCaps="false"
         android:textColor="#fff"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_description" />
 
     <TextView
         android:id="@+id/noAcc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="80dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="2sp"
+        android:text="Don&apos;t have an account yet?"
         android:textColor="#ffffff"
         android:textSize="12sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/registerBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Don&apos;t have an account yet?" />
+        app:layout_constraintTop_toBottomOf="@id/login_btn" />
 
     <TextView
         android:id="@+id/registerBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="80dp"
-        android:layout_marginBottom="80dp"
         android:clickable="true"
         android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="2sp"
+        android:text="Register"
         android:textColor="@color/red"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/noAcc"
-        tools:text="Register" />
+        app:layout_constraintTop_toBottomOf="@id/login_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
