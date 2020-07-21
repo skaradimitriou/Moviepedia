@@ -4,22 +4,17 @@ import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.util.Patterns
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.FirebaseDatabase
-import com.stathis.moviepedia.models.User
 import kotlinx.android.synthetic.main.activity_intro_screen.*
-import kotlinx.android.synthetic.main.login_view.view.*
-import kotlinx.android.synthetic.main.register_view.*
+import kotlinx.android.synthetic.main.login_view.view.loginAccBtn
 import kotlinx.android.synthetic.main.register_view.view.*
-import kotlinx.android.synthetic.main.register_view.view.registerEmailField
 
 class IntroScreen : AppCompatActivity() {
 
@@ -57,7 +52,7 @@ class IntroScreen : AppCompatActivity() {
         val loginBuilder = AlertDialog.Builder(this)
             .setView(loginDialog)
         //show dialog
-        loginBuilder.show()
+        val loginDial = loginBuilder.show()
         //login button click of custom layout
         loginDialog.loginAccBtn.setOnClickListener {
             val emailField: TextInputEditText = loginDialog.findViewById(R.id.loginEmailField)
@@ -90,13 +85,11 @@ class IntroScreen : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         val user = auth.currentUser
                         updateUI(user)
-                        startActivity(Intent(this, Dashboard::class.java))
-                        finish() //kills IntroScreenApp
+//                        startActivity(Intent(this, Dashboard::class.java))
+//                        finish() //kills IntroScreenApp
+                        loginDial.dismiss()
+                        showSuccessLoginDialog()
                     } else {
-                        Toast.makeText(
-                            baseContext, "Login Failed.",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         updateUI(null)
                     }
                 }
@@ -150,6 +143,9 @@ class IntroScreen : AppCompatActivity() {
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             registerDialog.dismiss()
+                            showSuccessAccountDialog()
+                        } else {
+
                         }
                     }
             }
@@ -157,5 +153,38 @@ class IntroScreen : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
+    }
+
+    private fun showSuccessAccountDialog() {
+        //Inflate the dialog with custom view
+        val successDialog = LayoutInflater.from(this).inflate(R.layout.account_success_view, null)
+        //AlertDialogBuilder
+        val successBuilder = AlertDialog.Builder(this)
+            .setView(successDialog)
+        //show dialog
+        val successDialogue = successBuilder.show()
+        //2 second delay
+        Handler().postDelayed({
+            successDialogue.dismiss()
+            startActivity(Intent(this, PersonaliseAccount::class.java))
+        }, 2000)
+    }
+
+    private fun showSuccessLoginDialog() {
+        //Inflate the dialog with custom view
+        val successDialog = LayoutInflater.from(this).inflate(R.layout.account_success_view, null)
+        //AlertDialogBuilder
+        val successBuilder = AlertDialog.Builder(this)
+            .setView(successDialog)
+        val text: TextView = successDialog.findViewById(R.id.redirect_txt)
+        text.text = "Login successful"
+        //show dialog
+        val successDialogue = successBuilder.show()
+        //2 second delay
+        Handler().postDelayed({
+            successDialogue.dismiss()
+            startActivity(Intent(this, Dashboard::class.java))
+            finish() //kills IntroScreenApp
+        }, 2000)
     }
 }
