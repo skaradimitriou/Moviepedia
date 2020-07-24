@@ -38,6 +38,7 @@
         android:text="set up your profile" />
 
     <TextView
+        android:id="@+id/skipBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="20dp"
