@@ -7,7 +7,9 @@ import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.models.MovieFeed
 import com.stathis.moviepedia.models.Movies
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import okhttp3.Call
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.IOException
 import java.util.stream.DoubleStream.builder
 
@@ -30,21 +32,21 @@ class Dashboard : AppCompatActivity() {
         println("Attempting to fetch JSON from Tmdb")
 
         val url = "https://api.themoviedb.org/3/trending/all/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        val request = okhttp3.Request.Builder().url(url).build()
+        val request = Request.Builder().url(url).build()
 
         val client =  OkHttpClient()
         client.newCall(request).enqueue(object: okhttp3.Callback{
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                Log.d("YOU FAILED",call.toString())
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("Call Failed",call.toString())
             }
 
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+            override fun onResponse(call: Call, response: okhttp3.Response) {
                 val body = response.body?.string()
                 println(body)
 
                 val gson = GsonBuilder().create()
-                val movieFeed = gson.fromJson(body,MovieFeed::class.java)
-                Log.d("Response",movieFeed.toString())
+                val movieFeed = gson.fromJson(body, MovieFeed::class.java)
+                Log.d("Response", movieFeed.toString())
             }
 
         })

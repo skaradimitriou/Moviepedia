@@ -3,17 +3,17 @@ package com.stathis.moviepedia.models
 class Movies (
     val id:Int,
     val video:Boolean,
-    val voteCount:Int,
-    val voteAverage:Double,
+    val vote_count:Int,
+    val vote_average:Double,
     val title: String,
-    val releaseDate:String,
-    val originalLanguage:String,
-    val originalTitle:String,
-    val genreIds:List<Int>,
-    val imgPath:String,
+    val release_date:String,
+    val original_language:String,
+    val original_title:String,
+    val genre_ids: List<Int>,
+    val backdrop_path:String,
     val adult:Boolean,
     val overview:String,
-    val posterPath:String,
+    val poster_path:String,
     val popularity:Double,
-    val mediaType: String
+    val media_type: String
 )
