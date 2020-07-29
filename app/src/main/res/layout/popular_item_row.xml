@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="110dp"
+    android:layout_height="150dp"
+    android:layout_margin="10dp"
+    android:layout_marginRight="10dp"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4e4e4e"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/movie_img"
+            android:layout_width="match_parent"
+            android:layout_height="79dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_success" />
+
+        <TextView
+            android:id="@+id/movie_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="3dp"
+            android:textSize="10sp"
+            tools:text="7.5" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:text="Suicide squad" />
+
+        <TextView
+            android:id="@+id/movie_genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="10sp"
+            tools:text="Action" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
