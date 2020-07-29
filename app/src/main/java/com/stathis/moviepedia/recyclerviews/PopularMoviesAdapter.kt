@@ -3,6 +3,7 @@ package com.stathis.moviepedia.recyclerviews
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.MovieFeed
 import com.stathis.moviepedia.models.Movies
@@ -22,10 +23,6 @@ class PopularMoviesAdapter(val popularMovies: MovieFeed) :
 
     override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {
         val currentItem = popularMovies.results.get(position)
-        holder.movieName.text = currentItem.title
-        holder.movieGenre.text = currentItem.media_type
-        holder.movieRating.text = currentItem.vote_average.toString() + "/10"
+        holder.bind(currentItem)
     }
-
-
 }
