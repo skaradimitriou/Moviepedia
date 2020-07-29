@@ -6,6 +6,11 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "com.stathis.moviepedia"
         minSdkVersion 21
@@ -45,6 +50,12 @@ dependencies {
 
     //circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //GSON
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //Okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
 }
 
 //firebase
