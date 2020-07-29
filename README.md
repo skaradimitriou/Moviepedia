@@ -3,10 +3,10 @@ An application that lets you search for movies and learn more about them.
 
 ## Main Goal
 
-This app was developed as a side project. Users can
+This app was developed as a side project. Users can : <br/>
 a) Create an account & Login to their existing account <br/>
-b) personalise their account by adding nickname / profile image <br/>
-c) Search for movies & TV series and learn more information about them.
+b) Personalise their account by adding nickname / profile image <br/>
+c) Search for Movies & TV series and learn more information about them.
 
 ### Programming Language 
 
