@@ -19,5 +19,5 @@ c) Search for Movies & TV series and learn more information about them.
 ### Libraries
 
 [Glide](https://github.com/bumptech/glide) <br/>
-[OkHttp](https://square.github.io/okhttp/)
+[OkHttp](https://square.github.io/okhttp/) <br/>
 [Firebase](https://firebase.google.com/)
