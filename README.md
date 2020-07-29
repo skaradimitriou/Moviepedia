@@ -20,3 +20,4 @@ c) Search for Movies & TV series and learn more information about them.
 
 [Glide](https://github.com/bumptech/glide) <br/>
 [OkHttp](https://square.github.io/okhttp/)
+[Firebase](https://firebase.google.com/)
