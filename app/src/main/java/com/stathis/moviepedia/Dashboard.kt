@@ -6,7 +6,10 @@ import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.models.MovieFeed
+import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.UpcomingMovies
 import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
+import com.stathis.moviepedia.recyclerviews.UpcomingMoviesAdapter
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -22,15 +25,42 @@ class Dashboard : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        getUpcomingMovies()
         fetchJson()
 
     }
 
-    fun fetchJson() {
-        println("Attempting to fetch JSON from Tmdb")
+    fun getUpcomingMovies() {
 
-        val url =
-            "https://api.themoviedb.org/3/trending/all/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
+        val url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
+        val request = Request.Builder().url(url).build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("Call Failed", call.toString())
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                val body = response.body?.string()
+                println(body)
+
+                val gson = GsonBuilder().create()
+                val upcomingMovies = gson.fromJson(body, UpcomingMovies::class.java)
+                Log.d("Response", upcomingMovies.toString())
+
+                val upcomingMoviesRecView: RecyclerView = findViewById(R.id.upcomingMoviesRecView)
+
+                runOnUiThread{
+                    upcomingMoviesRecView.adapter = UpcomingMoviesAdapter(upcomingMovies)
+                }
+            }
+        })
+    }
+
+    fun fetchJson() {
+
+        val url = "https://api.themoviedb.org/3/trending/all/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
         val request = Request.Builder().url(url).build()
 
         val client = OkHttpClient()
@@ -53,9 +83,6 @@ class Dashboard : AppCompatActivity() {
                     popularRecView.adapter = PopularMoviesAdapter(popularMovies)
                 }
             }
-
         })
     }
-
-
 }

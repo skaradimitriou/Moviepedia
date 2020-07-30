@@ -1,0 +1,43 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="182dp"
+    android:layout_height="117dp"
+    android:layout_margin="10dp"
+    android:layout_marginRight="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="3dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/upcom_movieImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_success"
+            android:tint="#80000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/upcom_movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:textSize="12sp"
+            android:gravity="left"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="15dp"
+            tools:text="The Hobbit: The Battle of the Five Armies"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
