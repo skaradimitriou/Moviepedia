@@ -4,6 +4,7 @@ class Movies (
     val id:Int,
     val video:Boolean,
     val vote_count:Int,
+    val name:String,
     val vote_average:Double,
     val title: String,
     val release_date:String,

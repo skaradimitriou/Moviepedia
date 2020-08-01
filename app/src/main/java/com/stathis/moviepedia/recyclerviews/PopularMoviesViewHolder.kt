@@ -19,7 +19,13 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         Glide.with(itemView.context)
             .load("https://image.tmdb.org/t/p/w500" + movies.backdrop_path)
             .into(movieImg)
-        movieName.text = movies.title
+
+        if(movies.title.isNullOrBlank()){
+            movieName.text = movies.name
+        } else {
+            movieName.text = movies.title
+        }
+
         movieGenre.text = movies.media_type
         movieRating.text = movies.vote_average.toString() + "/10"
     }

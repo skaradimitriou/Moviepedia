@@ -15,8 +15,9 @@ class UpcomingMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
 
     fun bind(movies: Movies) {
         Glide.with(itemView.context)
-            .load("https://image.tmdb.org/t/p/w500" + movies.backdrop_path)
+            .load("https://image.tmdb.org/t/p/w500" + movies.poster_path)
             .into(upcom_movieImg)
+
         upcom_movie_title.text = movies.title
     }
 }
