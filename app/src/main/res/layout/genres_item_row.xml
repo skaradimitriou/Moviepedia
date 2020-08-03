@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/genres"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
