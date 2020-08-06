@@ -96,7 +96,7 @@ class DashboardFragment : Fragment() {
                 Log.d("Response", popularMovies.toString())
 
                 val popularRecView: RecyclerView = view!!.findViewById(R.id.popularRecView)
-
+                //move from background to ui thread and display data
                 activity!!.runOnUiThread {
                     popularRecView.adapter = PopularMoviesAdapter(popularMovies)
                 }

@@ -39,8 +39,12 @@ class Dashboard : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        dashboardFragment = DashboardFragment()
+        supportFragmentManager.beginTransaction().replace(R.id.content, dashboardFragment)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
+
         val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
-        bottomNav.setSelectedItemId(R.id.nav_home)
         bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
@@ -72,6 +76,7 @@ class Dashboard : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
             }
+            bottomNav.selectedItemId = R.id.nav_home
             false
         })
     }
