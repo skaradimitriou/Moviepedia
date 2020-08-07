@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.recyclerviews.AiringTvSeriesAdapter
+import com.stathis.moviepedia.recyclerviews.FeaturedTvSeriesAdapter
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -35,9 +37,37 @@ class TvSeriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getFeaturedTvSeries()
         getAiringTodayTvSeries()
         getTopRatedTvSeries()
         getPopularTvSeries()
+    }
+
+    private fun getFeaturedTvSeries() {
+        url = "https://api.themoviedb.org/3/tv/on_the_air?api_key=b36812048cc4b54d559f16a2ff196bc5"
+        request = Request.Builder().url(url).build()
+
+        client = OkHttpClient()
+        client.newCall(request).enqueue(object:okhttp3.Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("call failed",call.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val gson = GsonBuilder().create()
+
+                val featuredTvSeries = gson.fromJson(response.body?.string(), TvSeriesFeed::class.java)
+                //converts List to ArrayList<TvSeries>
+                val testArray:ArrayList<TvSeries> = ArrayList(featuredTvSeries.results)
+                Log.d("Response",testArray.toString())
+                val featuredTvRecView: RecyclerView = view!!.findViewById(R.id.upcomingTvSeriesRecView)
+
+                activity!!.runOnUiThread {
+                    featuredTvRecView.adapter = FeaturedTvSeriesAdapter(testArray)
+                }
+            }
+
+        })
     }
 
     private fun getAiringTodayTvSeries(){

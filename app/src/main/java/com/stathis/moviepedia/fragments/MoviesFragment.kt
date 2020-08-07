@@ -6,11 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.MovieFeed
+import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.recyclerviews.FeaturedTvSeriesAdapter
+import com.stathis.moviepedia.recyclerviews.MoviesAdapter
 import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -55,6 +60,16 @@ class MoviesFragment : Fragment() {
                 val gson = GsonBuilder().create()
                 val popularMovies = gson.fromJson(body, MovieFeed::class.java)
                 Log.d("Response", popularMovies.toString())
+                val moviesList: ArrayList<Movies> = ArrayList(popularMovies.results)
+                val moviesGridRecView: RecyclerView = view!!.findViewById(R.id.moviesGridRecView)
+//
+
+                activity!!.runOnUiThread {
+                    val gridLayoutManager = GridLayoutManager(context,2,LinearLayoutManager.VERTICAL,false)
+                    moviesGridRecView.setHasFixedSize(true)
+                    moviesGridRecView.layoutManager = gridLayoutManager
+                    moviesGridRecView.adapter = MoviesAdapter(moviesList)
+                }
             }
         })
     }
