@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
 
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.recyclerviews.AiringTvSeriesAdapter
@@ -25,6 +28,7 @@ class TvSeriesFragment : Fragment() {
     private lateinit var url: String
     private lateinit var request: Request
     private lateinit var client: OkHttpClient
+    private lateinit var database: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +38,11 @@ class TvSeriesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_tv_series, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        database = FirebaseDatabase.getInstance().reference
 
         getFeaturedTvSeries()
         getAiringTodayTvSeries()
@@ -60,6 +67,7 @@ class TvSeriesFragment : Fragment() {
                 //converts List to ArrayList<TvSeries>
                 val testArray:ArrayList<TvSeries> = ArrayList(featuredTvSeries.results)
                 Log.d("Response",testArray.toString())
+
                 val featuredTvRecView: RecyclerView = view!!.findViewById(R.id.upcomingTvSeriesRecView)
 
                 activity!!.runOnUiThread {

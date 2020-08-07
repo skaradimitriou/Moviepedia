@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.stathis.moviepedia.models.MovieGenres
 import kotlinx.android.synthetic.main.activity_movie_info_screen.*
 
 class MovieInfoScreen : AppCompatActivity() {
@@ -21,6 +22,7 @@ class MovieInfoScreen : AppCompatActivity() {
         val ratingBar:RatingBar = findViewById(R.id.ratingBar)
         //applying rating to the ratingBar
         ratingBar.rating = rating.toFloat()/2
+
 
         likeBtn.setOnClickListener {
             addtoFavorites()

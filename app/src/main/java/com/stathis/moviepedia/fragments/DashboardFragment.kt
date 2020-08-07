@@ -100,7 +100,6 @@ class DashboardFragment : Fragment() {
                 activity!!.runOnUiThread {
                     popularRecView.adapter = PopularMoviesAdapter(popularMovies)
                 }
-
             }
         })
     }
