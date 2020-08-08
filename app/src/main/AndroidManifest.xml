@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MovieInfoScreen"></activity>
         <activity android:name=".Dashboard" />
-        <activity android:name=".PersonaliseAccount" />
+        <activity android:name=".ChangeUserInfo" />
         <activity android:name=".IntroScreen" />
         <activity android:name=".SplashScreen">
             <intent-filter>

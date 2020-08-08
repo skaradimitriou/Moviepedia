@@ -8,7 +8,6 @@ import android.os.Handler
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.widget.TextView
-import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -166,7 +165,7 @@ class IntroScreen : AppCompatActivity() {
         //2 second delay
         Handler().postDelayed({
             successDialogue.dismiss()
-            startActivity(Intent(this, PersonaliseAccount::class.java))
+            startActivity(Intent(this, ChangeUserInfo::class.java))
         }, 2000)
     }
 
