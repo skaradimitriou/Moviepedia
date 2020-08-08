@@ -21,4 +21,4 @@ c) Search for Movies & TV series and learn more information about them.
 [Glide](https://github.com/bumptech/glide) <br/>
 [Gson](https://github.com/google/gson) <br/>
 [OkHttp](https://square.github.io/okhttp/) <br/>
-[Firebase](https://firebase.google.com/)
+[Firebase](https://firebase.google.com/) Authentication | Realtime Database | Storage
