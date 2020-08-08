@@ -1,6 +1,5 @@
 package com.stathis.moviepedia.fragments
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,12 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
 
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.models.MovieFeed
-import com.stathis.moviepedia.models.MovieGenresFeed
-import com.stathis.moviepedia.models.UpcomingMovies
+import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.GenresAdapter
 import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
 import com.stathis.moviepedia.recyclerviews.UpcomingMoviesAdapter
@@ -29,6 +27,10 @@ class DashboardFragment : Fragment() {
     private lateinit var url: String
     private lateinit var request: Request
     private lateinit var client: OkHttpClient
+    private lateinit var databaseReference: DatabaseReference
+    private var upcomingMoviesList: MutableList<Movies> = mutableListOf()
+    private var trendingMoviesList: MutableList<Movies> = mutableListOf()
+    private var topRatedMoviesList: MutableList<Movies> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,12 +45,13 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getUpcomingMovies()
-        getTrendingMovies()
         getMovieGenres()
         getTopRatedMovies()
+        getTrendingMovies()
     }
 
-    fun getUpcomingMovies() {
+
+    private fun getUpcomingMovies() {
 
         url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
         request = Request.Builder().url(url).build()
@@ -66,18 +69,21 @@ class DashboardFragment : Fragment() {
                 val gson = GsonBuilder().create()
                 val upcomingMovies = gson.fromJson(body, UpcomingMovies::class.java)
                 Log.d("Response", upcomingMovies.toString())
+                upcomingMoviesList = ArrayList(upcomingMovies.results)
+
+                Log.d("this is the list",upcomingMoviesList.toString())
 
                 val upcomingMoviesRecView: RecyclerView = view!!.findViewById(R.id.upcomingMoviesRecView)
 
                 activity!!.runOnUiThread {
-                    upcomingMoviesRecView.adapter = UpcomingMoviesAdapter(upcomingMovies)
+                    upcomingMoviesRecView.adapter = UpcomingMoviesAdapter(upcomingMoviesList)
                 }
 
             }
         })
     }
 
-    fun getTrendingMovies() {
+    private fun getTrendingMovies() {
 
         url =
             "https://api.themoviedb.org/3/trending/all/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
@@ -95,16 +101,19 @@ class DashboardFragment : Fragment() {
                 val popularMovies = gson.fromJson(body, MovieFeed::class.java)
                 Log.d("Response", popularMovies.toString())
 
+                trendingMoviesList = ArrayList(popularMovies.results)
+                Log.d("this is the list",trendingMoviesList.toString())
+
                 val popularRecView: RecyclerView = view!!.findViewById(R.id.popularRecView)
                 //move from background to ui thread and display data
                 activity!!.runOnUiThread {
-                    popularRecView.adapter = PopularMoviesAdapter(popularMovies)
+                    popularRecView.adapter = PopularMoviesAdapter(trendingMoviesList)
                 }
             }
         })
     }
 
-    fun getMovieGenres() {
+    private fun getMovieGenres() {
 
         url =
             "https://api.themoviedb.org/3/genre/movie/list?api_key=b36812048cc4b54d559f16a2ff196bc5"
@@ -133,7 +142,7 @@ class DashboardFragment : Fragment() {
         })
     }
 
-    fun getTopRatedMovies() {
+    private fun getTopRatedMovies() {
         url =
             "https://api.themoviedb.org/3/movie/top_rated?api_key=b36812048cc4b54d559f16a2ff196bc5"
         request = Request.Builder().url(url).build()
@@ -151,11 +160,13 @@ class DashboardFragment : Fragment() {
                 val topRatedMovies = gson.fromJson(body, MovieFeed::class.java)
                 Log.d("Top Rated Call Response", topRatedMovies.toString())
 
+                topRatedMoviesList = ArrayList(topRatedMovies.results)
+                Log.d("this is the list",topRatedMoviesList.toString())
+
                 val topRatedRecView: RecyclerView = view!!.findViewById(R.id.topRatedRecView)
                 activity!!.runOnUiThread {
-                    topRatedRecView.adapter = PopularMoviesAdapter(topRatedMovies)
+                    topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList)
                 }
-
             }
         })
     }

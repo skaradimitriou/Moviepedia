@@ -9,7 +9,7 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.MovieGenres
 import kotlinx.android.synthetic.main.genres_item_row.view.*
 
-class GenresViewHolver(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class GenresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val genresItem: TextView = itemView.findViewById(R.id.genres)
     val genreColor:LinearLayout = itemView.findViewById(R.id.genreColor)

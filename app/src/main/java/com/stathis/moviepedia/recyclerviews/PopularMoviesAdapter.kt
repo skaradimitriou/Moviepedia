@@ -3,12 +3,10 @@ package com.stathis.moviepedia.recyclerviews
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.models.MovieFeed
 import com.stathis.moviepedia.models.Movies
 
-class PopularMoviesAdapter(val popularMovies: MovieFeed) :
+class PopularMoviesAdapter(val popularMovies: MutableList<Movies>) :
     RecyclerView.Adapter<PopularMoviesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
@@ -22,7 +20,7 @@ class PopularMoviesAdapter(val popularMovies: MovieFeed) :
     }
 
     override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {
-        val currentItem = popularMovies.results.get(position)
+        val currentItem = popularMovies[position]
         holder.bind(currentItem)
     }
 }
