@@ -17,4 +17,12 @@ class Movies (
     val poster_path:String,
     val popularity:Double,
     val media_type: String
-)
+){
+    constructor() : this(0,false,0,"",0.0,""
+        ,"","","", emptyList(),"",false
+        ,"","",0.0,""){
+
+    }
+
+
+}

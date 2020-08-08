@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.models.MovieFeed
 import com.stathis.moviepedia.models.Movies
 
 class MoviesAdapter(val movies: ArrayList<Movies>) : RecyclerView.Adapter<MoviesViewHolder>() {

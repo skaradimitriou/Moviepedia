@@ -13,9 +13,10 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
+        app:spanCount="2"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="15dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
