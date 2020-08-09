@@ -1,18 +1,22 @@
 package com.stathis.moviepedia.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.MovieInfoScreen
 
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.GenresAdapter
+import com.stathis.moviepedia.recyclerviews.ItemClickListener
 import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
 import com.stathis.moviepedia.recyclerviews.UpcomingMoviesAdapter
 import okhttp3.Call
@@ -22,7 +26,7 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : Fragment(), ItemClickListener {
 
     private lateinit var url: String
     private lateinit var request: Request
@@ -76,13 +80,13 @@ class DashboardFragment : Fragment() {
                 val upcomingMoviesRecView: RecyclerView = view!!.findViewById(R.id.upcomingMoviesRecView)
 
                 activity!!.runOnUiThread {
-                    upcomingMoviesRecView.adapter = UpcomingMoviesAdapter(upcomingMoviesList)
+
+                    upcomingMoviesRecView.adapter = UpcomingMoviesAdapter(upcomingMoviesList,this@DashboardFragment)
                 }
 
             }
         })
     }
-
     private fun getTrendingMovies() {
 
         url =
@@ -170,5 +174,34 @@ class DashboardFragment : Fragment() {
             }
         })
     }
+
+    /* handles movie clicks.
+    * The point was to send the movie data to the movie info screen*/
+    override fun onItemClick(movies: Movies) {
+        val movieIntent = Intent (activity, MovieInfoScreen::class.java)
+        val name = movies.name
+        val title = movies.title
+        //converting rating toString() so I can pass it. Double was throwing error
+        val rating = movies.vote_average.toString()
+        Log.d("rating", rating)
+        if(name.isNullOrBlank()){
+            movieIntent.putExtra("MOVIE_NAME", title)
+            Log.d("Movie Name Clicked", title)
+        } else {
+            movieIntent.putExtra("MOVIE_NAME", name)
+            Log.d("Movie Name Clicked", name)
+        }
+            movieIntent.putExtra("MOVIE_PHOTO",movies.backdrop_path)
+        movieIntent.putExtra("MOVIE_PHOTO",movies.poster_path)
+        movieIntent.putExtra("RELEASE_DATE",movies.release_date)
+        movieIntent.putExtra("DESCRIPTION",movies.overview)
+        movieIntent.putExtra("RATING",rating)
+        startActivity(movieIntent)
+    }
+
+    override fun onClick(v: View?) {
+        //
+    }
+
 
 }
