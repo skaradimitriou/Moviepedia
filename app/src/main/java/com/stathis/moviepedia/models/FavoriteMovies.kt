@@ -6,4 +6,6 @@ class FavoriteMovies(
     val movie_rating:Double,
     val description:String,
     val releaseDate:String
-)
+){
+    constructor():this ("","",0.0,"","")
+}

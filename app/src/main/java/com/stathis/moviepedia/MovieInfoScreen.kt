@@ -1,5 +1,7 @@
 package com.stathis.moviepedia
 
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.media.Image
 import android.os.Bundle
 import android.util.Log
@@ -8,14 +10,17 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import com.stathis.moviepedia.R.drawable.ic_favorite_icon
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.MovieGenres
 import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.recyclerviews.MoviesAdapter
 import kotlinx.android.synthetic.main.activity_movie_info_screen.*
+import org.w3c.dom.Comment
 import org.w3c.dom.Text
 
 class MovieInfoScreen : AppCompatActivity() {
@@ -27,14 +32,18 @@ class MovieInfoScreen : AppCompatActivity() {
     private lateinit var movieDescription:String
     private lateinit var databaseReference: DatabaseReference
     private var favoriteMoviesList: MutableList<FavoriteMovies> = mutableListOf()
+    private var test: MutableList<FavoriteMovies> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_info_screen)
+        getFavoritesFromDb()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+
+        var likeBtn:ImageView = findViewById(R.id.likeBtn)
 
         moviePhoto = intent.getStringExtra("MOVIE_PHOTO")
         movieTitle = intent.getStringExtra("MOVIE_NAME")
@@ -48,8 +57,17 @@ class MovieInfoScreen : AppCompatActivity() {
         setMovieDescription()
         setMovieReleaseDate()
 
+
         likeBtn.setOnClickListener {
-            addtoFavorites()
+            val whiteFavBtnColor: Drawable.ConstantState? = resources.getDrawable(R.drawable.ic_favorite_icon,this.theme).constantState
+            val likeBtnColor = likeBtn.drawable.constantState
+
+            if(likeBtnColor!!.equals(whiteFavBtnColor)){
+               addToFavorites()
+            }
+            else {
+                removeFromFavorites()
+            }
         }
 
         shareBtn.setOnClickListener {
@@ -90,9 +108,61 @@ class MovieInfoScreen : AppCompatActivity() {
         releaseDate.text = movieReleaseDate
     }
 
-    private fun addtoFavorites(){
+    private fun getFavoritesFromDb() {
         //adds a new favorite to the favorite movie list
-        TODO("MAKE IT POSSIBLE TO ADD MULTIPLE FAVORITE MOVIES")
+        databaseReference = FirebaseDatabase.getInstance().reference
+        databaseReference.child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .child("favoriteMovieList")
+            .addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+                    //
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        for (i in p0.children) {
+                            val favorite = i.getValue(FavoriteMovies::class.java)
+                            if(favorite?.title == movieTitle){
+                                likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp)
+                                favoriteMoviesList.add(favorite)
+                                Log.d("IS FAV", favoriteMoviesList.toString())
+                            }
+                            favoriteMoviesList.add(favorite!!)
+                            Log.d("favoriteList", favoriteMoviesList.toString())
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun removeFromFavorites(){
+        //adds a new favorite to the favorite movie list
+        databaseReference = FirebaseDatabase.getInstance().reference
+        databaseReference.child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .child("favoriteMovieList")
+            .addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+                    //
+                }
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        for (i in p0.children) {
+                            val favorite = i.getValue(FavoriteMovies::class.java)
+                            val fav = FavoriteMovies(moviePhoto,movieTitle,movieRating.toDouble(),movieDescription,movieReleaseDate)
+                            if(favorite?.title == movieTitle){
+                                i.ref.removeValue()
+                                likeBtn.setImageResource(R.drawable.ic_favorite_icon)
+                            }
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun addToFavorites(){
+
         favoriteMoviesList.add(FavoriteMovies(moviePhoto,movieTitle,movieRating.toDouble(),movieDescription,movieReleaseDate))
         Log.d("FAV_MOVIE",favoriteMoviesList.toString())
 
@@ -100,6 +170,8 @@ class MovieInfoScreen : AppCompatActivity() {
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteMovieList").setValue(favoriteMoviesList)
+        val likeBtn:ImageView  = findViewById(R.id.likeBtn)
+        likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp)
     }
 
     private fun share(){
