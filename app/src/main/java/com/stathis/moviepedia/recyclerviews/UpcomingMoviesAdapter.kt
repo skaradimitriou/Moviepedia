@@ -17,7 +17,7 @@ class UpcomingMoviesAdapter(val upcomingMovies: MutableList<Movies>, private val
     }
 
     override fun getItemCount(): Int {
-        return 6
+        return upcomingMovies.size
     }
 
     override fun onBindViewHolder(holder: UpcomingMoviesViewHolder, position: Int) {

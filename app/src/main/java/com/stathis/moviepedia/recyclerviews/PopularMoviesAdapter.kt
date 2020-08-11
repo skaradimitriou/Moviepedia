@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.Movies
 
-class PopularMoviesAdapter(val popularMovies: MutableList<Movies>) :
+class PopularMoviesAdapter(val popularMovies: MutableList<Movies>, private val listener: ItemClickListener) :
     RecyclerView.Adapter<PopularMoviesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
@@ -21,6 +21,6 @@ class PopularMoviesAdapter(val popularMovies: MutableList<Movies>) :
 
     override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {
         val currentItem = popularMovies[position]
-        holder.bind(currentItem)
+        holder.bind(currentItem,listener)
     }
 }

@@ -1,5 +1,6 @@
 package com.stathis.moviepedia.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,20 +11,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.MovieInfoScreen
 
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.TvSeriesInfoScreen
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.recyclerviews.AiringTvSeriesAdapter
 import com.stathis.moviepedia.recyclerviews.FeaturedTvSeriesAdapter
+import com.stathis.moviepedia.recyclerviews.ItemClickListener
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
-class TvSeriesFragment : Fragment() {
+class TvSeriesFragment : Fragment(),ItemClickListener {
 
     private lateinit var url: String
     private lateinit var request: Request
@@ -71,7 +75,7 @@ class TvSeriesFragment : Fragment() {
                 val featuredTvRecView: RecyclerView = view!!.findViewById(R.id.upcomingTvSeriesRecView)
 
                 activity!!.runOnUiThread {
-                    featuredTvRecView.adapter = FeaturedTvSeriesAdapter(testArray)
+                    featuredTvRecView.adapter = FeaturedTvSeriesAdapter(testArray,this@TvSeriesFragment)
                 }
             }
 
@@ -99,7 +103,7 @@ class TvSeriesFragment : Fragment() {
                 val airingRecView: RecyclerView = view!!.findViewById(R.id.onTheAirRecView)
 
                 activity!!.runOnUiThread {
-                    airingRecView.adapter = AiringTvSeriesAdapter(airingTodayTvSeries)
+                    airingRecView.adapter = AiringTvSeriesAdapter(airingTodayTvSeries,this@TvSeriesFragment)
                 }
             }
         })
@@ -126,7 +130,7 @@ class TvSeriesFragment : Fragment() {
                 //move from background to UI thread and display data
                 val topRatedTvRecView:RecyclerView = view!!.findViewById(R.id.topRatedTvRecView)
                 activity!!.runOnUiThread {
-                    topRatedTvRecView.adapter = AiringTvSeriesAdapter(topRatedTvSeries)
+                    topRatedTvRecView.adapter = AiringTvSeriesAdapter(topRatedTvSeries,this@TvSeriesFragment)
                 }
             }
         })
@@ -153,10 +157,45 @@ class TvSeriesFragment : Fragment() {
                     //move from background to UI thread and display data
                     val popularTvRecView:RecyclerView = view!!.findViewById(R.id.popularTvRecView)
                     activity!!.runOnUiThread {
-                        popularTvRecView.adapter = AiringTvSeriesAdapter(popularTvSeries)
+                        popularTvRecView.adapter = AiringTvSeriesAdapter(popularTvSeries,this@TvSeriesFragment)
                     }
             }
         })
+    }
+
+    override fun onItemClick(movies: Movies) {
+       //
+    }
+
+    override fun onTvSeriesClick(tvSeries: TvSeries) {
+        val movieIntent = Intent (activity, TvSeriesInfoScreen::class.java)
+        val name = tvSeries.name
+        val original_name = tvSeries.original_name
+        //converting rating toString() so I can pass it. Double was throwing error
+        val rating = tvSeries.vote_average.toString()
+        Log.d("rating", rating)
+        if(name.isNullOrBlank()){
+            movieIntent.putExtra("TV_SERIES_NAME", original_name)
+            Log.d("Movie Name Clicked", original_name)
+        } else {
+            movieIntent.putExtra("TV_SERIES_NAME", name)
+            Log.d("Movie Name Clicked", name)
+        }
+
+        if(tvSeries.poster_path.isNullOrBlank()){
+            movieIntent.putExtra("TV_SERIES_PHOTO",tvSeries.backdrop_path)
+        } else{
+            movieIntent.putExtra("TV_SERIES_PHOTO",tvSeries.poster_path)
+        }
+
+        movieIntent.putExtra("TV_SERIES_RELEASE_DATE",tvSeries.first_air_date)
+        movieIntent.putExtra("TV_SERIES_DESCRIPTION",tvSeries.overview)
+        movieIntent.putExtra("TV_SERIES_RATING",rating)
+        startActivity(movieIntent)
+    }
+
+    override fun onClick(v: View?) {
+        //
     }
 
 }

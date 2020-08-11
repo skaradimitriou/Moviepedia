@@ -111,7 +111,7 @@ class DashboardFragment : Fragment(), ItemClickListener {
                 val popularRecView: RecyclerView = view!!.findViewById(R.id.popularRecView)
                 //move from background to ui thread and display data
                 activity!!.runOnUiThread {
-                    popularRecView.adapter = PopularMoviesAdapter(trendingMoviesList)
+                    popularRecView.adapter = PopularMoviesAdapter(trendingMoviesList,this@DashboardFragment)
                 }
             }
         })
@@ -169,7 +169,7 @@ class DashboardFragment : Fragment(), ItemClickListener {
 
                 val topRatedRecView: RecyclerView = view!!.findViewById(R.id.topRatedRecView)
                 activity!!.runOnUiThread {
-                    topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList)
+                    topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList,this@DashboardFragment)
                 }
             }
         })
@@ -197,6 +197,10 @@ class DashboardFragment : Fragment(), ItemClickListener {
         movieIntent.putExtra("DESCRIPTION",movies.overview)
         movieIntent.putExtra("RATING",rating)
         startActivity(movieIntent)
+    }
+
+    override fun onTvSeriesClick(tvSeries: TvSeries) {
+        TODO("Not yet implemented")
     }
 
     override fun onClick(v: View?) {

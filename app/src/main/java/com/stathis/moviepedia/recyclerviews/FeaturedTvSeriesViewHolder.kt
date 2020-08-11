@@ -14,11 +14,14 @@ class FeaturedTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
     val upcom_movieImg: ImageView = itemView.findViewById(R.id.upcom_movieImg)
     val upcom_movie_title: TextView = itemView.findViewById(R.id.upcom_movie_title)
 
-    fun present (tvSeries: TvSeries) {
+    fun present (tvSeries: TvSeries,listener:ItemClickListener) {
         Glide.with(itemView.context)
             .load("https://image.tmdb.org/t/p/w500" + tvSeries.poster_path)
             .into(upcom_movieImg)
 
-        upcom_movie_title.text = tvSeries.original_name
+        upcom_movie_title.text = tvSeries.name
+        itemView.setOnClickListener{
+            listener.onTvSeriesClick(tvSeries)
+        }
     }
 }

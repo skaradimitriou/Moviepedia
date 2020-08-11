@@ -15,7 +15,7 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
     val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
 
-    fun bind(movies: Movies) {
+    fun bind(movies: Movies,listener: ItemClickListener) {
         Glide.with(itemView.context)
             .load("https://image.tmdb.org/t/p/w500" + movies.backdrop_path)
             .into(movieImg)
@@ -28,6 +28,9 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 
         movieGenre.text = movies.media_type
         movieRating.text = movies.vote_average.toString() + "/10"
+        itemView.setOnClickListener {
+            listener.onItemClick(movies)
+        }
     }
 
 }

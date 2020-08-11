@@ -7,7 +7,7 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
 
-class FeaturedTvSeriesAdapter (val tvSeries: ArrayList<TvSeries>) : RecyclerView.Adapter<FeaturedTvSeriesViewHolder>() {
+class FeaturedTvSeriesAdapter (val tvSeries: ArrayList<TvSeries>, private val listener: ItemClickListener) : RecyclerView.Adapter<FeaturedTvSeriesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeaturedTvSeriesViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -21,6 +21,6 @@ class FeaturedTvSeriesAdapter (val tvSeries: ArrayList<TvSeries>) : RecyclerView
 
     override fun onBindViewHolder(holder: FeaturedTvSeriesViewHolder, position: Int) {
         val currentItem = tvSeries[position]
-        holder.present(currentItem)
+        holder.present(currentItem,listener)
     }
 }

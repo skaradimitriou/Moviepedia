@@ -16,17 +16,21 @@ class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
     val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
 
-    fun bind(tvSeriesFeed: TvSeries){
+    fun bind(tvSeriesFeed: TvSeries,listener:ItemClickListener){
         Glide.with(itemView.context)
             .load("https://image.tmdb.org/t/p/w500" + tvSeriesFeed.backdrop_path)
             .into(movieImg)
 
         if(tvSeriesFeed.name.isNullOrBlank()){
-            movieName.text = tvSeriesFeed.name
+            movieName.text = tvSeriesFeed.original_name
         } else {
             movieName.text = tvSeriesFeed.name
         }
 
         movieRating.text = tvSeriesFeed.vote_average.toString() + "/10"
+
+        itemView.setOnClickListener{
+            listener.onTvSeriesClick(tvSeriesFeed)
+        }
     }
 }

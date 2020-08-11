@@ -61,7 +61,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="3sp"
-                android:text="51 Favorites"
+                tools:text="51 Favorites"
                 android:textColor="#ffffff"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -96,6 +96,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/movies_favRecView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"

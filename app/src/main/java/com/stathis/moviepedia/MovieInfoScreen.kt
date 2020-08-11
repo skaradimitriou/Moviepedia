@@ -1,29 +1,18 @@
 package com.stathis.moviepedia
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.stathis.moviepedia.R.drawable.ic_favorite_icon
 import com.stathis.moviepedia.models.FavoriteMovies
-import com.stathis.moviepedia.models.MovieGenres
-import com.stathis.moviepedia.models.Movies
-import com.stathis.moviepedia.recyclerviews.MoviesAdapter
 import kotlinx.android.synthetic.main.activity_movie_info_screen.*
-import org.w3c.dom.Comment
-import org.w3c.dom.Text
-import java.lang.Exception
 
 class MovieInfoScreen : AppCompatActivity() {
 
@@ -37,7 +26,6 @@ class MovieInfoScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_info_screen)
-
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -125,7 +113,7 @@ class MovieInfoScreen : AppCompatActivity() {
                         for (i in p0.children) {
                             val fav = i.getValue(FavoriteMovies::class.java)
                             if(fav?.title == movieTitle){
-                                likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp)
+                                likeBtn.setImageResource(R.drawable.ic_favorite_white)
                             }
                             Log.d("i",i.toString())
                         }
@@ -165,8 +153,7 @@ class MovieInfoScreen : AppCompatActivity() {
                 .child("favoriteMovieList")
                 .child(movieTitle).setValue(FavoriteMovies(moviePhoto,movieTitle,movieRating.toDouble(),movieDescription,movieReleaseDate))
             val likeBtn:ImageView  = findViewById(R.id.likeBtn)
-            likeBtn.setImageResource(R.drawable.ic_favorite_black_24dp)
-
+            likeBtn.setImageResource(R.drawable.ic_favorite_white)
     }
 
     private fun share(){
