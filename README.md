@@ -7,8 +7,8 @@ This app was developed as a side project.
 The Users of this application can : <br/>
 a) Sign-up (Register) & Sign-in (Login) <br/>
 b) Personalise their account by adding a profile image <br/>
-c) Search for Movies & TV Series and learn more information about them.
-d) Add a movie as a favorite
+c) Search for Movies & TV Series and learn more information about them. <br/>
+d) Add a movie as a favorite <br/>
 e) Share a movie
 
 ### Programming Language 
