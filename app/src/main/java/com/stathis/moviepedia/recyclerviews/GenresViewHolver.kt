@@ -14,7 +14,7 @@ class GenresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val genresItem: TextView = itemView.findViewById(R.id.genres)
     val genreColor:LinearLayout = itemView.findViewById(R.id.genreColor)
 
-    fun bind(genres: MovieGenres) {
+    fun bind(genres: MovieGenres,listener: GenresClickListener) {
         genresItem.text = genres.name
 
         when(genres.name){
@@ -38,6 +38,11 @@ class GenresViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             "War" -> genreColor.setBackgroundColor(Color.parseColor("#f86611"))
             "Western" -> genreColor.setBackgroundColor(Color.parseColor("#EC5657"))
         }
+
+        itemView.setOnClickListener{
+            listener.onGenreClick(genres)
+        }
+
     }
 
 }

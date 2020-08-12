@@ -7,10 +7,14 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.Movies
 
-class FavoriteMoviesAdapter(val favoriteMovies: MutableList<FavoriteMovies>, private val listener: FavoriteClickListener) : RecyclerView.Adapter<FavoriteMoviesViewHolder>() {
+class FavoriteMoviesAdapter(
+    val favoriteMovies: MutableList<FavoriteMovies>,
+    private val listener: FavoriteClickListener
+) : RecyclerView.Adapter<FavoriteMoviesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteMoviesViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.popular_item_row, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.popular_item_row, parent, false)
         return FavoriteMoviesViewHolder(view)
     }
 
@@ -20,6 +24,8 @@ class FavoriteMoviesAdapter(val favoriteMovies: MutableList<FavoriteMovies>, pri
 
     override fun onBindViewHolder(holder: FavoriteMoviesViewHolder, position: Int) {
         val currentItem = favoriteMovies[position]
-        holder.bind(currentItem,listener)
+        holder.bind(currentItem, listener)
     }
+
+
 }

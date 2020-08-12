@@ -22,11 +22,13 @@ import com.google.firebase.storage.StorageReference
 import com.stathis.moviepedia.MovieInfoScreen
 
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.TvSeriesInfoScreen
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
 import com.stathis.moviepedia.recyclerviews.FavoriteMoviesAdapter
+import com.stathis.moviepedia.recyclerviews.FavoriteTvSeriesAdapter
 import com.stathis.moviepedia.recyclerviews.MoviesAdapter
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_movie_info_screen.*
@@ -41,7 +43,8 @@ class UserProfileFragment : Fragment(), FavoriteClickListener {
     private lateinit var userPhoto:CircleImageView
     private lateinit var storage:  FirebaseStorage
     private lateinit var databaseReference: DatabaseReference
-    private var userFavorites:MutableList<FavoriteMovies> = mutableListOf()
+    private var userFavoriteMovies:MutableList<FavoriteMovies> = mutableListOf()
+    private var userFavoriteTvSeries:MutableList<FavoriteTvSeries> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +56,8 @@ class UserProfileFragment : Fragment(), FavoriteClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getUserFavorites()
+        getUserFavoriteMovies()
+        getUserFavoriteTvSeries()
 
         userPhoto = view.findViewById(R.id.profileImg)
         retrieveUserImg()
@@ -63,7 +67,7 @@ class UserProfileFragment : Fragment(), FavoriteClickListener {
         }
     }
 
-    private fun getUserFavorites(){
+    private fun getUserFavoriteMovies(){
         //adds a new favorite to the favorite movie list
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
@@ -78,14 +82,40 @@ class UserProfileFragment : Fragment(), FavoriteClickListener {
                     if (p0.exists()) {
                         for (i in p0.children) {
                             val fav = i.getValue(FavoriteMovies::class.java)
-                            userFavorites.add(fav!!)
+                            userFavoriteMovies.add(fav!!)
                             Log.d("i",i.toString())
 
                             val favMoviesRecView: RecyclerView = view!!.findViewById(R.id.movies_favRecView)
-                            favMoviesRecView.adapter = FavoriteMoviesAdapter(userFavorites,this@UserProfileFragment)
+                            favMoviesRecView.adapter = FavoriteMoviesAdapter(userFavoriteMovies,this@UserProfileFragment)
                             val favoriteCounter:TextView = view!!.findViewById(R.id.favorites)
-                            val size = userFavorites.size
+                            val size = userFavoriteMovies.size
                             favoriteCounter.text = "$size Favorites"
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun getUserFavoriteTvSeries(){
+        //adds a new favorite to the favorite movie list
+        databaseReference = FirebaseDatabase.getInstance().reference
+        databaseReference.child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .child("favoriteTvSeries")
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    //
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        for (i in p0.children) {
+                            val fav = i.getValue(FavoriteTvSeries::class.java)
+                            userFavoriteTvSeries.add(fav!!)
+                            Log.d("i",i.toString())
+
+                            val favMoviesRecView: RecyclerView = view!!.findViewById(R.id.tvSeries_favRecView)
+                            favMoviesRecView.adapter = FavoriteTvSeriesAdapter(userFavoriteTvSeries,this@UserProfileFragment)
                         }
                     }
                 }
@@ -164,7 +194,17 @@ class UserProfileFragment : Fragment(), FavoriteClickListener {
     }
 
     override fun onFavoriteTvSeriesClick(favoriteTvSeries: FavoriteTvSeries) {
-        TODO("Not yet implemented")
+        val movieIntent = Intent (activity, TvSeriesInfoScreen::class.java)
+        //converting rating toString() so I can pass it. Double was throwing error
+        val rating = favoriteTvSeries.movie_rating.toString()
+        Log.d("rating", rating)
+        movieIntent.putExtra("TV_SERIES_NAME",favoriteTvSeries.title )
+        movieIntent.putExtra("TV_SERIES_PHOTO",favoriteTvSeries.photo)
+        movieIntent.putExtra("TV_SERIES_ID",favoriteTvSeries.id)
+        movieIntent.putExtra("TV_SERIES_RELEASE_DATE",favoriteTvSeries.releaseDate)
+        movieIntent.putExtra("TV_SERIES_DESCRIPTION",favoriteTvSeries.description)
+        movieIntent.putExtra("TV_SERIES_RATING",rating)
+        startActivity(movieIntent)
     }
 
 }

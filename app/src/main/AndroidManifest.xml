@@ -14,7 +14,7 @@
         <activity android:name=".TvSeriesInfoScreen"></activity>
         <activity android:name=".MovieInfoScreen" />
         <activity android:name=".Dashboard" />
-        <activity android:name=".ChangeUserInfo" />
+        <activity android:name=".GenresInfoScreen" />
         <activity android:name=".IntroScreen" />
         <activity android:name=".SplashScreen">
             <intent-filter>

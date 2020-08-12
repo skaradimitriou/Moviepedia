@@ -16,9 +16,15 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
 
     fun bind(movies: Movies,listener: ItemClickListener) {
-        Glide.with(itemView.context)
-            .load("https://image.tmdb.org/t/p/w500" + movies.backdrop_path)
-            .into(movieImg)
+        if(movies.backdrop_path.isNullOrBlank()){
+            Glide.with(itemView.context)
+                .load("https://image.tmdb.org/t/p/w500" + movies.poster_path)
+                .into(movieImg)
+        }else {
+            Glide.with(itemView.context)
+                .load("https://image.tmdb.org/t/p/w500" + movies.backdrop_path)
+                .into(movieImg)
+        }
 
         if(movies.title.isNullOrBlank()){
             movieName.text = movies.name

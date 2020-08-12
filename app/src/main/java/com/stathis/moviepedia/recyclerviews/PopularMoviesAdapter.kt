@@ -16,7 +16,7 @@ class PopularMoviesAdapter(val popularMovies: MutableList<Movies>, private val l
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return popularMovies.size
     }
 
     override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {

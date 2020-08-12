@@ -165,7 +165,7 @@ class IntroScreen : AppCompatActivity() {
         //2 second delay
         Handler().postDelayed({
             successDialogue.dismiss()
-            startActivity(Intent(this, ChangeUserInfo::class.java))
+            startActivity(Intent(this, GenresInfoScreen::class.java))
         }, 2000)
     }
 

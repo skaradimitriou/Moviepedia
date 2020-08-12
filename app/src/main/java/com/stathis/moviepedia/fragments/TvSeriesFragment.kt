@@ -187,7 +187,7 @@ class TvSeriesFragment : Fragment(),ItemClickListener {
         } else{
             movieIntent.putExtra("TV_SERIES_PHOTO",tvSeries.poster_path)
         }
-
+        movieIntent.putExtra("TV_SERIES_ID",tvSeries.id)
         movieIntent.putExtra("TV_SERIES_RELEASE_DATE",tvSeries.first_air_date)
         movieIntent.putExtra("TV_SERIES_DESCRIPTION",tvSeries.overview)
         movieIntent.putExtra("TV_SERIES_RATING",rating)
