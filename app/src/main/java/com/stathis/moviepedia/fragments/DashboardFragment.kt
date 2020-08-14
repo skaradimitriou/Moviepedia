@@ -1,14 +1,20 @@
 package com.stathis.moviepedia.fragments
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.GenresInfoScreen
 import com.stathis.moviepedia.MovieInfoScreen
@@ -16,6 +22,7 @@ import com.stathis.moviepedia.MovieInfoScreen
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -23,7 +30,7 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
+class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
 
     private lateinit var url: String
     private lateinit var request: Request
@@ -53,6 +60,8 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
     }
 
 
+
+
     private fun getUpcomingMovies() {
 
         url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
@@ -73,18 +82,21 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
                 Log.d("Response", upcomingMovies.toString())
                 upcomingMoviesList = ArrayList(upcomingMovies.results)
 
-                Log.d("this is the list",upcomingMoviesList.toString())
+                Log.d("this is the list", upcomingMoviesList.toString())
 
-                val upcomingMoviesRecView: RecyclerView = view!!.findViewById(R.id.upcomingMoviesRecView)
+                val upcomingMoviesRecView: RecyclerView =
+                    view!!.findViewById(R.id.upcomingMoviesRecView)
 
                 activity!!.runOnUiThread {
 
-                    upcomingMoviesRecView.adapter = UpcomingMoviesAdapter(upcomingMoviesList,this@DashboardFragment)
+                    upcomingMoviesRecView.adapter =
+                        UpcomingMoviesAdapter(upcomingMoviesList, this@DashboardFragment)
                 }
 
             }
         })
     }
+
     private fun getTrendingMovies() {
 
         url =
@@ -104,12 +116,13 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
                 Log.d("Response", popularMovies.toString())
 
                 trendingMoviesList = ArrayList(popularMovies.results)
-                Log.d("this is the list",trendingMoviesList.toString())
+                Log.d("this is the list", trendingMoviesList.toString())
 
                 val popularRecView: RecyclerView = view!!.findViewById(R.id.popularRecView)
                 //move from background to ui thread and display data
                 activity!!.runOnUiThread {
-                    popularRecView.adapter = PopularMoviesAdapter(trendingMoviesList,this@DashboardFragment)
+                    popularRecView.adapter =
+                        PopularMoviesAdapter(trendingMoviesList, this@DashboardFragment)
                 }
             }
         })
@@ -136,9 +149,9 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
                 genresList = ArrayList(movieGenres.genres)
 
                 val genresRecView: RecyclerView = view!!.findViewById(R.id.genresRecView)
-                   activity!!.runOnUiThread {
-                       genresRecView.adapter = GenresAdapter(genresList,this@DashboardFragment)
-                   }
+                activity!!.runOnUiThread {
+                    genresRecView.adapter = GenresAdapter(genresList, this@DashboardFragment)
+                }
 
             }
         })
@@ -163,15 +176,18 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
                 Log.d("Top Rated Call Response", topRatedMovies.toString())
 
                 topRatedMoviesList = ArrayList(topRatedMovies.results)
-                Log.d("this is the list",topRatedMoviesList.toString())
+                Log.d("this is the list", topRatedMoviesList.toString())
 
                 val topRatedRecView: RecyclerView = view!!.findViewById(R.id.topRatedRecView)
                 activity!!.runOnUiThread {
                     //sorting list by rating and passing it to the adapter
                     topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList.sortedWith(
-                        compareBy {it.vote_average}).reversed() as MutableList<Movies>,this@DashboardFragment)
-                    Log.d("SortedList",topRatedMoviesList.sortedWith(
-                        compareBy {it.vote_average}).reversed().toString())
+                        compareBy { it.vote_average }).reversed() as MutableList<Movies>,
+                        this@DashboardFragment
+                    )
+                    Log.d("SortedList", topRatedMoviesList.sortedWith(
+                        compareBy { it.vote_average }).reversed().toString()
+                    )
                 }
             }
         })
@@ -180,25 +196,25 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
     /* handles movie clicks.
     * The point was to send the movie data to the movie info screen*/
     override fun onItemClick(movies: Movies) {
-        val movieIntent = Intent (activity, MovieInfoScreen::class.java)
+        val movieIntent = Intent(activity, MovieInfoScreen::class.java)
         val name = movies.name
         val title = movies.title
         //converting rating toString() so I can pass it. Double was throwing error
         val rating = movies.vote_average.toString()
         Log.d("rating", rating)
-        if(name.isNullOrBlank()){
+        if (name.isNullOrBlank()) {
             movieIntent.putExtra("MOVIE_NAME", title)
             Log.d("Movie Name Clicked", title)
         } else {
             movieIntent.putExtra("MOVIE_NAME", name)
             Log.d("Movie Name Clicked", name)
         }
-        movieIntent.putExtra("MOVIE_ID",movies.id)
-        movieIntent.putExtra("MOVIE_PHOTO",movies.backdrop_path)
-        movieIntent.putExtra("MOVIE_PHOTO",movies.poster_path)
-        movieIntent.putExtra("RELEASE_DATE",movies.release_date)
-        movieIntent.putExtra("DESCRIPTION",movies.overview)
-        movieIntent.putExtra("RATING",rating)
+        movieIntent.putExtra("MOVIE_ID", movies.id)
+        movieIntent.putExtra("MOVIE_PHOTO", movies.backdrop_path)
+        movieIntent.putExtra("MOVIE_PHOTO", movies.poster_path)
+        movieIntent.putExtra("RELEASE_DATE", movies.release_date)
+        movieIntent.putExtra("DESCRIPTION", movies.overview)
+        movieIntent.putExtra("RATING", rating)
         startActivity(movieIntent)
     }
 
@@ -211,16 +227,9 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
     }
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        val genresIntent = Intent (activity, GenresInfoScreen::class.java)
-//        var genreId:Int = movieGenres.id
-//        Log.d("genreid",genreId.toString())
-//        for(i in genresList){
-//            genreId = i.id
-//            Log.d("genreid",genreId.toString())
-//        }
-
-        genresIntent.putExtra("GENRE_ID",movieGenres.id)
-        genresIntent.putExtra("GENRE_NAME",movieGenres.name)
+        val genresIntent = Intent(activity, GenresInfoScreen::class.java)
+        genresIntent.putExtra("GENRE_ID", movieGenres.id)
+        genresIntent.putExtra("GENRE_NAME", movieGenres.name)
         startActivity(genresIntent)
     }
 

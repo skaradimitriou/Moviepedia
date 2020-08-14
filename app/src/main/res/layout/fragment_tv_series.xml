@@ -11,43 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/burgerMenu"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/ic_menu_white_24dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.SearchView
-            android:layout_width="234dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="15dp"
-            android:background="#fff"
-            app:queryHint="@string/query_hint"
-            app:layout_constraintCircleRadius="15dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userProfileImg"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/profile_img_placeholder"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/upcomingTvSeriesRecView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

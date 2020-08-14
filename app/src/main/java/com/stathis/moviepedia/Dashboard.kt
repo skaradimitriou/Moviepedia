@@ -1,21 +1,26 @@
 package com.stathis.moviepedia
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.fragments.DashboardFragment
-import com.stathis.moviepedia.fragments.MoviesFragment
-import com.stathis.moviepedia.fragments.TvSeriesFragment
-import com.stathis.moviepedia.fragments.UserProfileFragment
+import com.stathis.moviepedia.fragments.*
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.GenresAdapter
 import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
 import com.stathis.moviepedia.recyclerviews.UpcomingMoviesAdapter
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.Call
 import okhttp3.MultipartBody.Part.Companion.create
 import okhttp3.OkHttpClient
@@ -26,6 +31,10 @@ import java.net.URI.create
 
 class Dashboard : AppCompatActivity() {
 
+    private lateinit var userProfileImg: CircleImageView
+    private lateinit var storage: FirebaseStorage
+    private lateinit var searchBar: androidx.appcompat.widget.SearchView
+    private lateinit var searchFragment: SearchFragment
     private lateinit var dashboardFragment: DashboardFragment
     private lateinit var moviesFragment: MoviesFragment
     private lateinit var tvSeriesFragment: TvSeriesFragment
@@ -38,6 +47,32 @@ class Dashboard : AppCompatActivity() {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+
+        userProfileImg = findViewById(R.id.userProfileImg)
+        getUserProfileImg()
+
+        searchBar = findViewById(R.id.searchView)
+
+        searchBar.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchBar.clearFocus()
+                searchBar.setQuery("",false)
+                Log.d("HELLO",query)
+                val bundle = bundleOf("QUERY" to query)
+                searchFragment = SearchFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.content, searchFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit()
+                searchFragment.arguments = bundle
+                Log.d("BUNDLE",bundle.toString())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+        })
 
         dashboardFragment = DashboardFragment()
         supportFragmentManager.beginTransaction().replace(R.id.content, dashboardFragment)
@@ -79,5 +114,24 @@ class Dashboard : AppCompatActivity() {
             bottomNav.selectedItemId = R.id.nav_home
             false
         })
+    }
+
+    private fun getUserProfileImg() {
+        storage = FirebaseStorage.getInstance()
+        var imageRef: StorageReference =
+            storage.reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
+        imageRef.getBytes(1024 * 1024).addOnSuccessListener { bytes ->
+            var userPhoto: CircleImageView = findViewById(R.id.userProfileImg)
+            val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            userPhoto.setImageBitmap(bitmap)
+
+        }.addOnFailureListener {
+            // Handle any errors
+        }
+        imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
+            Log.d("DownloadUrl", downloadUrl.toString())
+        }.addOnFailureListener { it ->
+            Log.d("DownloadUrl", it.toString())
+        }
     }
 }
