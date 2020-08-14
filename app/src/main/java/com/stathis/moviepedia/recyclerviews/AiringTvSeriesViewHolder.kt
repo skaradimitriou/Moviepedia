@@ -12,7 +12,6 @@ import com.stathis.moviepedia.models.TvSeriesFeed
 class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val movieName: TextView = itemView.findViewById(R.id.movie_title)
-    val movieRating: TextView = itemView.findViewById(R.id.movie_rating)
     val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
 
@@ -32,8 +31,6 @@ class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
         } else {
             movieName.text = tvSeriesFeed.name
         }
-
-        movieRating.text = tvSeriesFeed.vote_average.toString() + "/10"
 
         itemView.setOnClickListener{
             listener.onTvSeriesClick(tvSeriesFeed)

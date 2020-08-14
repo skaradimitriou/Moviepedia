@@ -193,7 +193,8 @@ class DashboardFragment : Fragment(), ItemClickListener,GenresClickListener {
             movieIntent.putExtra("MOVIE_NAME", name)
             Log.d("Movie Name Clicked", name)
         }
-            movieIntent.putExtra("MOVIE_PHOTO",movies.backdrop_path)
+        movieIntent.putExtra("MOVIE_ID",movies.id)
+        movieIntent.putExtra("MOVIE_PHOTO",movies.backdrop_path)
         movieIntent.putExtra("MOVIE_PHOTO",movies.poster_path)
         movieIntent.putExtra("RELEASE_DATE",movies.release_date)
         movieIntent.putExtra("DESCRIPTION",movies.overview)

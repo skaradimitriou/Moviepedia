@@ -11,7 +11,6 @@ import com.stathis.moviepedia.models.Movies
 class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val movieName: TextView = itemView.findViewById(R.id.movie_title)
-    val movieRating: TextView = itemView.findViewById(R.id.movie_rating)
     val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
 
@@ -33,7 +32,7 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         }
 
         movieGenre.text = movies.media_type
-        movieRating.text = movies.vote_average.toString() + "/10"
+
         itemView.setOnClickListener {
             listener.onItemClick(movies)
         }
