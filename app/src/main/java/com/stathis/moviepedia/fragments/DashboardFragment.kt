@@ -141,7 +141,6 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
 
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
-                println(body)
 
                 val gson = GsonBuilder().create()
                 val movieGenres = gson.fromJson(body, MovieGenresFeed::class.java)
