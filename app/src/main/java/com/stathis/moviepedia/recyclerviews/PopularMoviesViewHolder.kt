@@ -13,6 +13,7 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
     val movieName: TextView = itemView.findViewById(R.id.movie_title)
     val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
+    val movieRating:TextView = itemView.findViewById(R.id.ratingTxt)
 
     fun bind(movies: Movies,listener: ItemClickListener) {
         if(movies.backdrop_path.isNullOrBlank()){
@@ -32,6 +33,7 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         }
 
         movieGenre.text = movies.media_type
+        movieRating.text = movies.vote_average.toString()
 
         itemView.setOnClickListener {
             listener.onItemClick(movies)

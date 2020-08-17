@@ -13,7 +13,7 @@ class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val resultImg: ImageView = itemView.findViewById(R.id.resultImg)
     val resultTxt: TextView = itemView.findViewById(R.id.resultTxt)
 
-    fun bind(movies: Movies) {
+    fun bind(movies: Movies,listener: ItemClickListener) {
         Glide.with(itemView.context)
             .load("https://image.tmdb.org/t/p/w500" + movies.poster_path)
             .into(resultImg)
@@ -22,6 +22,10 @@ class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             resultTxt.text = movies.title
         } else {
             resultTxt.text = movies.name
+        }
+
+        itemView.setOnClickListener {
+            listener.onItemClick(movies)
         }
 
     }

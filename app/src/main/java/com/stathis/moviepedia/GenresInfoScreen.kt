@@ -1,25 +1,25 @@
 package com.stathis.moviepedia
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.models.GenreMoviesFeed
-import com.stathis.moviepedia.models.MovieFeed
-import com.stathis.moviepedia.models.MovieGenresFeed
-import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.*
+import com.stathis.moviepedia.recyclerviews.ItemClickListener
 import com.stathis.moviepedia.recyclerviews.MoviesAdapter
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
 
-class GenresInfoScreen : AppCompatActivity() {
+class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
 
     private lateinit var url: String
     private lateinit var request: Request
@@ -28,6 +28,7 @@ class GenresInfoScreen : AppCompatActivity() {
     private lateinit var genreName: String
     private val apiKey = "?api_key=b36812048cc4b54d559f16a2ff196bc5"
     private var movieList: MutableList<Movies> = mutableListOf()
+    private lateinit var moviesGridRecView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,8 @@ class GenresInfoScreen : AppCompatActivity() {
         super.onPostCreate(savedInstanceState)
         genreId = intent.getIntExtra("GENRE_ID",genreId)
         genreName = intent.getStringExtra("GENRE_NAME")
+
+        moviesGridRecView = findViewById(R.id.genresGridRecView)
 
         getResultsForThisGenre()
 
@@ -64,11 +67,41 @@ class GenresInfoScreen : AppCompatActivity() {
                 runOnUiThread{
                     val header:TextView = findViewById(R.id.genresHeaderTxt)
                     header.text = "$genreName Movies"
-                    val moviesGridRecView: RecyclerView = findViewById(R.id.genresGridRecView)
-                    moviesGridRecView.adapter = MoviesAdapter(movieList as ArrayList<Movies>)
+                    moviesGridRecView.adapter = MoviesAdapter(movieList as ArrayList<Movies>,this@GenresInfoScreen)
                 }
             }
         })
+    }
+
+    override fun onItemClick(movies: Movies) {
+        val movieIntent = Intent(this, MovieInfoScreen::class.java)
+        val name = movies.name
+        val title = movies.title
+        //converting rating toString() so I can pass it. Double was throwing error
+        val rating = movies.vote_average.toString()
+        Log.d("rating", rating)
+        if (name.isNullOrBlank()) {
+            movieIntent.putExtra("MOVIE_NAME", title)
+            Log.d("Movie Name Clicked", title)
+        } else {
+            movieIntent.putExtra("MOVIE_NAME", name)
+            Log.d("Movie Name Clicked", name)
+        }
+        movieIntent.putExtra("MOVIE_ID", movies.id)
+        movieIntent.putExtra("MOVIE_PHOTO", movies.backdrop_path)
+        movieIntent.putExtra("MOVIE_PHOTO", movies.poster_path)
+        movieIntent.putExtra("RELEASE_DATE", movies.release_date)
+        movieIntent.putExtra("DESCRIPTION", movies.overview)
+        movieIntent.putExtra("RATING", rating)
+        startActivity(movieIntent)
+    }
+
+    override fun onTvSeriesClick(tvSeries: TvSeries) {
+        //
+    }
+
+    override fun onClick(v: View?) {
+        //
     }
 
 }

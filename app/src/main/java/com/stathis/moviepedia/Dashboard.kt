@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.FrameLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +39,6 @@ class Dashboard : AppCompatActivity() {
     private lateinit var dashboardFragment: DashboardFragment
     private lateinit var moviesFragment: MoviesFragment
     private lateinit var tvSeriesFragment: TvSeriesFragment
-    private lateinit var userProfileFragment: UserProfileFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +50,9 @@ class Dashboard : AppCompatActivity() {
 
         userProfileImg = findViewById(R.id.userProfileImg)
         getUserProfileImg()
+        userProfileImg.setOnClickListener{
+            startActivity(Intent(this, UserProfile::class.java))
+        }
 
         searchBar = findViewById(R.id.searchView)
 
@@ -103,9 +106,9 @@ class Dashboard : AppCompatActivity() {
                         .commit()
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.nav_profile -> {
-                    userProfileFragment = UserProfileFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.content, userProfileFragment)
+                R.id.nav_search -> {
+                    searchFragment = SearchFragment()
+                    supportFragmentManager.beginTransaction().replace(R.id.content, searchFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                     return@OnNavigationItemSelectedListener true

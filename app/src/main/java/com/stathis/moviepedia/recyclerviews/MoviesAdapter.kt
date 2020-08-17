@@ -7,7 +7,7 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.MovieFeed
 import com.stathis.moviepedia.models.Movies
 
-class MoviesAdapter(val movies: ArrayList<Movies>) : RecyclerView.Adapter<MoviesViewHolder>() {
+class MoviesAdapter(val movies: ArrayList<Movies>,  private var listener: ItemClickListener) : RecyclerView.Adapter<MoviesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_item_row, parent, false)
@@ -20,6 +20,6 @@ class MoviesAdapter(val movies: ArrayList<Movies>) : RecyclerView.Adapter<Movies
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         val currentItem = movies[position]
-        holder.bind(currentItem)
+        holder.bind(currentItem,listener)
     }
 }

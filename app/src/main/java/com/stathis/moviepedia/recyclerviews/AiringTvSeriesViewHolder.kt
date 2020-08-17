@@ -14,6 +14,7 @@ class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
     val movieName: TextView = itemView.findViewById(R.id.movie_title)
     val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
+    val ratingTxt: TextView = itemView.findViewById(R.id.ratingTxt)
 
     fun bind(tvSeriesFeed: TvSeries,listener:ItemClickListener){
         if(tvSeriesFeed.backdrop_path.isNullOrBlank()){
@@ -31,6 +32,8 @@ class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
         } else {
             movieName.text = tvSeriesFeed.name
         }
+
+        ratingTxt.text = tvSeriesFeed.vote_average.toString()
 
         itemView.setOnClickListener{
             listener.onTvSeriesClick(tvSeriesFeed)

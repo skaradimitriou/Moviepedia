@@ -13,6 +13,8 @@ import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.MovieFeed
 import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.recyclerviews.ItemClickListener
 import com.stathis.moviepedia.recyclerviews.MoviesAdapter
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -20,7 +22,7 @@ import okhttp3.Request
 import java.io.IOException
 
 
-class MoviesFragment : Fragment() {
+class MoviesFragment : Fragment(),ItemClickListener {
 
     private lateinit var url: String
     private lateinit var request: Request
@@ -62,7 +64,7 @@ class MoviesFragment : Fragment() {
                             Log.d("movieList", movieList.toString())
 
                             val moviesGridRecView: RecyclerView = view!!.findViewById(R.id.moviesGridRecView)
-                            moviesGridRecView.adapter = MoviesAdapter(movieList as ArrayList<Movies>)
+                            moviesGridRecView.adapter = MoviesAdapter(movieList as ArrayList<Movies>,this@MoviesFragment)
                         }
                     }
                 }
@@ -93,6 +95,18 @@ class MoviesFragment : Fragment() {
                     .child("moviesList").setValue(moviesList)
             }
         })
+    }
+
+    override fun onItemClick(movies: Movies) {
+        //
+    }
+
+    override fun onTvSeriesClick(tvSeries: TvSeries) {
+        //
+    }
+
+    override fun onClick(v: View?) {
+        //
     }
 
 }

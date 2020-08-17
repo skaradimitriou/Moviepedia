@@ -1,5 +1,6 @@
 package com.stathis.moviepedia.recyclerviews
 
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,14 +16,17 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val searchType: TextView = itemView.findViewById(R.id.searchType)
     val ratingTxt:TextView = itemView.findViewById(R.id.ratingTxt)
 
-    fun bind(searchItem: SearchItem) {
-        if (searchItem.backdrop_path.isNullOrBlank()) {
+    fun bind(searchItem: SearchItem, listener: SearchItemClickListener) {
+
+        if (searchItem.backdrop_path.isNullOrEmpty() && searchItem.poster_path.isNullOrEmpty()){
+            searchImg.setImageResource(R.drawable.default_img)
+        } else if (searchItem.poster_path.isNullOrEmpty()) {
             Glide.with(itemView.context)
-                .load("https://image.tmdb.org/t/p/w500" + searchItem.poster_path)
+                .load("https://image.tmdb.org/t/p/w500" + searchItem.backdrop_path)
                 .into(searchImg)
         } else {
             Glide.with(itemView.context)
-                .load("https://image.tmdb.org/t/p/w500" + searchItem.backdrop_path)
+                .load("https://image.tmdb.org/t/p/w500" + searchItem.poster_path)
                 .into(searchImg)
         }
 
@@ -30,6 +34,10 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             searchName.text = searchItem.name
         } else {
             searchName.text = searchItem.title
+        }
+
+        itemView.setOnClickListener{
+            listener.onSearchItemClick(searchItem)
         }
 
         searchType.text = searchItem.media_type

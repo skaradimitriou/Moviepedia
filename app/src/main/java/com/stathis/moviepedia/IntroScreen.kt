@@ -152,6 +152,7 @@ class IntroScreen : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
+
     }
 
     private fun showSuccessAccountDialog() {

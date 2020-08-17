@@ -7,7 +7,10 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.search.SearchItem
 
-class SearchAdapter(private val searchItems: ArrayList<SearchItem>) : RecyclerView.Adapter<SearchViewHolder>() {
+class SearchAdapter(
+    private val searchItems: ArrayList<SearchItem>,
+    private val listener: SearchItemClickListener
+) : RecyclerView.Adapter<SearchViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val view =
@@ -21,6 +24,6 @@ class SearchAdapter(private val searchItems: ArrayList<SearchItem>) : RecyclerVi
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val currentItem = searchItems[position]
-        holder.bind(currentItem)
+        holder.bind(currentItem, listener)
     }
 }

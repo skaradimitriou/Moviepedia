@@ -90,11 +90,15 @@ class MovieInfoScreen : AppCompatActivity() {
     }
 
     private fun setMoviePhoto(){
+        var moviePoster:ImageView = findViewById(R.id.movie_img)
         var movieImg:ImageView = findViewById(R.id.imgView)
 
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w500$moviePhoto")
             .into(movieImg)
+        Glide.with(this)
+            .load("https://image.tmdb.org/t/p/w500$moviePhoto")
+            .into(moviePoster)
     }
 
     private fun setMovieTitle(){
@@ -138,12 +142,15 @@ class MovieInfoScreen : AppCompatActivity() {
                 val gson = GsonBuilder().create()
                 val cast = gson.fromJson(body, MovieCastFeed::class.java)
                 Log.d("Response", cast.toString())
-                movieCastInfo = ArrayList(cast.cast)
-                Log.d("this is the list",movieCastInfo.toString())
 
-                runOnUiThread{
-                    val castRecView:RecyclerView = findViewById(R.id.castRecView)
-                    castRecView.adapter = CastAdapter(movieCastInfo)
+                if (cast?.cast != null) {
+                    movieCastInfo = ArrayList(cast.cast)
+                    Log.d("this is the list",movieCastInfo.toString())
+
+                    runOnUiThread{
+                        val castRecView:RecyclerView = findViewById(R.id.castRecView)
+                        castRecView.adapter = CastAdapter(movieCastInfo)
+                    }
                 }
             }
         })

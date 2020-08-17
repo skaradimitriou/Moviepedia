@@ -9,56 +9,58 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="3dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <ImageView
+        android:id="@+id/movie_img"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:cardCornerRadius="7dp"
-        app:cardElevation="3dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <ImageView
-                android:id="@+id/movie_img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/ic_success" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/default_img" />
 
     <TextView
         android:id="@+id/movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="1dp"
         android:textAlignment="viewStart"
         android:textColor="#ffffff"
-        android:textSize="11sp"
+        android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintLeft_toLeftOf="@+id/movie_img"
+        app:layout_constraintRight_toRightOf="@+id/movie_img"
+        app:layout_constraintTop_toBottomOf="@+id/movie_img"
         tools:text="Suicide squad" />
 
     <TextView
         android:id="@+id/movie_genre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
         android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="10sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/movie_img"
+        app:layout_constraintRight_toRightOf="@+id/movie_img"
         app:layout_constraintTop_toBottomOf="@+id/movie_title"
         tools:text="Action" />
+
+    <TextView
+        android:id="@+id/ratingTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circular_background"
+        android:padding="8dp"
+        android:text="9.1"
+        android:textColor="#fff"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

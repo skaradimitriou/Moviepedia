@@ -1,28 +1,20 @@
 package com.stathis.moviepedia.fragments
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.GenresInfoScreen
 import com.stathis.moviepedia.MovieInfoScreen
-
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
-import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -40,6 +32,11 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
     private var trendingMoviesList: MutableList<Movies> = mutableListOf()
     private var genresList: MutableList<MovieGenres> = mutableListOf()
     private var topRatedMoviesList: MutableList<Movies> = mutableListOf()
+    private lateinit var upcomingMoviesRecView: RecyclerView
+    private lateinit var popularRecView: RecyclerView
+    private lateinit var topRatedRecView: RecyclerView
+    private lateinit var genresRecView: RecyclerView
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,23 +44,25 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
-        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        upcomingMoviesRecView = view.findViewById(R.id.upcomingMoviesRecView)
+        popularRecView = view.findViewById(R.id.popularRecView)
+        topRatedRecView = view.findViewById(R.id.topRatedRecView)
+        genresRecView = view.findViewById(R.id.genresRecView)
+
         getUpcomingMovies()
         getMovieGenres()
         getTopRatedMovies()
         getTrendingMovies()
+
     }
 
 
-
-
     private fun getUpcomingMovies() {
-
         url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
         request = Request.Builder().url(url).build()
 
@@ -84,11 +83,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
 
                 Log.d("this is the list", upcomingMoviesList.toString())
 
-                val upcomingMoviesRecView: RecyclerView =
-                    view!!.findViewById(R.id.upcomingMoviesRecView)
-
                 activity!!.runOnUiThread {
-
                     upcomingMoviesRecView.adapter =
                         UpcomingMoviesAdapter(upcomingMoviesList, this@DashboardFragment)
                 }
@@ -118,7 +113,6 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
                 trendingMoviesList = ArrayList(popularMovies.results)
                 Log.d("this is the list", trendingMoviesList.toString())
 
-                val popularRecView: RecyclerView = view!!.findViewById(R.id.popularRecView)
                 //move from background to ui thread and display data
                 activity!!.runOnUiThread {
                     popularRecView.adapter =
@@ -147,7 +141,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
                 Log.d("RESPONSE", movieGenres.toString())
                 genresList = ArrayList(movieGenres.genres)
 
-                val genresRecView: RecyclerView = view!!.findViewById(R.id.genresRecView)
+
                 activity!!.runOnUiThread {
                     genresRecView.adapter = GenresAdapter(genresList, this@DashboardFragment)
                 }
@@ -177,7 +171,6 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
                 topRatedMoviesList = ArrayList(topRatedMovies.results)
                 Log.d("this is the list", topRatedMoviesList.toString())
 
-                val topRatedRecView: RecyclerView = view!!.findViewById(R.id.topRatedRecView)
                 activity!!.runOnUiThread {
                     //sorting list by rating and passing it to the adapter
                     topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList.sortedWith(
