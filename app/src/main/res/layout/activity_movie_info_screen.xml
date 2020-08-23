@@ -46,7 +46,7 @@
 
             <TextView
                 android:id="@+id/mainTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="This is a cool movie title"

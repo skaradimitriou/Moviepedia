@@ -55,6 +55,9 @@ class Dashboard : AppCompatActivity() {
         }
 
         searchBar = findViewById(R.id.searchView)
+        searchBar.setOnClickListener{
+            searchBar.isIconified = false
+        }
 
         searchBar.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {

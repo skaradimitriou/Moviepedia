@@ -96,11 +96,37 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
-            android:paddingBottom="52dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topRated" />
+
+        <TextView
+            android:id="@+id/userFav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif"
+            android:text="Your Favorite Movies"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/topRatedRecView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favoriteMoviesRV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:paddingBottom="52dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userFav" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

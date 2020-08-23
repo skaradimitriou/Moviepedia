@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.GenresInfoScreen
@@ -15,6 +16,7 @@ import com.stathis.moviepedia.MovieInfoScreen
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -22,7 +24,7 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
+class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,FavoriteClickListener {
 
     private lateinit var url: String
     private lateinit var request: Request
@@ -32,10 +34,8 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
     private var trendingMoviesList: MutableList<Movies> = mutableListOf()
     private var genresList: MutableList<MovieGenres> = mutableListOf()
     private var topRatedMoviesList: MutableList<Movies> = mutableListOf()
-    private lateinit var upcomingMoviesRecView: RecyclerView
-    private lateinit var popularRecView: RecyclerView
-    private lateinit var topRatedRecView: RecyclerView
-    private lateinit var genresRecView: RecyclerView
+    private var userFavMovies: MutableList<FavoriteMovies> = mutableListOf()
+    private lateinit var listAdapter:ListAdapter
 
 
     override fun onCreateView(
@@ -49,15 +49,13 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        upcomingMoviesRecView = view.findViewById(R.id.upcomingMoviesRecView)
-        popularRecView = view.findViewById(R.id.popularRecView)
-        topRatedRecView = view.findViewById(R.id.topRatedRecView)
-        genresRecView = view.findViewById(R.id.genresRecView)
+        listAdapter = ListAdapter(this@DashboardFragment)
 
         getUpcomingMovies()
         getMovieGenres()
         getTopRatedMovies()
         getTrendingMovies()
+        getFavoriteMovies()
 
     }
 
@@ -93,7 +91,6 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
     }
 
     private fun getTrendingMovies() {
-
         url =
             "https://api.themoviedb.org/3/trending/all/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
         request = Request.Builder().url(url).build()
@@ -115,8 +112,8 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
 
                 //move from background to ui thread and display data
                 activity!!.runOnUiThread {
-                    popularRecView.adapter =
-                        PopularMoviesAdapter(trendingMoviesList, this@DashboardFragment)
+                    listAdapter.submitList(upcomingMoviesList)
+                    popularRecView.adapter = listAdapter
                 }
             }
         })
@@ -172,17 +169,43 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
                 Log.d("this is the list", topRatedMoviesList.toString())
 
                 activity!!.runOnUiThread {
-                    //sorting list by rating and passing it to the adapter
+//                    sorting list by rating and passing it to the adapter
                     topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList.sortedWith(
                         compareBy { it.vote_average }).reversed() as MutableList<Movies>,
-                        this@DashboardFragment
-                    )
+                        this@DashboardFragment)
+
                     Log.d("SortedList", topRatedMoviesList.sortedWith(
                         compareBy { it.vote_average }).reversed().toString()
                     )
                 }
             }
         })
+    }
+
+    private fun getFavoriteMovies(){
+        databaseReference = FirebaseDatabase.getInstance().reference
+        databaseReference.child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .child("favoriteMovieList")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    //
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        for (i in p0.children) {
+                            val fav = i.getValue(FavoriteMovies::class.java)
+                            userFavMovies.add(fav!!)
+                            Log.d("FAV_MOVIES", userFavMovies.toString())
+                            favoriteMoviesRV.adapter = FavoriteMoviesAdapter(userFavMovies,this@DashboardFragment)
+                        }
+                    } else {
+                        userFav.visibility = View.GONE
+                    }
+                }
+
+            })
     }
 
     /* handles movie clicks.
@@ -208,6 +231,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
         movieIntent.putExtra("DESCRIPTION", movies.overview)
         movieIntent.putExtra("RATING", rating)
         startActivity(movieIntent)
+
     }
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
@@ -224,6 +248,23 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener {
         genresIntent.putExtra("GENRE_NAME", movieGenres.name)
         startActivity(genresIntent)
     }
+
+    override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
+        val movieIntent = Intent (activity, MovieInfoScreen::class.java)
+        //converting rating toString() so I can pass it. Double was throwing an error
+        val rating = favoriteMovies.movie_rating.toString()
+        movieIntent.putExtra("MOVIE_NAME", favoriteMovies.title)
+        movieIntent.putExtra("MOVIE_PHOTO",favoriteMovies.photo)
+        movieIntent.putExtra("RELEASE_DATE",favoriteMovies.releaseDate)
+        movieIntent.putExtra("DESCRIPTION",favoriteMovies.description)
+        movieIntent.putExtra("RATING",rating)
+        startActivity(movieIntent)
+    }
+
+    override fun onFavoriteTvSeriesClick(favoriteTvSeries: FavoriteTvSeries) {
+        //
+    }
+
 
 
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1d1d1d"
+    tools:context=".PersonalizeAccount">
+
+    <TextView
+        android:id="@+id/profileTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="4sp"
+        android:gravity="center_horizontal"
+        android:text="Your profile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/profileSubTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="2dp"
+        android:textStyle="normal"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="3sp"
+        android:text="set up your profile"
+        app:layout_constraintTop_toBottomOf="@+id/profileTxt"
+        app:layout_constraintLeft_toLeftOf="@id/profileTxt" />
+
+    <TextView
+        android:id="@+id/skipBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:textColor="#ffffff"
+        android:layout_marginRight="20dp"
+        android:lineSpacingExtra="3sp"
+        android:text="Skip"
+        app:layout_constraintTop_toTopOf="@+id/profileTxt"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/personalisePhoto"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/default_img"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/callYou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="100dp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="3sp"
+        android:text="How shall we call you?"
+        app:layout_constraintTop_toBottomOf="@+id/personalisePhoto"
+        app:layout_constraintLeft_toLeftOf="@+id/username" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="20dp"
+        android:background="#fff"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:hint="Usernane"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/callYou" />
+
+    <Button
+        android:id="@+id/getStartedBtn"
+        android:layout_width="285dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="50dp"
+        android:background="@color/red"
+        android:text="Get started"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

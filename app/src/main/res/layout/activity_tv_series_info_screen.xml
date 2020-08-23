@@ -57,7 +57,7 @@
 
             <TextView
                 android:id="@+id/tvSeriesTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="This is a cool movie title"
@@ -74,7 +74,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="2020-08-04"
                 android:textColor="#fff"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintLeft_toRightOf="@+id/posterImg"
                 app:layout_constraintTop_toBottomOf="@+id/tvSeriesTxt" />
 
@@ -85,7 +85,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="8.0/10"
                 android:textColor="#fff"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintLeft_toRightOf="@+id/releaseDate"
                 app:layout_constraintTop_toTopOf="@+id/releaseDate" />
 

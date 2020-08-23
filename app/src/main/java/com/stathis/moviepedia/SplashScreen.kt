@@ -18,6 +18,8 @@ class SplashScreen : AppCompatActivity() {
             startActivity(Intent(this, IntroScreen::class.java))
             //finish this activity
             finish()
+            overridePendingTransition(0, 0)
         },5000)
+
     }
 }

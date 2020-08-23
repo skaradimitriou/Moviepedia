@@ -1,5 +1,6 @@
 package com.stathis.moviepedia
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -20,7 +22,7 @@ import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
 import com.stathis.moviepedia.recyclerviews.FavoriteMoviesAdapter
 import com.stathis.moviepedia.recyclerviews.FavoriteTvSeriesAdapter
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_user_profile.*
+import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.ByteArrayOutputStream
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
@@ -69,12 +71,13 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }
     }
 
+
     private fun getUserFavoriteMovies(){
         //adds a new favorite to the favorite movie list
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-            .child("favoriteMovieList")
+            .child("favoriteMovies")
             .addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     //
@@ -88,9 +91,9 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
                             Log.d("i",i.toString())
 
                             //display data
-                            favGridRecView.adapter = FavoriteMoviesAdapter(userFavoriteMovies,this@UserProfile)
-                            val favoriteCounter: TextView = findViewById(R.id.favorites)
-                            favoriteCounter.text = "${p0.childrenCount} Favorites"
+                            if (userFavoriteMovies.size > 0){
+                                favGridRecView.adapter = FavoriteMoviesAdapter(userFavoriteMovies,this@UserProfile)
+                            }
                         }
                     }
                 }
@@ -114,8 +117,9 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
                             val fav = i.getValue(FavoriteTvSeries::class.java)
                             userFavoriteTvSeries.add(fav!!)
                             Log.d("i",i.toString())
-
-                            favGridRecView.adapter = FavoriteTvSeriesAdapter(userFavoriteTvSeries,this@UserProfile)
+                            if (userFavoriteTvSeries.size > 0){
+                                favGridRecView.adapter = FavoriteTvSeriesAdapter(userFavoriteTvSeries,this@UserProfile)
+                            }
                         }
                     }
                 }
@@ -170,7 +174,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
                 storageRef.downloadUrl.addOnCompleteListener{ urlTask ->
                     urlTask.result?.let{
                         imageUri = it
-                        profileImg.setImageBitmap(bitmap)
+                        userPhoto.setImageBitmap(bitmap)
                     }
                 }
             } else {

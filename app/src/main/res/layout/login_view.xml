@@ -69,6 +69,8 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_password_icon"
                     android:drawablePadding="15dp"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
                     android:hint="Password" />
 
             </com.google.android.material.textfield.TextInputLayout>

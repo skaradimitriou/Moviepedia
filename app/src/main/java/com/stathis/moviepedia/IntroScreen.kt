@@ -8,6 +8,7 @@ import android.os.Handler
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -87,8 +88,10 @@ class IntroScreen : AppCompatActivity() {
 //                        startActivity(Intent(this, Dashboard::class.java))
 //                        finish() //kills IntroScreenApp
                         loginDial.dismiss()
-                        showSuccessLoginDialog()
+                        startActivity(Intent(this, Dashboard::class.java))
                     } else {
+                        val toast = Toast.makeText(applicationContext, "Please enter valid credentials", Toast.LENGTH_LONG)
+                        toast.show()
                         updateUI(null)
                     }
                 }
@@ -144,7 +147,8 @@ class IntroScreen : AppCompatActivity() {
                             registerDialog.dismiss()
                             showSuccessAccountDialog()
                         } else {
-
+                            val toast = Toast.makeText(applicationContext, "Please enter valid credentials", Toast.LENGTH_LONG)
+                            toast.show()
                         }
                     }
             }
@@ -166,25 +170,7 @@ class IntroScreen : AppCompatActivity() {
         //2 second delay
         Handler().postDelayed({
             successDialogue.dismiss()
-            startActivity(Intent(this, GenresInfoScreen::class.java))
-        }, 2000)
-    }
-
-    private fun showSuccessLoginDialog() {
-        //Inflate the dialog with custom view
-        val successDialog = LayoutInflater.from(this).inflate(R.layout.account_success_view, null)
-        //AlertDialogBuilder
-        val successBuilder = AlertDialog.Builder(this)
-            .setView(successDialog)
-        val text: TextView = successDialog.findViewById(R.id.redirect_txt)
-        text.text = "Login successful"
-        //show dialog
-        val successDialogue = successBuilder.show()
-        //2 second delay
-        Handler().postDelayed({
-            successDialogue.dismiss()
-            startActivity(Intent(this, Dashboard::class.java))
-            finish() //kills IntroScreenApp
+            startActivity(Intent(this, PersonalizeAccount::class.java))
         }, 2000)
     }
 }

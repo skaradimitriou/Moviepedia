@@ -26,6 +26,7 @@ import com.stathis.moviepedia.recyclerviews.AiringTvSeriesAdapter
 import com.stathis.moviepedia.recyclerviews.QueryAdapter
 import com.stathis.moviepedia.recyclerviews.SearchAdapter
 import com.stathis.moviepedia.recyclerviews.SearchItemClickListener
+import kotlinx.android.synthetic.main.fragment_search.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -69,24 +70,24 @@ class SearchFragment : Fragment(),SearchItemClickListener {
             getRecentUserQueries()
         } else {
             Log.d("he searched",bundle)
-            getQueryInfo()
+            getQueryInfo(query)
         }
 
     }
 
-    private fun getQueryInfo() {
+    private fun getQueryInfo(query: Query) {
         //saving the user queries to the db so we can access them for an enhanced User Experience
-        if (bundle != "null"){
-            addQueryToDb()
+        if (query.queryName != "null"){
+            addQueryToDb(query)
         }
 
         //Building the url by replacing spacings with "+" so I can call the API for results
-        if (bundle.contains(" ")) {
-            bundle = bundle.replace("\\s".toRegex(), "+")
-            url = "https://api.themoviedb.org/3/search/multi?api_key=$apiKey&query=$bundle"
+        if (query.queryName.contains(" ")) {
+            query.queryName = query.queryName.replace("\\s".toRegex(), "+")
+            url = "https://api.themoviedb.org/3/search/multi?api_key=$apiKey&query=${query.queryName}"
             Log.d("URL", url)
         } else {
-            url = "https://api.themoviedb.org/3/search/multi?api_key=$apiKey&query=$bundle"
+            url = "https://api.themoviedb.org/3/search/multi?api_key=$apiKey&query=${query.queryName}"
             Log.d("URL", url)
         }
 
@@ -117,7 +118,7 @@ class SearchFragment : Fragment(),SearchItemClickListener {
         })
     }
 
-    private fun addQueryToDb() {
+    private fun addQueryToDb(query: Query) {
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
@@ -154,7 +155,8 @@ class SearchFragment : Fragment(),SearchItemClickListener {
 
 
     override fun onQueryClick(query: Query) {
-        getQueryInfo()
+        queryTxt.visibility = View.GONE
+        getQueryInfo(query)
     }
 
     override fun onSearchItemClick(searchItem: SearchItem) {
