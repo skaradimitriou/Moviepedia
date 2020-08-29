@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.GenresInfoScreen
@@ -16,7 +15,6 @@ import com.stathis.moviepedia.MovieInfoScreen
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request

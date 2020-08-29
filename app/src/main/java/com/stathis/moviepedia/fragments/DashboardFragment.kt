@@ -7,35 +7,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.google.gson.GsonBuilder
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.GenresInfoScreen
 import com.stathis.moviepedia.MovieInfoScreen
+import com.stathis.moviepedia.MoviesViewModel
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
 
 
-class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,FavoriteClickListener {
+class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
+    FavoriteClickListener {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private lateinit var client: OkHttpClient
-    private lateinit var databaseReference: DatabaseReference
-    private var upcomingMoviesList: MutableList<Movies> = mutableListOf()
-    private var trendingMoviesList: MutableList<Movies> = mutableListOf()
-    private var genresList: MutableList<MovieGenres> = mutableListOf()
-    private var topRatedMoviesList: MutableList<Movies> = mutableListOf()
-    private var userFavMovies: MutableList<FavoriteMovies> = mutableListOf()
-    private lateinit var listAdapter:ListAdapter
+    private lateinit var listAdapter: ListAdapter
+    private var viewModel: MoviesViewModel = MoviesViewModel()
 
 
     override fun onCreateView(
@@ -51,161 +38,63 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,Fav
 
         listAdapter = ListAdapter(this@DashboardFragment)
 
-        getUpcomingMovies()
-        getMovieGenres()
-        getTopRatedMovies()
-        getTrendingMovies()
-        getFavoriteMovies()
-
-    }
-
-
-    private fun getUpcomingMovies() {
-        url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                println(body)
-
-                val gson = GsonBuilder().create()
-                val upcomingMovies = gson.fromJson(body, UpcomingMovies::class.java)
-                Log.d("Response", upcomingMovies.toString())
-                upcomingMoviesList = ArrayList(upcomingMovies.results)
-
-                Log.d("this is the list", upcomingMoviesList.toString())
-
-                activity!!.runOnUiThread {
-                    upcomingMoviesRecView.adapter =
-                        UpcomingMoviesAdapter(upcomingMoviesList, this@DashboardFragment)
-                }
-
+        viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+        viewModel.UpComingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
+            override fun onChanged(t: MutableList<Movies>?) {
+                Log.d("T", t.toString())
+                upcomingMoviesRecView.adapter =
+                    UpcomingMoviesAdapter(t, this@DashboardFragment)
             }
         })
-    }
 
-    private fun getTrendingMovies() {
-        url =
-            "https://api.themoviedb.org/3/trending/all/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
+        viewModel.TrendingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
+            override fun onChanged(t: MutableList<Movies>?) {
+                Log.d("T", t.toString())
+                listAdapter.submitList(t)
+                popularRecView.adapter = listAdapter
             }
+        })
 
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val popularMovies = gson.fromJson(body, MovieFeed::class.java)
-                Log.d("Response", popularMovies.toString())
+        viewModel.TopRatedMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
+            override fun onChanged(t: MutableList<Movies>?) {
+                Log.d("T", t.toString())
+//                sorting list by rating and passing it to the adapter
+                topRatedRecView.adapter = PopularMoviesAdapter(
+                    t?.sortedWith(
+                        compareBy { it.vote_average })?.reversed() as MutableList<Movies>,
+                    this@DashboardFragment
+                )
 
-                trendingMoviesList = ArrayList(popularMovies.results)
-                Log.d("this is the list", trendingMoviesList.toString())
+                Log.d(
+                    "SortedList", t?.sortedWith(
+                        compareBy { it.vote_average })?.reversed().toString()
+                )
+            }
+        })
 
-                //move from background to ui thread and display data
-                activity!!.runOnUiThread {
-                    listAdapter.submitList(upcomingMoviesList)
-                    popularRecView.adapter = listAdapter
+        viewModel.getFavoriteMovies().observe(this, object : Observer<MutableList<FavoriteMovies>> {
+            override fun onChanged(t: MutableList<FavoriteMovies>?) {
+                if (t?.size == 0){
+                    userFav.visibility = View.GONE
+                }else{
+                    favoriteMoviesRV.adapter =
+                        FavoriteMoviesAdapter(t, this@DashboardFragment)
                 }
             }
         })
-    }
 
-    private fun getMovieGenres() {
-        url =
-            "https://api.themoviedb.org/3/genre/movie/list?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Genre call Failed", call.toString())
+        viewModel.getMovieGenres().observe(this, object : Observer<MutableList<MovieGenres>> {
+            override fun onChanged(t: MutableList<MovieGenres>?) {
+                genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-
-                val gson = GsonBuilder().create()
-                val movieGenres = gson.fromJson(body, MovieGenresFeed::class.java)
-                Log.d("RESPONSE", movieGenres.toString())
-                genresList = ArrayList(movieGenres.genres)
-
-
-                activity!!.runOnUiThread {
-                    genresRecView.adapter = GenresAdapter(genresList, this@DashboardFragment)
-                }
-
-            }
         })
-    }
 
-    private fun getTopRatedMovies() {
-        url =
-            "https://api.themoviedb.org/3/movie/top_rated?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Top Rated Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                Log.d("TOP RATED MOVIES CALL", body.toString())
-                val gson = GsonBuilder().create()
-                val topRatedMovies = gson.fromJson(body, MovieFeed::class.java)
-                Log.d("Top Rated Call Response", topRatedMovies.toString())
-
-                topRatedMoviesList = ArrayList(topRatedMovies.results)
-                Log.d("this is the list", topRatedMoviesList.toString())
-
-                activity!!.runOnUiThread {
-//                    sorting list by rating and passing it to the adapter
-                    topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList.sortedWith(
-                        compareBy { it.vote_average }).reversed() as MutableList<Movies>,
-                        this@DashboardFragment)
-
-                    Log.d("SortedList", topRatedMoviesList.sortedWith(
-                        compareBy { it.vote_average }).reversed().toString()
-                    )
-                }
-            }
-        })
-    }
-
-    private fun getFavoriteMovies(){
-        databaseReference = FirebaseDatabase.getInstance().reference
-        databaseReference.child("users")
-            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-            .child("favoriteMovieList")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    //
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        for (i in p0.children) {
-                            val fav = i.getValue(FavoriteMovies::class.java)
-                            userFavMovies.add(fav!!)
-                            Log.d("FAV_MOVIES", userFavMovies.toString())
-                            favoriteMoviesRV.adapter = FavoriteMoviesAdapter(userFavMovies,this@DashboardFragment)
-                        }
-                    } else {
-                        userFav.visibility = View.GONE
-                    }
-                }
-
-            })
+        viewModel.UpComingMoviesCall()
+        viewModel.TrendingMoviesCall()
+        viewModel.TopRatedMoviesCall()
+        viewModel.getFavoriteMovies()
+        viewModel.getMovieGenres()
     }
 
     /* handles movie clicks.
@@ -250,21 +139,18 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,Fav
     }
 
     override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
-        val movieIntent = Intent (activity, MovieInfoScreen::class.java)
+        val movieIntent = Intent(activity, MovieInfoScreen::class.java)
         //converting rating toString() so I can pass it. Double was throwing an error
         val rating = favoriteMovies.movie_rating.toString()
         movieIntent.putExtra("MOVIE_NAME", favoriteMovies.title)
-        movieIntent.putExtra("MOVIE_PHOTO",favoriteMovies.photo)
-        movieIntent.putExtra("RELEASE_DATE",favoriteMovies.releaseDate)
-        movieIntent.putExtra("DESCRIPTION",favoriteMovies.description)
-        movieIntent.putExtra("RATING",rating)
+        movieIntent.putExtra("MOVIE_PHOTO", favoriteMovies.photo)
+        movieIntent.putExtra("RELEASE_DATE", favoriteMovies.releaseDate)
+        movieIntent.putExtra("DESCRIPTION", favoriteMovies.description)
+        movieIntent.putExtra("RATING", rating)
         startActivity(movieIntent)
     }
 
     override fun onFavoriteTvSeriesClick(favoriteTvSeries: FavoriteTvSeries) {
         //
     }
-
-
-
 }

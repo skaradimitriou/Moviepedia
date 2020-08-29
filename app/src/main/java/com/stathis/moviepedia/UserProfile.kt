@@ -1,6 +1,5 @@
 package com.stathis.moviepedia
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,7 +9,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -22,7 +20,6 @@ import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
 import com.stathis.moviepedia.recyclerviews.FavoriteMoviesAdapter
 import com.stathis.moviepedia.recyclerviews.FavoriteTvSeriesAdapter
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.ByteArrayOutputStream
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {

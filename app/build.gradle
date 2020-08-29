@@ -66,6 +66,13 @@ dependencies {
     //Lottie
     implementation 'com.airbnb.android:lottie:2.8.0'
 
+    //Shimmer  Effect
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
 }
 

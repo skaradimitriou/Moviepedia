@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.WindowManager
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 
-class SplashScreen : AppCompatActivity() {
+class SplashScreen : AppCompatActivity(), LifecycleOwner {
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +23,5 @@ class SplashScreen : AppCompatActivity() {
             finish()
             overridePendingTransition(0, 0)
         },5000)
-
     }
 }

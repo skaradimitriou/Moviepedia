@@ -2,11 +2,15 @@ package com.stathis.moviepedia
 
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -27,6 +31,7 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
     private var genreId: Int = 0
     private lateinit var genreName: String
     private val apiKey = "?api_key=b36812048cc4b54d559f16a2ff196bc5"
+    private lateinit var header:TextView
     private var movieList: MutableList<Movies> = mutableListOf()
     private lateinit var moviesGridRecView: RecyclerView
 
@@ -40,10 +45,12 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
         genreId = intent.getIntExtra("GENRE_ID",genreId)
         genreName = intent.getStringExtra("GENRE_NAME")
 
-        moviesGridRecView = findViewById(R.id.genresGridRecView)
+        header = findViewById(R.id.genresHeaderTxt)
 
+        //api call
         getResultsForThisGenre()
 
+        moviesGridRecView = findViewById(R.id.genresGridRecView)
     }
 
     private fun getResultsForThisGenre() {
@@ -65,12 +72,38 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
                 Log.d("GENRE_LIST",movieList.toString())
 
                 runOnUiThread{
-                    val header:TextView = findViewById(R.id.genresHeaderTxt)
+                    val genre = MovieGenres(genreId,genreName)
+                    //setting background color according to the Genre ID
+                    setGenreHeader(genre)
                     header.text = "$genreName Movies"
                     moviesGridRecView.adapter = MoviesAdapter(movieList as ArrayList<Movies>,this@GenresInfoScreen)
                 }
             }
         })
+    }
+
+    private fun setGenreHeader(genres: MovieGenres){
+        when(genres.name){
+            "Action" -> header.setBackgroundColor(Color.parseColor("#4f5fef"))
+            "Adventure" -> header.setBackgroundColor(Color.parseColor("#23B993"))
+            "Animation" -> header.setBackgroundColor(Color.parseColor("#ff0045"))
+            "Comedy" -> header.setBackgroundColor(Color.parseColor("#f86611"))
+            "Crime" -> header.setBackgroundColor(Color.parseColor("#EC5657"))
+            "Documentary" -> header.setBackgroundColor(Color.parseColor("#2D2C4E"))
+            "Drama" -> header.setBackgroundColor(Color.parseColor("#000000"))
+            "Family" -> header.setBackgroundColor(Color.parseColor("#4f5fef"))
+            "Fantasy" -> header.setBackgroundColor(Color.parseColor("#23B993"))
+            "History" -> header.setBackgroundColor(Color.parseColor("#ff0045"))
+            "Horror" -> header.setBackgroundColor(Color.parseColor("#f86611"))
+            "Music" -> header.setBackgroundColor(Color.parseColor("#EC5657"))
+            "Mystery" -> header.setBackgroundColor(Color.parseColor("#2D2C4E"))
+            "Romance" -> header.setBackgroundColor(Color.parseColor("#000000"))
+            "Science Fiction" -> header.setBackgroundColor(Color.parseColor("#4f5fef"))
+            "TV Movie" -> header.setBackgroundColor(Color.parseColor("#23B993"))
+            "Thriller" -> header.setBackgroundColor(Color.parseColor("#ff0045"))
+            "War" -> header.setBackgroundColor(Color.parseColor("#f86611"))
+            "Western" -> header.setBackgroundColor(Color.parseColor("#EC5657"))
+        }
     }
 
     override fun onItemClick(movies: Movies) {

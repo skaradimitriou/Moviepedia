@@ -8,7 +8,7 @@ import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.Movies
 
 class FavoriteMoviesAdapter(
-    val favoriteMovies: MutableList<FavoriteMovies>,
+    val favoriteMovies: MutableList<FavoriteMovies>?,
     private val listener: FavoriteClickListener
 ) : RecyclerView.Adapter<FavoriteMoviesViewHolder>() {
 
@@ -19,11 +19,11 @@ class FavoriteMoviesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return favoriteMovies.size
+        return favoriteMovies!!.size
     }
 
     override fun onBindViewHolder(holder: FavoriteMoviesViewHolder, position: Int) {
-        val currentItem = favoriteMovies[position]
+        val currentItem = favoriteMovies!![position]
         holder.bind(currentItem, listener)
     }
 

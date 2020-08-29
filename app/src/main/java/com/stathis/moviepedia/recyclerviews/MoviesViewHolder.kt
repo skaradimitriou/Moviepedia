@@ -10,8 +10,10 @@ import com.stathis.moviepedia.models.Movies
 
 class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val resultImg: ImageView = itemView.findViewById(R.id.resultImg)
-    val resultTxt: TextView = itemView.findViewById(R.id.resultTxt)
+    val resultImg: ImageView = itemView.findViewById(R.id.movie_img)
+    val resultTxt: TextView = itemView.findViewById(R.id.movie_title)
+    val movieRating:TextView = itemView.findViewById(R.id.ratingTxt)
+    val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
 
     fun bind(movies: Movies,listener: ItemClickListener) {
         Glide.with(itemView.context)
@@ -23,6 +25,9 @@ class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } else {
             resultTxt.text = movies.name
         }
+
+        movieGenre.text = movies.media_type
+        movieRating.text = movies.vote_average.toString()
 
         itemView.setOnClickListener {
             listener.onItemClick(movies)

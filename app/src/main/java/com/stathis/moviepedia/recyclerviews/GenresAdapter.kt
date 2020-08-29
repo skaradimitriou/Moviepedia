@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.MovieGenres
 
-class GenresAdapter(val movieGenres: MutableList<MovieGenres>, private val listener:GenresClickListener) : RecyclerView.Adapter<GenresViewHolder>() {
+class GenresAdapter(val movieGenres: MutableList<MovieGenres>?, private val listener:GenresClickListener) : RecyclerView.Adapter<GenresViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenresViewHolder {
         val view =
@@ -15,11 +15,11 @@ class GenresAdapter(val movieGenres: MutableList<MovieGenres>, private val liste
     }
 
     override fun getItemCount(): Int {
-        return movieGenres.size
+        return movieGenres!!.size
     }
 
     override fun onBindViewHolder(holder: GenresViewHolder, position: Int) {
-        val currentItem = movieGenres[position]
+        val currentItem = movieGenres!![position]
         holder.bind(currentItem,listener)
     }
 }
