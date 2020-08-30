@@ -22,7 +22,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
     FavoriteClickListener {
 
     private lateinit var listAdapter: ListAdapter
-    private var viewModel: MoviesViewModel = MoviesViewModel()
+    private var moviesViewModel: MoviesViewModel = MoviesViewModel()
 
 
     override fun onCreateView(
@@ -38,8 +38,8 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
         listAdapter = ListAdapter(this@DashboardFragment)
 
-        viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
-        viewModel.UpComingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
+        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+        moviesViewModel.UpComingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
                 upcomingMoviesRecView.adapter =
@@ -47,7 +47,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
             }
         })
 
-        viewModel.TrendingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
+        moviesViewModel.TrendingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
                 listAdapter.submitList(t)
@@ -55,7 +55,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
             }
         })
 
-        viewModel.TopRatedMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
+        moviesViewModel.TopRatedMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
 //                sorting list by rating and passing it to the adapter
@@ -72,29 +72,29 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
             }
         })
 
-        viewModel.getFavoriteMovies().observe(this, object : Observer<MutableList<FavoriteMovies>> {
+        moviesViewModel.getFavoriteMovies().observe(this, object : Observer<MutableList<FavoriteMovies>> {
             override fun onChanged(t: MutableList<FavoriteMovies>?) {
                 if (t?.size == 0){
                     userFav.visibility = View.GONE
-                }else{
+                } else {
                     favoriteMoviesRV.adapter =
                         FavoriteMoviesAdapter(t, this@DashboardFragment)
                 }
             }
         })
 
-        viewModel.getMovieGenres().observe(this, object : Observer<MutableList<MovieGenres>> {
+        moviesViewModel.getMovieGenres().observe(this, object : Observer<MutableList<MovieGenres>> {
             override fun onChanged(t: MutableList<MovieGenres>?) {
                 genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
             }
 
         })
 
-        viewModel.UpComingMoviesCall()
-        viewModel.TrendingMoviesCall()
-        viewModel.TopRatedMoviesCall()
-        viewModel.getFavoriteMovies()
-        viewModel.getMovieGenres()
+        moviesViewModel.UpComingMoviesCall()
+        moviesViewModel.TrendingMoviesCall()
+        moviesViewModel.TopRatedMoviesCall()
+        moviesViewModel.getFavoriteMovies()
+        moviesViewModel.getMovieGenres()
     }
 
     /* handles movie clicks.

@@ -1,19 +1,12 @@
 package com.stathis.moviepedia
 
 import android.util.Log
-import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.recyclerviews.FavoriteMoviesAdapter
-import com.stathis.moviepedia.recyclerviews.GenresAdapter
-import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
-import com.stathis.moviepedia.recyclerviews.UpcomingMoviesAdapter
-import kotlinx.android.synthetic.main.fragment_dashboard.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -35,24 +28,7 @@ class MoviesViewModel : ViewModel() {
     private var streamTwo : MutableLiveData<MutableList<Movies>> = MutableLiveData()
     private var streamGenres : MutableLiveData<MutableList<MovieGenres>> = MutableLiveData()
     private var streamThree : MutableLiveData<MutableList<Movies>> = MutableLiveData()
-    private var streamFour : MutableLiveData<MutableList<FavoriteMovies>> = MutableLiveData()
-
-
-//    fun getStream(): MutableLiveData<MutableList<Movies>> {
-//        return stream
-//    }
-//
-//    fun getTrendingMovies(): MutableLiveData<MutableList<Movies>> {
-//        return streamTwo
-//    }
-//
-//    fun getTopRatedMovies(): MutableLiveData<MutableList<Movies>> {
-//        return streamThree
-//    }
-//
-//    fun getUserFavorites(): MutableLiveData<MutableList<FavoriteMovies>> {
-//        return streamFour
-//    }
+    private var favoriteMovies : MutableLiveData<MutableList<FavoriteMovies>> = MutableLiveData()
 
     fun UpComingMoviesCall(): MutableLiveData<MutableList<Movies>> {
         url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
@@ -98,11 +74,6 @@ class MoviesViewModel : ViewModel() {
 
                 trendingMoviesList = ArrayList(popularMovies.results)
                 Log.d("this is the list", trendingMoviesList.toString())
-
-                //move from background to ui thread and display data
-//                activity!!.runOnUiThread {
-//
-//                }
                 streamTwo.postValue(trendingMoviesList)
             }
         })
@@ -146,17 +117,16 @@ class MoviesViewModel : ViewModel() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        for (i in p0.children) {
-                            val fav = i.getValue(FavoriteMovies::class.java)
-                            userFavMovies.add(fav!!)
-                            Log.d("FAV_MOVIES", userFavMovies.toString())
+                    if (p0.exists()){
+                        for (fav in p0.children){
+                            userFavMovies.add(fav.getValue(FavoriteMovies::class.java)!!)
                         }
                     }
-                    streamFour.postValue(userFavMovies)
+                    favoriteMovies.postValue(userFavMovies)
                 }
             })
-        return streamFour
+        Log.d("fav",favoriteMovies.toString())
+        return favoriteMovies
     }
 
     fun getMovieGenres(): MutableLiveData<MutableList<MovieGenres>> {
@@ -183,4 +153,3 @@ class MoviesViewModel : ViewModel() {
         return streamGenres
     }
 }
-

@@ -5,9 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.TvSeries
-import com.stathis.moviepedia.models.TvSeriesFeed
 
-class FeaturedTvSeriesAdapter (val tvSeries: ArrayList<TvSeries>, private val listener: ItemClickListener) : RecyclerView.Adapter<FeaturedTvSeriesViewHolder>() {
+class FeaturedTvSeriesAdapter(val tvSeries: MutableList<TvSeries>?, private val listener: ItemClickListener) : RecyclerView.Adapter<FeaturedTvSeriesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeaturedTvSeriesViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -16,11 +15,11 @@ class FeaturedTvSeriesAdapter (val tvSeries: ArrayList<TvSeries>, private val li
     }
 
     override fun getItemCount(): Int {
-        return tvSeries.size
+        return tvSeries!!.size
     }
 
     override fun onBindViewHolder(holder: FeaturedTvSeriesViewHolder, position: Int) {
-        val currentItem = tvSeries[position]
+        val currentItem = tvSeries!![position]
         holder.present(currentItem,listener)
     }
 }
