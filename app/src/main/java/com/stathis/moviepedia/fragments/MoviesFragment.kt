@@ -7,14 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.GenresInfoScreen
-import com.stathis.moviepedia.MovieInfoScreen
-import com.stathis.moviepedia.R
+import com.stathis.moviepedia.*
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
+import kotlinx.android.synthetic.main.fragment_movies.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -24,25 +24,14 @@ import java.io.IOException
 
 class MoviesFragment : Fragment(), ItemClickListener,GenresClickListener {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private lateinit var client: OkHttpClient
-    private lateinit var databaseReference: DatabaseReference
-    private var upcomingMoviesList: MutableList<Movies> = mutableListOf()
-    private var trendingMoviesList: MutableList<Movies> = mutableListOf()
-    private var genresList: MutableList<MovieGenres> = mutableListOf()
-    private var topRatedMoviesList: MutableList<Movies> = mutableListOf()
-    private var userFavMovies: MutableList<FavoriteMovies> = mutableListOf()
-    private lateinit var upcomingMoviesRecView: RecyclerView
-    private lateinit var popularRecView: RecyclerView
-    private lateinit var topRatedRecView: RecyclerView
-    private lateinit var genresRecView: RecyclerView
-    private lateinit var favoriteMoviesRV: RecyclerView
+    private var moviesViewModel: MoviesViewModel = MoviesViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Initializing the viewModel for this fragment
+        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_movies, container, false)
     }
@@ -50,138 +39,41 @@ class MoviesFragment : Fragment(), ItemClickListener,GenresClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        upcomingMoviesRecView = view.findViewById(R.id.upcomingMoviesRecView)
-        popularRecView = view.findViewById(R.id.popularRecView)
-        topRatedRecView = view.findViewById(R.id.topRatedRecView)
-        genresRecView = view.findViewById(R.id.genresRecView)
-        favoriteMoviesRV = view.findViewById(R.id.favoriteMoviesRV)
+        //viewModel lamda expression for upcoming movies
+        moviesViewModel.getUpcomingMovies().observe(viewLifecycleOwner,
+            Observer<MutableList<Movies>> { t ->
+                upcomingMoviesRecView.adapter =
+                    UpcomingMoviesAdapter(t, this@MoviesFragment)
+            })
 
-        getUpcomingMovies()
-        getMovieGenres()
-        getTopRatedMovies()
-        getTrendingMovies()
-    }
-
-    private fun getUpcomingMovies() {
-        url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                println(body)
-
-                val gson = GsonBuilder().create()
-                val upcomingMovies = gson.fromJson(body, UpcomingMovies::class.java)
-                Log.d("Response", upcomingMovies.toString())
-                upcomingMoviesList = ArrayList(upcomingMovies.results)
-
-                Log.d("this is the list", upcomingMoviesList.toString())
-
-                activity!!.runOnUiThread {
-                    upcomingMoviesRecView.adapter =
-                        UpcomingMoviesAdapter(upcomingMoviesList, this@MoviesFragment)
-                }
-
-            }
+        //viewModel lamda expression for trending movies
+        moviesViewModel.getTrendingMovies().observe(viewLifecycleOwner,Observer<MutableList<Movies>>{ t->
+            popularRecView.adapter =
+                PopularMoviesAdapter(t, this@MoviesFragment)
         })
-    }
 
-    private fun getTrendingMovies() {
-        url =
-            "https://api.themoviedb.org/3/trending/movie/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val popularMovies = gson.fromJson(body, MovieFeed::class.java)
-                Log.d("Response", popularMovies.toString())
-
-                trendingMoviesList = ArrayList(popularMovies.results)
-                Log.d("this is the list", trendingMoviesList.toString())
-
-                //move from background to ui thread and display data
-                activity!!.runOnUiThread {
-                    popularRecView.adapter =
-                        PopularMoviesAdapter(trendingMoviesList, this@MoviesFragment)
-                }
-            }
+        //viewModel lamda expression for top rated movies
+        moviesViewModel.getTopRatedMovies().observe(viewLifecycleOwner,Observer<MutableList<Movies>>{t->
+            //sorting list by rating and passing it to the adapter
+            topRatedRecView.adapter = PopularMoviesAdapter(t.sortedWith(
+                compareBy { it.vote_average }).reversed() as MutableList<Movies>,
+                this@MoviesFragment
+            )
+            Log.d("SortedList", t.sortedWith(
+                compareBy { it.vote_average }).reversed().toString()
+            )
         })
-    }
 
-    private fun getMovieGenres() {
-        url =
-            "https://api.themoviedb.org/3/genre/movie/list?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Genre call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-
-                val gson = GsonBuilder().create()
-                val movieGenres = gson.fromJson(body, MovieGenresFeed::class.java)
-                Log.d("RESPONSE", movieGenres.toString())
-                genresList = ArrayList(movieGenres.genres)
-
-
-                activity!!.runOnUiThread {
-                    genresRecView.adapter = GenresAdapter(genresList, this@MoviesFragment)
-                }
-
-            }
+        //viewModel lambda expression for Movie Genres
+        moviesViewModel.getMovieGenres().observe(viewLifecycleOwner,Observer<MutableList<MovieGenres>>{t->
+            genresRecView.adapter = GenresAdapter(t, this@MoviesFragment)
         })
-    }
 
-    private fun getTopRatedMovies() {
-        url =
-            "https://api.themoviedb.org/3/movie/top_rated?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Top Rated Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                Log.d("TOP RATED MOVIES CALL", body.toString())
-                val gson = GsonBuilder().create()
-                val topRatedMovies = gson.fromJson(body, MovieFeed::class.java)
-                Log.d("Top Rated Call Response", topRatedMovies.toString())
-
-                topRatedMoviesList = ArrayList(topRatedMovies.results)
-                Log.d("this is the list", topRatedMoviesList.toString())
-
-                activity!!.runOnUiThread {
-                    //sorting list by rating and passing it to the adapter
-                    topRatedRecView.adapter = PopularMoviesAdapter(topRatedMoviesList.sortedWith(
-                        compareBy { it.vote_average }).reversed() as MutableList<Movies>,
-                        this@MoviesFragment
-                    )
-                    Log.d("SortedList", topRatedMoviesList.sortedWith(
-                        compareBy { it.vote_average }).reversed().toString()
-                    )
-                }
-            }
-        })
+        // Calling my ViewModel functions
+        moviesViewModel.getUpcomingMovies()
+        moviesViewModel.getMovieGenres()
+        moviesViewModel.getTopRatedMovies()
+        moviesViewModel.getTrendingMovies()
     }
 
     override fun onItemClick(movies: Movies) {
@@ -221,6 +113,4 @@ class MoviesFragment : Fragment(), ItemClickListener,GenresClickListener {
         genresIntent.putExtra("GENRE_NAME", movieGenres.name)
         startActivity(genresIntent)
     }
-
-
 }

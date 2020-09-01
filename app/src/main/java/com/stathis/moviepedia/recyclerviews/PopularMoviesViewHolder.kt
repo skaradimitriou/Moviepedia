@@ -20,6 +20,7 @@ class PopularMoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
     val movieRating:TextView = itemView.findViewById(R.id.ratingTxt)
 
 
+
     fun bind(movies: Movies,listener: ItemClickListener) {
 
         if(movies.backdrop_path.isNullOrBlank()){

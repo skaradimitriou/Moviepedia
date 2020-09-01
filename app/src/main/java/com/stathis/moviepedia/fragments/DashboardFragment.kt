@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.GenresInfoScreen
 import com.stathis.moviepedia.MovieInfoScreen
-import com.stathis.moviepedia.MoviesViewModel
+import com.stathis.moviepedia.MovAndTvSeriesViewModel
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
@@ -22,13 +22,13 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
     FavoriteClickListener {
 
     private lateinit var listAdapter: ListAdapter
-    private var moviesViewModel: MoviesViewModel = MoviesViewModel()
-
+    private var moviesViewModel: MovAndTvSeriesViewModel = MovAndTvSeriesViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        moviesViewModel = ViewModelProvider(this).get(MovAndTvSeriesViewModel::class.java)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
@@ -38,7 +38,6 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
         listAdapter = ListAdapter(this@DashboardFragment)
 
-        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         moviesViewModel.UpComingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
@@ -83,7 +82,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
             }
         })
 
-        moviesViewModel.getMovieGenres().observe(this, object : Observer<MutableList<MovieGenres>> {
+        moviesViewModel.getMovieGenres().observe(viewLifecycleOwner, object : Observer<MutableList<MovieGenres>> {
             override fun onChanged(t: MutableList<MovieGenres>?) {
                 genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
             }
