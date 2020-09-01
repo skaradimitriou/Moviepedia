@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -28,34 +29,53 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     private lateinit var imageUri: Uri
     private lateinit var userPhoto: CircleImageView
     private lateinit var storage: FirebaseStorage
-    private lateinit var databaseReference: DatabaseReference
-    private var userFavoriteMovies:MutableList<FavoriteMovies> = mutableListOf()
-    private var userFavoriteTvSeries:MutableList<FavoriteTvSeries> = mutableListOf()
     private lateinit var favGridRecView:RecyclerView
+    private var userViewModel: UserViewModel = UserViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
+        // User ViewModel
+
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        userViewModel.getUserFavoriteMovies()
+
         val favMovies:TextView = findViewById(R.id.favMov)
         val favTv:TextView = findViewById(R.id.favTv)
 
-        getUserFavoriteMovies()
+        userViewModel.getUserFavoriteMovies().observe(this, Observer<MutableList<FavoriteMovies>>{ t->
+            Log.d("User Fav Movies",t.toString())
+            if (t.size > 0){
+                favGridRecView.adapter = FavoriteMoviesAdapter(t,this@UserProfile)
+            } else {
+                //display empty favorites
+            }
+        })
+
+        userViewModel.getUserFavoriteTvSeries().observe(this,Observer<MutableList<FavoriteTvSeries>>{c->
+            Log.d("User Fav Tv Series",c.toString())
+            if (c.size > 0){
+                favGridRecView.adapter = FavoriteTvSeriesAdapter(c,this@UserProfile)
+            }else {
+                //display empty favorites
+            }
+        })
+
 
         favMovies.setOnClickListener {
             favMovies.alpha = 1F
             favTv.alpha = 0.5F
-            getUserFavoriteMovies()
+            userViewModel.getUserFavoriteMovies()
         }
 
         favTv.setOnClickListener{
             favTv.alpha = 1F
             favMovies.alpha = 0.5F
-            getUserFavoriteTvSeries()
+            userViewModel.getUserFavoriteTvSeries()
         }
 
         userPhoto = findViewById(R.id.profileImg)
@@ -66,61 +86,6 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         userPhoto.setOnClickListener{
             takePictureIntent()
         }
-    }
-
-
-    private fun getUserFavoriteMovies(){
-        //adds a new favorite to the favorite movie list
-        databaseReference = FirebaseDatabase.getInstance().reference
-        databaseReference.child("users")
-            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-            .child("favoriteMovies")
-            .addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    //
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        for (i in p0.children) {
-                            val fav = i.getValue(FavoriteMovies::class.java)
-                            userFavoriteMovies.add(fav!!)
-                            Log.d("i",i.toString())
-
-                            //display data
-                            if (userFavoriteMovies.size > 0){
-                                favGridRecView.adapter = FavoriteMoviesAdapter(userFavoriteMovies,this@UserProfile)
-                            }
-                        }
-                    }
-                }
-            })
-    }
-
-    private fun getUserFavoriteTvSeries(){
-        //adds a new favorite to the favorite movie list
-        databaseReference = FirebaseDatabase.getInstance().reference
-        databaseReference.child("users")
-            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-            .child("favoriteTvSeries")
-            .addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    //
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        for (i in p0.children) {
-                            val fav = i.getValue(FavoriteTvSeries::class.java)
-                            userFavoriteTvSeries.add(fav!!)
-                            Log.d("i",i.toString())
-                            if (userFavoriteTvSeries.size > 0){
-                                favGridRecView.adapter = FavoriteTvSeriesAdapter(userFavoriteTvSeries,this@UserProfile)
-                            }
-                        }
-                    }
-                }
-            })
     }
 
     private fun retrieveUserImg(){
