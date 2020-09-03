@@ -58,7 +58,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
 //                sorting list by rating and passing it to the adapter
-                topRatedRecView.adapter = PopularMoviesAdapter(
+                topRatedRecView.adapter = TopRatedAdapter(
                     t?.sortedWith(
                         compareBy { it.vote_average })?.reversed() as MutableList<Movies>,
                     this@DashboardFragment
