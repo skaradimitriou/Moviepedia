@@ -46,6 +46,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         val favMovies:TextView = findViewById(R.id.favMov)
         val favTv:TextView = findViewById(R.id.favTv)
+        userPhoto = findViewById(R.id.profileImg)
 
         userViewModel.getUserFavoriteMovies().observe(this, Observer<MutableList<FavoriteMovies>>{ t->
             Log.d("User Fav Movies",t.toString())
@@ -65,6 +66,10 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             }
         })
 
+        userViewModel.retrieveUserImg().observe(this,Observer<Bitmap>{ img ->
+            Log.d("profile image path", img.toString())
+            userPhoto.setImageBitmap(img)
+        })
 
         favMovies.setOnClickListener {
             favMovies.alpha = 1F
@@ -78,33 +83,13 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             userViewModel.getUserFavoriteTvSeries()
         }
 
-        userPhoto = findViewById(R.id.profileImg)
-        retrieveUserImg()
+        userViewModel.retrieveUserImg()
 
         favGridRecView = findViewById(R.id.favGridRecView)
 
         userPhoto.setOnClickListener{
             takePictureIntent()
         }
-    }
-
-    private fun retrieveUserImg(){
-        storage = FirebaseStorage.getInstance()
-        var imageRef: StorageReference = storage.reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
-        imageRef.getBytes(1024*1024).addOnSuccessListener {bytes ->
-            var userPhoto:CircleImageView = findViewById(R.id.profileImg)
-            val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.size)
-            userPhoto.setImageBitmap(bitmap)
-
-        }.addOnFailureListener {
-            // Handle any errors
-        }
-        imageRef.downloadUrl.addOnSuccessListener {downloadUrl ->
-            Log.d("DownloadUrl", downloadUrl.toString())
-        }.addOnFailureListener {it->
-            Log.d("DownloadUrl", it.toString())
-        }
-
     }
 
     private fun takePictureIntent(){

@@ -2,6 +2,7 @@ package com.stathis.moviepedia
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.models.Movies
@@ -24,13 +26,13 @@ class UserViewModel : ViewModel() {
 
     private val REQUEST_IMAGE_CAPTURE = 100
     private lateinit var imageUri: Uri
-    private lateinit var userPhoto: CircleImageView
     private lateinit var storage: FirebaseStorage
     private lateinit var databaseReference: DatabaseReference
     private var userFavoriteMovies:MutableList<FavoriteMovies> = mutableListOf()
     private var userFavoriteTvSeries:MutableList<FavoriteTvSeries> = mutableListOf()
     private var favoriteMovies : MutableLiveData<MutableList<FavoriteMovies>> = MutableLiveData()
     private var favoriteTvSeries : MutableLiveData<MutableList<FavoriteTvSeries>> = MutableLiveData()
+    private var userImgPath : MutableLiveData<Bitmap> = MutableLiveData()
 
     fun getUserFavoriteMovies(): MutableLiveData<MutableList<FavoriteMovies>> {
         //adds a new favorite to the favorite movie list
@@ -89,5 +91,26 @@ class UserViewModel : ViewModel() {
                 }
             })
         return favoriteTvSeries
+    }
+
+    fun retrieveUserImg(): MutableLiveData<Bitmap> {
+        storage = FirebaseStorage.getInstance()
+        var imageRef: StorageReference = storage.reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
+        imageRef.getBytes(1024*1024).addOnSuccessListener {bytes ->
+
+            val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.size)
+            userImgPath.postValue(bitmap)
+//            userPhoto.setImageBitmap(bitmap)
+
+        }.addOnFailureListener {
+            // Handle any errors
+        }
+        imageRef.downloadUrl.addOnSuccessListener {downloadUrl ->
+            Log.d("DownloadUrl", downloadUrl.toString())
+
+        }.addOnFailureListener {it->
+            Log.d("DownloadUrl", it.toString())
+        }
+        return userImgPath
     }
 }
