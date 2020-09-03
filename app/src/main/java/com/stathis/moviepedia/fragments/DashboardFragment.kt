@@ -49,7 +49,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
         moviesViewModel.TrendingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
-                listAdapter.submitList(t)
+                listAdapter.submitList(t as List<Any>?)
                 popularRecView.adapter = listAdapter
             }
         })
@@ -57,12 +57,11 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
         moviesViewModel.TopRatedMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
+                val topRatedAdapter:TopRatedAdapter = TopRatedAdapter(this@DashboardFragment)
+                topRatedAdapter.submitList(t?.sortedWith(
+                    compareBy { it.vote_average })?.reversed())
 //                sorting list by rating and passing it to the adapter
-                topRatedRecView.adapter = TopRatedAdapter(
-                    t?.sortedWith(
-                        compareBy { it.vote_average })?.reversed() as MutableList<Movies>,
-                    this@DashboardFragment
-                )
+                topRatedRecView.adapter = topRatedAdapter
 
                 Log.d(
                     "SortedList", t?.sortedWith(

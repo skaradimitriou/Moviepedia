@@ -8,7 +8,7 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.Movies
 
 class ListAdapter(val listener: ItemClickListener) :
-    ListAdapter<Movies, PopularMoviesViewHolder>(DiffUtilClass<Movies>()) {
+    ListAdapter<Any, PopularMoviesViewHolder>(DiffUtilClass<Any>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
         val view =
@@ -18,6 +18,6 @@ class ListAdapter(val listener: ItemClickListener) :
 
     override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {
         val movies = getItem(position)
-        holder.bind(movies, listener)
+        holder.bind(movies as Movies, listener)
     }
 }

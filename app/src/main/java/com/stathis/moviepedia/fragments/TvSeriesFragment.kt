@@ -61,7 +61,9 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
         tvSeriesViewModel.getTopRatedTvSeries().observe(this,object :
             Observer<MutableList<TvSeries>> {
             override fun onChanged(t: MutableList<TvSeries>?) {
-                topRatedTvRecView.adapter = AiringTvSeriesAdapter(t, this@TvSeriesFragment)
+                val topRatedAdapter:TopRatedAdapter = TopRatedAdapter( this@TvSeriesFragment)
+                topRatedAdapter.submitList(t as List<Any>?)
+                topRatedTvRecView.adapter = topRatedAdapter
             }
         })
 
