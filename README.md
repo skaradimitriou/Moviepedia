@@ -15,6 +15,9 @@ e) Share a movie
 
 [Kotlin](https://kotlinlang.org/)
 
+## Architecture
+Model - View - ViewModel (MVVM)
+
 ### Theme 
 
 [Material Design](https://material.io/)
