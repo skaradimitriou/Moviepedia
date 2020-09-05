@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.ItemClickListener
 import com.stathis.moviepedia.recyclerviews.MoviesAdapter
@@ -31,26 +32,24 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
     private var genreId: Int = 0
     private lateinit var genreName: String
     private val apiKey = "?api_key=b36812048cc4b54d559f16a2ff196bc5"
-    private lateinit var header:TextView
+    private lateinit var header: TextView
     private var movieList: MutableList<Movies> = mutableListOf()
     private lateinit var moviesGridRecView: RecyclerView
+    private lateinit var binding: ActivityGenresInfoScreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_genres_info_screen)
+        binding = ActivityGenresInfoScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        genreId = intent.getIntExtra("GENRE_ID",genreId)
+        genreId = intent.getIntExtra("GENRE_ID", genreId)
         genreName = intent.getStringExtra("GENRE_NAME")
-
-        header = findViewById(R.id.genresHeaderTxt)
 
         //api call
         getResultsForThisGenre()
-
-        moviesGridRecView = findViewById(R.id.genresGridRecView)
     }
 
     private fun getResultsForThisGenre() {
@@ -69,41 +68,42 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
                 val genres = gson.fromJson(body, GenreMoviesFeed::class.java)
                 Log.d("Response", genres.toString())
                 movieList = ArrayList(genres.results)
-                Log.d("GENRE_LIST",movieList.toString())
+                Log.d("GENRE_LIST", movieList.toString())
 
-                runOnUiThread{
-                    val genre = MovieGenres(genreId,genreName)
+                runOnUiThread {
+                    val genre = MovieGenres(genreId, genreName)
                     //setting background color according to the Genre ID
                     setGenreHeader(genre)
-                    header.text = "$genreName Movies"
-                    moviesGridRecView.adapter = MoviesAdapter(movieList as ArrayList<Movies>,this@GenresInfoScreen)
+                    binding.genresGridRecView.adapter =
+                        MoviesAdapter(movieList as ArrayList<Movies>, this@GenresInfoScreen)
                 }
             }
         })
     }
 
-    private fun setGenreHeader(genres: MovieGenres){
-        when(genres.name){
-            "Action" -> header.setBackgroundColor(Color.parseColor("#4f5fef"))
-            "Adventure" -> header.setBackgroundColor(Color.parseColor("#23B993"))
-            "Animation" -> header.setBackgroundColor(Color.parseColor("#ff0045"))
-            "Comedy" -> header.setBackgroundColor(Color.parseColor("#f86611"))
-            "Crime" -> header.setBackgroundColor(Color.parseColor("#EC5657"))
-            "Documentary" -> header.setBackgroundColor(Color.parseColor("#2D2C4E"))
-            "Drama" -> header.setBackgroundColor(Color.parseColor("#000000"))
-            "Family" -> header.setBackgroundColor(Color.parseColor("#4f5fef"))
-            "Fantasy" -> header.setBackgroundColor(Color.parseColor("#23B993"))
-            "History" -> header.setBackgroundColor(Color.parseColor("#ff0045"))
-            "Horror" -> header.setBackgroundColor(Color.parseColor("#f86611"))
-            "Music" -> header.setBackgroundColor(Color.parseColor("#EC5657"))
-            "Mystery" -> header.setBackgroundColor(Color.parseColor("#2D2C4E"))
-            "Romance" -> header.setBackgroundColor(Color.parseColor("#000000"))
-            "Science Fiction" -> header.setBackgroundColor(Color.parseColor("#4f5fef"))
-            "TV Movie" -> header.setBackgroundColor(Color.parseColor("#23B993"))
-            "Thriller" -> header.setBackgroundColor(Color.parseColor("#ff0045"))
-            "War" -> header.setBackgroundColor(Color.parseColor("#f86611"))
-            "Western" -> header.setBackgroundColor(Color.parseColor("#EC5657"))
+    private fun setGenreHeader(genres: MovieGenres) {
+        when (genres.name) {
+            "Action" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#4f5fef"))
+            "Adventure" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#23B993"))
+            "Animation" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#ff0045"))
+            "Comedy" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#f86611"))
+            "Crime" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#EC5657"))
+            "Documentary" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#2D2C4E"))
+            "Drama" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#000000"))
+            "Family" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#4f5fef"))
+            "Fantasy" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#23B993"))
+            "History" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#ff0045"))
+            "Horror" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#f86611"))
+            "Music" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#EC5657"))
+            "Mystery" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#2D2C4E"))
+            "Romance" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#000000"))
+            "Science Fiction" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#4f5fef"))
+            "TV Movie" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#23B993"))
+            "Thriller" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#ff0045"))
+            "War" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#f86611"))
+            "Western" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#EC5657"))
         }
+        binding.genresHeaderTxt.text = "$genreName Movies"
     }
 
     override fun onItemClick(movies: Movies) {

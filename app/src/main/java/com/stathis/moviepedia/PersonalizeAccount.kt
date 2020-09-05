@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.stathis.moviepedia.databinding.ActivityPersonalizeAccountBinding
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_personalize_account.*
 import java.io.ByteArrayOutputStream
@@ -19,27 +20,24 @@ class PersonalizeAccount : AppCompatActivity() {
 
     private val REQUEST_IMAGE_CAPTURE = 100
     private lateinit var imageUri: Uri
-    private lateinit var userPhoto: CircleImageView
-    private lateinit var storage: FirebaseStorage
     private lateinit var databaseReference:DatabaseReference
+    private lateinit var binding:ActivityPersonalizeAccountBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_personalize_account)
+        binding = ActivityPersonalizeAccountBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        userPhoto = findViewById(R.id.personalisePhoto)
-        val usernameField: EditText = findViewById(R.id.username)
-
-        userPhoto.setOnClickListener{
+        binding.personalisePhoto.setOnClickListener{
             takePictureIntent()
         }
 
-        getStartedBtn.setOnClickListener{
-            val username:String = usernameField.text.toString()
+        binding.getStartedBtn.setOnClickListener{
+            val username:String = binding.username.text.toString()
             saveUsername(username)
         }
     }
@@ -80,7 +78,7 @@ class PersonalizeAccount : AppCompatActivity() {
                 storageRef.downloadUrl.addOnCompleteListener{ urlTask ->
                     urlTask.result?.let{
                         imageUri = it
-                        userPhoto.setImageBitmap(bitmap)
+                        binding.personalisePhoto.setImageBitmap(bitmap)
                     }
                 }
             } else {

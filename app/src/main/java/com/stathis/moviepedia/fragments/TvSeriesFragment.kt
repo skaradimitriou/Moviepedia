@@ -17,6 +17,7 @@ import com.stathis.moviepedia.GenresInfoScreen
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.TvSeriesInfoScreen
 import com.stathis.moviepedia.TvSeriesViewModel
+import com.stathis.moviepedia.databinding.FragmentTvSeriesBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
 import kotlinx.android.synthetic.main.fragment_tv_series.*
@@ -26,13 +27,15 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
 
     private lateinit var database: DatabaseReference
     private var tvSeriesViewModel: TvSeriesViewModel = TvSeriesViewModel()
+    private lateinit var binding: FragmentTvSeriesBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tv_series, container, false)
+        binding = FragmentTvSeriesBinding.inflate(layoutInflater)
+        return binding.root
     }
 
 
@@ -47,14 +50,14 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
             Observer<MutableList<TvSeries>> {
             override fun onChanged(t: MutableList<TvSeries>?) {
                 Log.d("Featured TvSeries",t.toString())
-                upcomingTvSeriesRecView.adapter = FeaturedTvSeriesAdapter(t, this@TvSeriesFragment)
+                binding.upcomingTvSeriesRecView.adapter = FeaturedTvSeriesAdapter(t, this@TvSeriesFragment)
             }
         })
 
         tvSeriesViewModel.getAiringTodayTvSeries().observe(this,object :
             Observer<MutableList<TvSeries>> {
             override fun onChanged(t: MutableList<TvSeries>?) {
-                onTheAirRecView.adapter = AiringTvSeriesAdapter(t, this@TvSeriesFragment)
+                binding.onTheAirRecView.adapter = AiringTvSeriesAdapter(t, this@TvSeriesFragment)
             }
         })
 
@@ -63,14 +66,14 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
             override fun onChanged(t: MutableList<TvSeries>?) {
                 val topRatedAdapter:TopRatedAdapter = TopRatedAdapter( this@TvSeriesFragment)
                 topRatedAdapter.submitList(t as List<Any>?)
-                topRatedTvRecView.adapter = topRatedAdapter
+                binding.topRatedTvRecView.adapter = topRatedAdapter
             }
         })
 
         tvSeriesViewModel.getPopularTvSeries().observe(this,object :
             Observer<MutableList<TvSeries>> {
             override fun onChanged(t: MutableList<TvSeries>?) {
-                popularTvRecView.adapter =
+                binding.popularTvRecView.adapter =
                         AiringTvSeriesAdapter(t, this@TvSeriesFragment)
             }
         })
@@ -78,7 +81,7 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
         tvSeriesViewModel.getTvGenres().observe(this,object :
             Observer<MutableList<MovieGenres>> {
             override fun onChanged(t: MutableList<MovieGenres>?) {
-                genresTvRecView.adapter =
+                binding.genresTvRecView.adapter =
                         GenresAdapter(t, this@TvSeriesFragment)
             }
         })

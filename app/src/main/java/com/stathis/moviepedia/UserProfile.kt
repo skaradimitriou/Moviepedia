@@ -10,11 +10,13 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
@@ -27,16 +29,15 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
     private val REQUEST_IMAGE_CAPTURE = 100
     private lateinit var imageUri: Uri
-    private lateinit var userPhoto: CircleImageView
-    private lateinit var storage: FirebaseStorage
-    private lateinit var favGridRecView:RecyclerView
     private var userViewModel: UserViewModel = UserViewModel()
+    private lateinit var binding:ActivityUserProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_profile)
+        binding = ActivityUserProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         // User ViewModel
-
+        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -44,14 +45,10 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         userViewModel.getUserFavoriteMovies()
 
-        val favMovies:TextView = findViewById(R.id.favMov)
-        val favTv:TextView = findViewById(R.id.favTv)
-        userPhoto = findViewById(R.id.profileImg)
-
         userViewModel.getUserFavoriteMovies().observe(this, Observer<MutableList<FavoriteMovies>>{ t->
             Log.d("User Fav Movies",t.toString())
             if (t.size > 0){
-                favGridRecView.adapter = FavoriteMoviesAdapter(t,this@UserProfile)
+                binding.favGridRecView.adapter = FavoriteMoviesAdapter(t,this@UserProfile)
             } else {
                 //display empty favorites
             }
@@ -60,7 +57,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         userViewModel.getUserFavoriteTvSeries().observe(this,Observer<MutableList<FavoriteTvSeries>>{c->
             Log.d("User Fav Tv Series",c.toString())
             if (c.size > 0){
-                favGridRecView.adapter = FavoriteTvSeriesAdapter(c,this@UserProfile)
+                binding.favGridRecView.adapter = FavoriteTvSeriesAdapter(c,this@UserProfile)
             }else {
                 //display empty favorites
             }
@@ -68,26 +65,24 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         userViewModel.retrieveUserImg().observe(this,Observer<Bitmap>{ img ->
             Log.d("profile image path", img.toString())
-            userPhoto.setImageBitmap(img)
+            binding.profileImg.setImageBitmap(img)
         })
 
-        favMovies.setOnClickListener {
-            favMovies.alpha = 1F
-            favTv.alpha = 0.5F
+        binding.favMov.setOnClickListener {
+            binding.favMov.alpha = 1F
+            binding.favTv.alpha = 0.5F
             userViewModel.getUserFavoriteMovies()
         }
 
-        favTv.setOnClickListener{
-            favTv.alpha = 1F
-            favMovies.alpha = 0.5F
+        binding.favTv.setOnClickListener{
+            binding.favTv.alpha = 1F
+            binding.favMov.alpha = 0.5F
             userViewModel.getUserFavoriteTvSeries()
         }
 
         userViewModel.retrieveUserImg()
 
-        favGridRecView = findViewById(R.id.favGridRecView)
-
-        userPhoto.setOnClickListener{
+        binding.profileImg.setOnClickListener{
             takePictureIntent()
         }
     }
@@ -121,7 +116,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
                 storageRef.downloadUrl.addOnCompleteListener{ urlTask ->
                     urlTask.result?.let{
                         imageUri = it
-                        userPhoto.setImageBitmap(bitmap)
+                        binding.profileImg.setImageBitmap(bitmap)
                     }
                 }
             } else {

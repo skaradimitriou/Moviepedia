@@ -15,6 +15,7 @@ import com.stathis.moviepedia.MovieInfoScreen
 
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.TvSeriesInfoScreen
+import com.stathis.moviepedia.databinding.FragmentSearchBinding
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
@@ -44,21 +45,20 @@ class SearchFragment : Fragment(),SearchItemClickListener {
     private var searchItems: MutableList<SearchItem> = mutableListOf()
     private var userQueries: MutableList<Query> = mutableListOf()
     private lateinit var databaseReference: DatabaseReference
-    private lateinit var searchRecView: RecyclerView
     private lateinit var query: Query
+    private lateinit var binding:FragmentSearchBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        binding = FragmentSearchBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        searchRecView = view.findViewById(R.id.searchResultsRecView)
 
         //getting the QUERY from the search bar
         bundle = this.arguments?.getString("QUERY").toString()
@@ -109,8 +109,7 @@ class SearchFragment : Fragment(),SearchItemClickListener {
 
                 //passing data to the ui thread and displaying them
                 activity!!.runOnUiThread {
-                    searchRecView.adapter = SearchAdapter(searchItems as ArrayList<SearchItem>,this@SearchFragment)
-
+                    binding.searchResultsRecView.adapter = SearchAdapter(searchItems as ArrayList<SearchItem>,this@SearchFragment)
                 }
 
             }
@@ -145,7 +144,7 @@ class SearchFragment : Fragment(),SearchItemClickListener {
                             Log.d("movieList", userQueries.toString())
 
                             activity!!.runOnUiThread {
-                                searchRecView.adapter = QueryAdapter(userQueries,this@SearchFragment)
+                                binding.searchResultsRecView.adapter = QueryAdapter(userQueries,this@SearchFragment)
                             }
                         }
                     }

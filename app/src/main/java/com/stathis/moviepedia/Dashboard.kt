@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.databinding.ActivityDashboardBinding
 import com.stathis.moviepedia.fragments.*
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.GenresAdapter
@@ -32,37 +33,35 @@ import java.net.URI.create
 
 class Dashboard : AppCompatActivity() {
 
-    private lateinit var userProfileImg: CircleImageView
     private lateinit var storage: FirebaseStorage
-    private lateinit var searchBar: androidx.appcompat.widget.SearchView
     private lateinit var searchFragment: SearchFragment
     private lateinit var dashboardFragment: DashboardFragment
     private lateinit var moviesFragment: MoviesFragment
     private lateinit var tvSeriesFragment: TvSeriesFragment
+    private lateinit var binding:ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        userProfileImg = findViewById(R.id.userProfileImg)
         getUserProfileImg()
-        userProfileImg.setOnClickListener{
+        binding.userProfileImg.setOnClickListener{
             startActivity(Intent(this, UserProfile::class.java))
         }
 
-        searchBar = findViewById(R.id.searchView)
-        searchBar.setOnClickListener{
-            searchBar.isIconified = false
+        binding.searchView.setOnClickListener{
+            binding.searchView.isIconified = false
         }
 
-        searchBar.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchBar.clearFocus()
-                searchBar.setQuery("",false)
+                binding.searchView.clearFocus()
+                binding.searchView.setQuery("",false)
                 Log.d("HELLO",query)
                 val bundle = bundleOf("QUERY" to query)
                 searchFragment = SearchFragment()
@@ -127,9 +126,8 @@ class Dashboard : AppCompatActivity() {
         var imageRef: StorageReference =
             storage.reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
         imageRef.getBytes(1024 * 1024).addOnSuccessListener { bytes ->
-            var userPhoto: CircleImageView = findViewById(R.id.userProfileImg)
             val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            userPhoto.setImageBitmap(bitmap)
+            binding.userProfileImg.setImageBitmap(bitmap)
 
         }.addOnFailureListener {
             // Handle any errors

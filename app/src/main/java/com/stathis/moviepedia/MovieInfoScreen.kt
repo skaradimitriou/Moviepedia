@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.databinding.ActivityMovieInfoScreenBinding
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.MovieFeed
 import com.stathis.moviepedia.models.Movies
@@ -40,16 +41,16 @@ class MovieInfoScreen : AppCompatActivity() {
     private lateinit var client: OkHttpClient
     private var movieCastInfo: MutableList<Cast> = mutableListOf()
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var binding:ActivityMovieInfoScreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_info_screen)
+        binding = ActivityMovieInfoScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-
-        var likeBtn:ImageView = findViewById(R.id.likeBtn)
 
         //getting info about the movie from intent
         getIntentInfo()
@@ -57,9 +58,9 @@ class MovieInfoScreen : AppCompatActivity() {
 
         getMovieCastInfo()
 
-        likeBtn.setOnClickListener {
+        binding.likeBtn.setOnClickListener {
             val whiteFavBtnColor: Drawable.ConstantState? = resources.getDrawable(R.drawable.ic_favorite_icon,this.theme).constantState
-            val likeBtnColor = likeBtn.drawable.constantState
+            val likeBtnColor = binding.likeBtn.drawable.constantState
 
             if(likeBtnColor!!.equals(whiteFavBtnColor)){
                 addToFavorites()
@@ -69,7 +70,7 @@ class MovieInfoScreen : AppCompatActivity() {
             }
         }
 
-        shareBtn.setOnClickListener {
+        binding.shareBtn.setOnClickListener {
             share()
         }
     }
@@ -90,40 +91,32 @@ class MovieInfoScreen : AppCompatActivity() {
     }
 
     private fun setMoviePhoto(){
-        var moviePoster:ImageView = findViewById(R.id.movie_img)
-        var movieImg:ImageView = findViewById(R.id.imgView)
-
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w500$moviePhoto")
-            .into(movieImg)
+            .into(binding.imgView)
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w500$moviePhoto")
-            .into(moviePoster)
+            .into(binding.movieImg)
     }
 
     private fun setMovieTitle(){
-        var title:TextView = findViewById(R.id.mainTxt)
-        title.text = movieTitle
+        binding.mainTxt.text = movieTitle
     }
 
     private fun setMovieRating(){
         //converting rating toDouble()
         var rating = intent.getStringExtra("RATING").toDouble()
-        var ratingTxt:TextView = findViewById(R.id.rating)
-        ratingTxt.text = "$rating/10"
-        val ratingBar:RatingBar = findViewById(R.id.ratingBar)
+        binding.rating.text = "$rating/10"
         //applying rating to the ratingBar
-        ratingBar.rating = rating.toFloat()/2
+        binding.ratingBar.rating = rating.toFloat()/2
     }
 
     private fun setMovieDescription(){
-        var description: TextView = findViewById(R.id.description)
-        description.text = movieDescription
+        binding.description.text = movieDescription
     }
 
     private fun setMovieReleaseDate(){
-        var releaseDate:TextView = findViewById(R.id.releaseDate)
-        releaseDate.text = movieReleaseDate
+        binding.releaseDate.text = movieReleaseDate
     }
 
     private fun getMovieCastInfo() {
@@ -148,8 +141,7 @@ class MovieInfoScreen : AppCompatActivity() {
                     Log.d("this is the list",movieCastInfo.toString())
 
                     runOnUiThread{
-                        val castRecView:RecyclerView = findViewById(R.id.castRecView)
-                        castRecView.adapter = CastAdapter(movieCastInfo)
+                        binding.castRecView.adapter = CastAdapter(movieCastInfo)
                     }
                 }
             }
@@ -172,7 +164,7 @@ class MovieInfoScreen : AppCompatActivity() {
                         for (i in p0.children) {
                             val fav = i.getValue(FavoriteMovies::class.java)
                             if(fav?.title == movieTitle){
-                                likeBtn.setImageResource(R.drawable.ic_favorite_white)
+                                binding.likeBtn.setImageResource(R.drawable.ic_favorite_white)
                             }
                             Log.d("i",i.toString())
                         }
@@ -197,7 +189,7 @@ class MovieInfoScreen : AppCompatActivity() {
                             val favorite = i.getValue(FavoriteMovies::class.java)
                             if(favorite?.title == movieTitle){
                                 i.ref.removeValue()
-                                likeBtn.setImageResource(R.drawable.ic_favorite_icon)
+                                binding.likeBtn.setImageResource(R.drawable.ic_favorite_icon)
                             }
                         }
                     }
@@ -211,8 +203,7 @@ class MovieInfoScreen : AppCompatActivity() {
                 .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
                 .child("favoriteMovieList")
                 .child(movieTitle).setValue(FavoriteMovies(moviePhoto,movieTitle,movieRating.toDouble(),movieDescription,movieReleaseDate))
-            val likeBtn:ImageView  = findViewById(R.id.likeBtn)
-            likeBtn.setImageResource(R.drawable.ic_favorite_white)
+            binding.likeBtn.setImageResource(R.drawable.ic_favorite_white)
     }
 
     private fun share(){

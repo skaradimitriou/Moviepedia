@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.databinding.ActivityTvSeriesInfoScreenBinding
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.models.cast.Cast
@@ -37,30 +38,29 @@ class TvSeriesInfoScreen : AppCompatActivity() {
     private lateinit var tvSeriesReleaseDate: String
     private lateinit var tvSeriesDescription: String
     private lateinit var databaseReference: DatabaseReference
-    private lateinit var likeBtn: ImageView
     private lateinit var url: String
     private lateinit var request: Request
     private var client: OkHttpClient = OkHttpClient()
     private var castInfo: MutableList<Cast> = mutableListOf()
+    private lateinit var binding:ActivityTvSeriesInfoScreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tv_series_info_screen)
+        binding = ActivityTvSeriesInfoScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         getUserFavorites()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        likeBtn = findViewById(R.id.likeBtn)
-
         getIntentInfo()
         getCastInfo()
 
-        likeBtn.setOnClickListener {
+        binding.likeBtn.setOnClickListener {
             val whiteFavBtnColor: Drawable.ConstantState? =
                 resources.getDrawable(R.drawable.ic_favorite_icon, this.theme).constantState
-            val likeBtnColor = likeBtn.drawable.constantState
+            val likeBtnColor = binding.likeBtn.drawable.constantState
 
             if (likeBtnColor!!.equals(whiteFavBtnColor)) {
                 addToFavorites()
@@ -69,10 +69,9 @@ class TvSeriesInfoScreen : AppCompatActivity() {
             }
         }
 
-        shareBtn.setOnClickListener {
+        binding.shareBtn.setOnClickListener {
             share()
         }
-
     }
 
     private fun getIntentInfo() {
@@ -91,41 +90,33 @@ class TvSeriesInfoScreen : AppCompatActivity() {
     }
 
     private fun setTvSeriesPhoto() {
-        var backgroundImg: ImageView = findViewById(R.id.imgView)
-        var posterImg: ImageView = findViewById(R.id.posterImg)
+        Glide.with(this)
+            .load("https://image.tmdb.org/t/p/w500$tvSeriesPhoto")
+            .into(binding.posterImg)
 
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w500$tvSeriesPhoto")
-            .into(posterImg)
-
-        Glide.with(this)
-            .load("https://image.tmdb.org/t/p/w500$tvSeriesPhoto")
-            .into(backgroundImg)
+            .into(binding.imgView)
     }
 
     private fun setTvSeriesTitle() {
-        var title: TextView = findViewById(R.id.tvSeriesTxt)
-        title.text = tvSeriesTitle
+        binding.tvSeriesTxt.text = tvSeriesTitle
     }
 
     private fun setTvSeriesRating() {
         //converting rating toDouble()
         var rating = tvSeriesRating.toDouble()
-        var ratingTxt: TextView = findViewById(R.id.rating)
-        ratingTxt.text = "$rating/10"
-        val ratingBar: RatingBar = findViewById(R.id.ratingBar)
+        binding.rating.text = "$rating/10"
         //applying rating to the ratingBar
-        ratingBar.rating = rating.toFloat() / 2
+        binding.ratingBar.rating = rating.toFloat() / 2
     }
 
     private fun setTvSeriesDescription() {
-        var description: TextView = findViewById(R.id.description)
-        description.text = tvSeriesDescription
+        binding.description.text = tvSeriesDescription
     }
 
     private fun setTvSeriesReleaseDate() {
-        var releaseDate: TextView = findViewById(R.id.releaseDate)
-        releaseDate.text = tvSeriesReleaseDate
+        binding.releaseDate.text = tvSeriesReleaseDate
     }
 
     private fun addToFavorites() {
@@ -143,8 +134,7 @@ class TvSeriesInfoScreen : AppCompatActivity() {
                     tvSeriesDescription
                 )
             )
-        val likeBtn: ImageView = findViewById(R.id.likeBtn)
-        likeBtn.setImageResource(R.drawable.ic_favorite_white)
+        binding.likeBtn.setImageResource(R.drawable.ic_favorite_white)
     }
 
     private fun getUserFavorites() {
@@ -163,7 +153,7 @@ class TvSeriesInfoScreen : AppCompatActivity() {
                         for (i in p0.children) {
                             val fav = i.getValue(FavoriteTvSeries::class.java)
                             if (fav?.id == tvSeriesId) {
-                                likeBtn.setImageResource(R.drawable.ic_favorite_white)
+                                binding.likeBtn.setImageResource(R.drawable.ic_favorite_white)
                             }
                             Log.d("i", i.toString())
                         }
@@ -189,7 +179,7 @@ class TvSeriesInfoScreen : AppCompatActivity() {
                             val favorite = i.getValue(FavoriteTvSeries::class.java)
                             if (favorite?.id == tvSeriesId) {
                                 i.ref.removeValue()
-                                likeBtn.setImageResource(R.drawable.ic_favorite_icon)
+                                binding.likeBtn.setImageResource(R.drawable.ic_favorite_icon)
                             }
                         }
                     }
@@ -217,10 +207,8 @@ class TvSeriesInfoScreen : AppCompatActivity() {
                     castInfo = ArrayList(cast.cast)
                     Log.d("Cast", castInfo.toString())
 
-                    val castRecView: RecyclerView = findViewById(R.id.castRecView)
-
                     runOnUiThread {
-                        castRecView.adapter = CastAdapter(castInfo)
+                        binding.castRecView.adapter = CastAdapter(castInfo)
                     }
                 }
             }
@@ -234,5 +222,4 @@ class TvSeriesInfoScreen : AppCompatActivity() {
         shareIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
         startActivity(shareIntent)
     }
-
 }

@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.stathis.moviepedia.IntroScreen
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.Movies

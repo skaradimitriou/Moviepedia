@@ -13,6 +13,7 @@ import com.stathis.moviepedia.GenresInfoScreen
 import com.stathis.moviepedia.MovieInfoScreen
 import com.stathis.moviepedia.MovAndTvSeriesViewModel
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
@@ -23,6 +24,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
     private lateinit var listAdapter: ListAdapter
     private var moviesViewModel: MovAndTvSeriesViewModel = MovAndTvSeriesViewModel()
+    private lateinit var binding: FragmentDashboardBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +32,8 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
     ): View? {
         moviesViewModel = ViewModelProvider(this).get(MovAndTvSeriesViewModel::class.java)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        binding = FragmentDashboardBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +44,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
         moviesViewModel.UpComingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
-                upcomingMoviesRecView.adapter =
+                binding.upcomingMoviesRecView.adapter =
                     UpcomingMoviesAdapter(t, this@DashboardFragment)
             }
         })
@@ -50,7 +53,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
                 listAdapter.submitList(t as List<Any>?)
-                popularRecView.adapter = listAdapter
+                binding.popularRecView.adapter = listAdapter
             }
         })
 
@@ -61,7 +64,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
                 topRatedAdapter.submitList(t?.sortedWith(
                     compareBy { it.vote_average })?.reversed())
 //                sorting list by rating and passing it to the adapter
-                topRatedRecView.adapter = topRatedAdapter
+                binding.topRatedRecView.adapter = topRatedAdapter
 
                 Log.d(
                     "SortedList", t?.sortedWith(
@@ -75,7 +78,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
                 if (t?.size == 0){
                     userFav.visibility = View.GONE
                 } else {
-                    favoriteMoviesRV.adapter =
+                    binding.favoriteMoviesRV.adapter =
                         FavoriteMoviesAdapter(t, this@DashboardFragment)
                 }
             }
@@ -83,7 +86,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
         moviesViewModel.getMovieGenres().observe(viewLifecycleOwner, object : Observer<MutableList<MovieGenres>> {
             override fun onChanged(t: MutableList<MovieGenres>?) {
-                genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
+                binding.genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
             }
 
         })

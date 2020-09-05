@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.*
+import com.stathis.moviepedia.databinding.FragmentMoviesBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
 import kotlinx.android.synthetic.main.fragment_movies.*
@@ -22,9 +23,10 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class MoviesFragment : Fragment(), ItemClickListener,GenresClickListener {
+class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
 
     private var moviesViewModel: MoviesViewModel = MoviesViewModel()
+    private lateinit var binding: FragmentMoviesBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +35,8 @@ class MoviesFragment : Fragment(), ItemClickListener,GenresClickListener {
         // Initializing the viewModel for this fragment
         moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies, container, false)
+        binding = FragmentMoviesBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,32 +45,37 @@ class MoviesFragment : Fragment(), ItemClickListener,GenresClickListener {
         //viewModel lamda expression for upcoming movies
         moviesViewModel.getUpcomingMovies().observe(viewLifecycleOwner,
             Observer<MutableList<Movies>> { t ->
-                upcomingMoviesRecView.adapter =
+                binding.upcomingMoviesRecView.adapter =
                     UpcomingMoviesAdapter(t, this@MoviesFragment)
             })
 
         //viewModel lamda expression for trending movies
-        moviesViewModel.getTrendingMovies().observe(viewLifecycleOwner,Observer<MutableList<Movies>>{ t->
-            popularRecView.adapter =
-                PopularMoviesAdapter(t, this@MoviesFragment)
-        })
+        moviesViewModel.getTrendingMovies()
+            .observe(viewLifecycleOwner, Observer<MutableList<Movies>> { t ->
+                binding.popularRecView.adapter =
+                    PopularMoviesAdapter(t, this@MoviesFragment)
+            })
 
         //viewModel lamda expression for top rated movies
-        moviesViewModel.getTopRatedMovies().observe(viewLifecycleOwner,Observer<MutableList<Movies>>{t->
-            //sorting list by rating and passing it to the adapter
-            topRatedRecView.adapter = PopularMoviesAdapter(t.sortedWith(
-                compareBy { it.vote_average }).reversed() as MutableList<Movies>,
-                this@MoviesFragment
-            )
-            Log.d("SortedList", t.sortedWith(
-                compareBy { it.vote_average }).reversed().toString()
-            )
-        })
+        moviesViewModel.getTopRatedMovies()
+            .observe(viewLifecycleOwner, Observer<MutableList<Movies>> { t ->
+                //sorting list by rating and passing it to the adapter
+                binding.topRatedRecView.adapter = PopularMoviesAdapter(
+                    t.sortedWith(
+                        compareBy { it.vote_average }).reversed() as MutableList<Movies>,
+                    this@MoviesFragment
+                )
+                Log.d(
+                    "SortedList", t.sortedWith(
+                        compareBy { it.vote_average }).reversed().toString()
+                )
+            })
 
         //viewModel lambda expression for Movie Genres
-        moviesViewModel.getMovieGenres().observe(viewLifecycleOwner,Observer<MutableList<MovieGenres>>{t->
-            genresRecView.adapter = GenresAdapter(t, this@MoviesFragment)
-        })
+        moviesViewModel.getMovieGenres()
+            .observe(viewLifecycleOwner, Observer<MutableList<MovieGenres>> { t ->
+                binding.genresRecView.adapter = GenresAdapter(t, this@MoviesFragment)
+            })
 
         // Calling my ViewModel functions
         moviesViewModel.getUpcomingMovies()
