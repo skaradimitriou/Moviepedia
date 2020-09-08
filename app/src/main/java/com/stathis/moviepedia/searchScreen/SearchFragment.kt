@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.fragments
+package com.stathis.moviepedia.searchScreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 
-import com.stathis.moviepedia.TvSeriesInfoScreen
+import com.stathis.moviepedia.tvSeriesInfoScreen.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentSearchBinding
 import com.stathis.moviepedia.models.search.Query
 import com.stathis.moviepedia.models.search.SearchItem
@@ -28,18 +29,12 @@ import okhttp3.Response
 import java.io.IOException
 
 
-class SearchFragment : Fragment(),SearchItemClickListener {
+class SearchFragment : Fragment(), SearchItemClickListener {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private lateinit var client: OkHttpClient
-    private var apiKey: String = "b36812048cc4b54d559f16a2ff196bc5"
     private lateinit var bundle: String
-    private var searchItems: MutableList<SearchItem> = mutableListOf()
-    private var userQueries: MutableList<Query> = mutableListOf()
-    private lateinit var databaseReference: DatabaseReference
     private lateinit var query: Query
-    private lateinit var binding:FragmentSearchBinding
+    private lateinit var binding: FragmentSearchBinding
+    private var searchScreenViewModel = SearchScreenViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,101 +52,33 @@ class SearchFragment : Fragment(),SearchItemClickListener {
         bundle = this.arguments?.getString("QUERY").toString()
         query = Query(bundle)
 
+        //Observers
+
+        searchScreenViewModel.getRecentUserQueries().observe(this,Observer<MutableList<Query>>{queries ->
+            Log.d("Queries",queries.toString())
+            binding.searchResultsRecView.adapter = QueryAdapter(queries,this@SearchFragment)
+        })
+
         /*if bundle is empty means that the user didn't search for something
         so I will show him his recent searches in a vertical recycler view*/
-        if(bundle == "null"){
-            getRecentUserQueries()
-        } else {
-            Log.d("he searched",bundle)
-            getQueryInfo(query)
+        if (bundle == "null") {
+            searchScreenViewModel.getRecentUserQueries()
         }
 
     }
-
-    private fun getQueryInfo(query: Query) {
-        //saving the user queries to the db so we can access them for an enhanced User Experience
-        if (query.queryName != "null"){
-            addQueryToDb(query)
-        }
-
-        //Building the url by replacing spacings with "+" so I can call the API for results
-        if (query.queryName.contains(" ")) {
-            query.queryName = query.queryName.replace("\\s".toRegex(), "+")
-            url = "https://api.themoviedb.org/3/search/multi?api_key=$apiKey&query=${query.queryName}"
-            Log.d("URL", url)
-        } else {
-            url = "https://api.themoviedb.org/3/search/multi?api_key=$apiKey&query=${query.queryName}"
-            Log.d("URL", url)
-        }
-
-        request = Request.Builder().url(url).build()
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                //
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                Log.d("RESPONSE", body.toString())
-
-                val searchItem = gson.fromJson(body, SearchItemsFeed::class.java)
-                searchItems = ArrayList(searchItem.results)
-                Log.d("TV", searchItems.toString())
-
-                //passing data to the ui thread and displaying them
-                activity!!.runOnUiThread {
-                    binding.searchResultsRecView.adapter = SearchAdapter(searchItems as ArrayList<SearchItem>,this@SearchFragment)
-                }
-
-            }
-
-        })
-    }
-
-    private fun addQueryToDb(query: Query) {
-        databaseReference = FirebaseDatabase.getInstance().reference
-        databaseReference.child("users")
-            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-            .child("userSearchQueries")
-            .child(query.queryName).setValue(query)
-    }
-
-    private fun getRecentUserQueries(){
-        databaseReference = FirebaseDatabase.getInstance().reference
-        databaseReference.child("users")
-            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-            .child("userSearchQueries")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        for (i in p0.children) {
-                            val query = i.getValue(Query::class.java)
-                            Log.d("q",query.toString())
-                            userQueries.add(query!!)
-                            Log.d("movieList", userQueries.toString())
-
-                            activity!!.runOnUiThread {
-                                binding.searchResultsRecView.adapter = QueryAdapter(userQueries,this@SearchFragment)
-                            }
-                        }
-                    }
-                }
-            })
-    }
-
 
     override fun onQueryClick(query: Query) {
         queryTxt.visibility = View.GONE
-        getQueryInfo(query)
+        searchScreenViewModel.getQueryInfo(query)
+            .observe(this, Observer<MutableList<SearchItem>> { searchItem ->
+                Log.d("Search Item",searchItem.toString())
+                binding.searchResultsRecView.adapter = SearchAdapter(searchItem as ArrayList<SearchItem>,this@SearchFragment)
+            })
+        searchScreenViewModel.getQueryInfo(query)
     }
 
     override fun onSearchItemClick(searchItem: SearchItem) {
+
         when (searchItem.media_type) {
             "movie" -> {
                 val movieIntent = Intent(activity, MovieInfoScreen::class.java)

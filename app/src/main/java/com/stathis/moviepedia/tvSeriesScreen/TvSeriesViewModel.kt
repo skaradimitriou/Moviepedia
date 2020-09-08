@@ -1,16 +1,13 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.tvSeriesScreen
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.models.MovieGenres
 import com.stathis.moviepedia.models.MovieGenresFeed
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
-import com.stathis.moviepedia.recyclerviews.AiringTvSeriesAdapter
-import com.stathis.moviepedia.recyclerviews.GenresAdapter
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request

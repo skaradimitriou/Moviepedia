@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.fragments
+package com.stathis.moviepedia.mainScreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,10 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.RoomDatabase
-import com.stathis.moviepedia.GenresInfoScreen
+import com.stathis.moviepedia.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.MovAndTvSeriesViewModel
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
@@ -23,7 +21,8 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
     FavoriteClickListener {
 
     private lateinit var listAdapter: ListAdapter
-    private var moviesViewModel: MovAndTvSeriesViewModel = MovAndTvSeriesViewModel()
+    private var moviesViewModel: MovAndTvSeriesViewModel =
+        MovAndTvSeriesViewModel()
     private lateinit var binding: FragmentDashboardBinding
 
     override fun onCreateView(

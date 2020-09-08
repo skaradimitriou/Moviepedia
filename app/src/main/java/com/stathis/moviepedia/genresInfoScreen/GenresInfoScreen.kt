@@ -1,4 +1,4 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.genresInfoScreen
 
 
 import android.content.Intent
@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.models.*
@@ -21,15 +22,11 @@ import java.io.IOException
 
 class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private lateinit var client: OkHttpClient
+
     private var genreId: Int = 0
     private lateinit var genreName: String
-    private val apiKey = "?api_key=b36812048cc4b54d559f16a2ff196bc5"
-    private lateinit var header: TextView
-    private var movieList: MutableList<Movies> = mutableListOf()
     private lateinit var binding: ActivityGenresInfoScreenBinding
+    private var genresInfoScreenViewModel: GenresInfoScreenViewModel = GenresInfoScreenViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,41 +39,19 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
         genreId = intent.getIntExtra("GENRE_ID", genreId)
         genreName = intent.getStringExtra("GENRE_NAME")
 
-        //api call
-        getResultsForThisGenre()
-    }
-
-    private fun getResultsForThisGenre() {
-        url = "https://api.themoviedb.org/3/discover/movie$apiKey&with_genres=$genreId"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val genres = gson.fromJson(body, GenreMoviesFeed::class.java)
-                Log.d("Response", genres.toString())
-                movieList = ArrayList(genres.results)
-                Log.d("GENRE_LIST", movieList.toString())
-
-                runOnUiThread {
-                    val genre = MovieGenres(genreId, genreName)
-                    //setting background color according to the Genre ID
-                    setGenreHeader(genre)
-                    binding.genresGridRecView.adapter =
-                        MoviesAdapter(movieList as ArrayList<Movies>, this@GenresInfoScreen)
-                }
-            }
+        genresInfoScreenViewModel.getResultsForThisGenre(genreId).observe(this, Observer<MutableList<Movies>>{ movies ->
+            Log.d("RESULT",movies.toString())
+            binding.genresGridRecView.adapter =
+                        MoviesAdapter(movies as ArrayList<Movies>, this@GenresInfoScreen)
         })
+
+        //api call
+        genresInfoScreenViewModel.getResultsForThisGenre(genreId)
+        setHeader(genreName)
     }
 
-    private fun setGenreHeader(genres: MovieGenres) {
-        when (genres.name) {
+    private fun setHeader(genreName:String){
+        when (genreName) {
             "Action" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#4f5fef"))
             "Adventure" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#23B993"))
             "Animation" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#ff0045"))

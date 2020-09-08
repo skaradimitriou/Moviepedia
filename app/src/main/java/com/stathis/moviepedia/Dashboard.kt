@@ -2,37 +2,21 @@ package com.stathis.moviepedia
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.FrameLayout
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.databinding.ActivityDashboardBinding
-import com.stathis.moviepedia.fragments.*
-import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.recyclerviews.GenresAdapter
-import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
-import com.stathis.moviepedia.recyclerviews.UpcomingMoviesAdapter
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_dashboard.*
-import okhttp3.Call
-import okhttp3.MultipartBody.Part.Companion.create
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
-import java.net.URI.create
+import com.stathis.moviepedia.mainScreen.DashboardFragment
+import com.stathis.moviepedia.moviesScreen.MoviesFragment
+import com.stathis.moviepedia.searchScreen.SearchFragment
+import com.stathis.moviepedia.tvSeriesScreen.TvSeriesFragment
+import com.stathis.moviepedia.userProfile.UserProfile
+import com.stathis.moviepedia.userProfile.UserViewModel
 
 class Dashboard : AppCompatActivity() {
 
@@ -42,7 +26,8 @@ class Dashboard : AppCompatActivity() {
     private lateinit var moviesFragment: MoviesFragment
     private lateinit var tvSeriesFragment: TvSeriesFragment
     private lateinit var binding:ActivityDashboardBinding
-    private var userViewModel: UserViewModel = UserViewModel()
+    private var userViewModel: UserViewModel =
+        UserViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +59,8 @@ class Dashboard : AppCompatActivity() {
                 binding.searchView.setQuery("",false)
                 Log.d("HELLO",query)
                 val bundle = bundleOf("QUERY" to query)
-                searchFragment = SearchFragment()
+                searchFragment =
+                    SearchFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.content, searchFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
@@ -98,28 +84,32 @@ class Dashboard : AppCompatActivity() {
         bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
-                    dashboardFragment = DashboardFragment()
+                    dashboardFragment =
+                        DashboardFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.content, dashboardFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_movies -> {
-                    moviesFragment = MoviesFragment()
+                    moviesFragment =
+                        MoviesFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.content, moviesFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_tv -> {
-                   tvSeriesFragment = TvSeriesFragment()
+                   tvSeriesFragment =
+                       TvSeriesFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.content, tvSeriesFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_search -> {
-                    searchFragment = SearchFragment()
+                    searchFragment =
+                        SearchFragment()
                     supportFragmentManager.beginTransaction().replace(R.id.content, searchFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()

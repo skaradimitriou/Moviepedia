@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.fragments
+package com.stathis.moviepedia.tvSeriesScreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,24 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.stathis.moviepedia.GenresInfoScreen
+import com.stathis.moviepedia.genresInfoScreen.GenresInfoScreen
 
-import com.stathis.moviepedia.R
-import com.stathis.moviepedia.TvSeriesInfoScreen
-import com.stathis.moviepedia.TvSeriesViewModel
+import com.stathis.moviepedia.tvSeriesInfoScreen.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentTvSeriesBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
-import kotlinx.android.synthetic.main.fragment_tv_series.*
 
 class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
 
 
     private lateinit var database: DatabaseReference
-    private var tvSeriesViewModel: TvSeriesViewModel = TvSeriesViewModel()
+    private var tvSeriesViewModel: TvSeriesViewModel =
+        TvSeriesViewModel()
     private lateinit var binding: FragmentTvSeriesBinding
 
     override fun onCreateView(

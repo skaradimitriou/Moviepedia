@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.fragments
+package com.stathis.moviepedia.moviesScreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.stathis.moviepedia.*
 import com.stathis.moviepedia.databinding.FragmentMoviesBinding
+import com.stathis.moviepedia.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.recyclerviews.*
@@ -18,7 +18,8 @@ import com.stathis.moviepedia.recyclerviews.*
 
 class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
 
-    private var moviesViewModel: MoviesViewModel = MoviesViewModel()
+    private var moviesViewModel: MoviesViewModel =
+        MoviesViewModel()
     private lateinit var binding: FragmentMoviesBinding
 
     override fun onCreateView(

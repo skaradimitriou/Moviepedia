@@ -1,4 +1,4 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.userProfile
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

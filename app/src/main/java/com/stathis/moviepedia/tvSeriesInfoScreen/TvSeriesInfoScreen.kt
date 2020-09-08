@@ -1,31 +1,25 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.tvSeriesInfoScreen
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityTvSeriesInfoScreenBinding
-import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
+import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.ReviewsFeed
+import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.recyclerviews.CastAdapter
 import com.stathis.moviepedia.recyclerviews.ReviewsAdapter
-import kotlinx.android.synthetic.main.activity_movie_info_screen.*
-import kotlinx.android.synthetic.main.activity_movie_info_screen.shareBtn
-import kotlinx.android.synthetic.main.activity_tv_series_info_screen.*
-import kotlinx.android.synthetic.main.popular_item_row.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -40,25 +34,37 @@ class TvSeriesInfoScreen : AppCompatActivity() {
     private lateinit var tvSeriesReleaseDate: String
     private lateinit var tvSeriesDescription: String
     private lateinit var databaseReference: DatabaseReference
-    private lateinit var url: String
-    private lateinit var request: Request
-    private var client: OkHttpClient = OkHttpClient()
-    private var castInfo: MutableList<Cast> = mutableListOf()
-    private lateinit var binding:ActivityTvSeriesInfoScreenBinding
+    private lateinit var binding: ActivityTvSeriesInfoScreenBinding
+    private lateinit var tvSeriesInfoScreenViewModel: TvSeriesInfoScreenViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTvSeriesInfoScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getUserFavorites()
+        tvSeriesInfoScreenViewModel = TvSeriesInfoScreenViewModel()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
         getIntentInfo()
-        getCastInfo()
-        getTvSeriesReviews()
+
+        tvSeriesInfoScreenViewModel.getCastInfo(tvSeriesId)
+            .observe(this, Observer<MutableList<Cast>> {cast ->
+                Log.d("cast is:",cast.toString())
+                binding.castRecView.adapter = CastAdapter(cast)
+            })
+
+        tvSeriesInfoScreenViewModel.getTvSeriesReviews(tvSeriesId).observe(this, Observer<MutableList<Reviews>>{reviews ->
+            Log.d("cast is:",reviews.toString())
+            val reviewsAdapter = ReviewsAdapter()
+            reviewsAdapter.submitList(reviews as List<Any>?)
+            binding.reviewsRecView.adapter = reviewsAdapter
+        })
+
+        tvSeriesInfoScreenViewModel.getCastInfo(tvSeriesId)
+        tvSeriesInfoScreenViewModel.getTvSeriesReviews(tvSeriesId)
 
         binding.likeBtn.setOnClickListener {
             val whiteFavBtnColor: Drawable.ConstantState? =
@@ -188,66 +194,6 @@ class TvSeriesInfoScreen : AppCompatActivity() {
                     }
                 }
             })
-    }
-
-    private fun getCastInfo() {
-        url =
-            "https://api.themoviedb.org/3/tv/$tvSeriesId/credits?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val cast = gson.fromJson(body, MovieCastFeed::class.java)
-                Log.d("Response", cast.toString())
-
-                if (cast != null) {
-                    castInfo = ArrayList(cast.cast)
-                    Log.d("Cast", castInfo.toString())
-
-                    runOnUiThread {
-                        binding.castRecView.adapter = CastAdapter(castInfo)
-                    }
-                }
-            }
-        })
-    }
-
-    private fun getTvSeriesReviews() {
-        url =
-            "https://api.themoviedb.org/3/tv/$tvSeriesId/reviews?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val review = gson.fromJson(body, ReviewsFeed::class.java)
-                Log.d("Response", review.toString())
-
-                if (review.results != null) {
-                    val ReviewsFeed = ArrayList(review.results)
-                    Log.d("this is the list",ReviewsFeed.toString())
-                    //display the reviews
-                    val reviewsAdapter = ReviewsAdapter()
-                    reviewsAdapter.submitList(ReviewsFeed as List<Any>?)
-
-                    runOnUiThread{
-                        binding.reviewsRecView.adapter = reviewsAdapter
-                    }
-                }
-            }
-        })
     }
 
     private fun share() {

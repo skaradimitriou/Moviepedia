@@ -1,20 +1,20 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.loginAndRegister
 
 import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
-import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.stathis.moviepedia.Dashboard
+import com.stathis.moviepedia.PersonalizeAccount
+import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityIntroScreenBinding
-import kotlinx.android.synthetic.main.activity_intro_screen.*
 import kotlinx.android.synthetic.main.login_view.view.loginAccBtn
 import kotlinx.android.synthetic.main.register_view.view.*
 

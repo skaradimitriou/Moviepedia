@@ -1,4 +1,4 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.mainScreen
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

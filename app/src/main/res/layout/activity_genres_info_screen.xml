@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark"
-    tools:context=".GenresInfoScreen">
+    tools:context=".genresInfoScreen.GenresInfoScreen">
 
     <TextView
         android:id="@+id/genresHeaderTxt"

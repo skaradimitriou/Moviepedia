@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".PersonalizeAccount"></activity>
-        <activity android:name=".UserProfile" />
+        <activity android:name=".userProfile.UserProfile" />
         <activity android:name=".SearchInfo" />
-        <activity android:name=".TvSeriesInfoScreen" />
+        <activity android:name=".tvSeriesInfoScreen.TvSeriesInfoScreen" />
         <activity android:name=".movieInfoScreen.MovieInfoScreen" />
         <activity android:name=".Dashboard" />
-        <activity android:name=".GenresInfoScreen" />
-        <activity android:name=".IntroScreen" />
+        <activity android:name=".genresInfoScreen.GenresInfoScreen" />
+        <activity android:name=".loginAndRegister.IntroScreen" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

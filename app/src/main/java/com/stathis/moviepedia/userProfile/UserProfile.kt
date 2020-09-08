@@ -1,4 +1,4 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.userProfile
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,13 +17,15 @@ import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.recyclerviews.FavoriteAdapter
 import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
+import com.stathis.moviepedia.tvSeriesInfoScreen.TvSeriesInfoScreen
 import java.io.ByteArrayOutputStream
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
     private val REQUEST_IMAGE_CAPTURE = 100
     private lateinit var imageUri: Uri
-    private var userViewModel: UserViewModel = UserViewModel()
+    private var userViewModel: UserViewModel =
+        UserViewModel()
     private lateinit var favoriteAdapter:FavoriteAdapter
     private lateinit var binding:ActivityUserProfileBinding
 
