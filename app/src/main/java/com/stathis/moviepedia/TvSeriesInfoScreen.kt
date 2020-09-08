@@ -17,9 +17,11 @@ import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.databinding.ActivityTvSeriesInfoScreenBinding
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
+import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.recyclerviews.CastAdapter
+import com.stathis.moviepedia.recyclerviews.ReviewsAdapter
 import kotlinx.android.synthetic.main.activity_movie_info_screen.*
 import kotlinx.android.synthetic.main.activity_movie_info_screen.shareBtn
 import kotlinx.android.synthetic.main.activity_tv_series_info_screen.*
@@ -56,6 +58,7 @@ class TvSeriesInfoScreen : AppCompatActivity() {
 
         getIntentInfo()
         getCastInfo()
+        getTvSeriesReviews()
 
         binding.likeBtn.setOnClickListener {
             val whiteFavBtnColor: Drawable.ConstantState? =
@@ -209,6 +212,38 @@ class TvSeriesInfoScreen : AppCompatActivity() {
 
                     runOnUiThread {
                         binding.castRecView.adapter = CastAdapter(castInfo)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun getTvSeriesReviews() {
+        url =
+            "https://api.themoviedb.org/3/tv/$tvSeriesId/reviews?api_key=b36812048cc4b54d559f16a2ff196bc5"
+        request = Request.Builder().url(url).build()
+
+        client = OkHttpClient()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("Call Failed", call.toString())
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                val body = response.body?.string()
+                val gson = GsonBuilder().create()
+                val review = gson.fromJson(body, ReviewsFeed::class.java)
+                Log.d("Response", review.toString())
+
+                if (review.results != null) {
+                    val ReviewsFeed = ArrayList(review.results)
+                    Log.d("this is the list",ReviewsFeed.toString())
+                    //display the reviews
+                    val reviewsAdapter = ReviewsAdapter()
+                    reviewsAdapter.submitList(ReviewsFeed as List<Any>?)
+
+                    runOnUiThread{
+                        binding.reviewsRecView.adapter = reviewsAdapter
                     }
                 }
             }

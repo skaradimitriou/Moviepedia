@@ -7,23 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.MovieInfoScreen
+import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 
-import com.stathis.moviepedia.R
 import com.stathis.moviepedia.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentSearchBinding
-import com.stathis.moviepedia.models.Movies
-import com.stathis.moviepedia.models.TvSeries
-import com.stathis.moviepedia.models.TvSeriesFeed
-import com.stathis.moviepedia.models.UpcomingMovies
 import com.stathis.moviepedia.models.search.Query
 import com.stathis.moviepedia.models.search.SearchItem
 import com.stathis.moviepedia.models.search.SearchItemsFeed
-import com.stathis.moviepedia.recyclerviews.AiringTvSeriesAdapter
 import com.stathis.moviepedia.recyclerviews.QueryAdapter
 import com.stathis.moviepedia.recyclerviews.SearchAdapter
 import com.stathis.moviepedia.recyclerviews.SearchItemClickListener

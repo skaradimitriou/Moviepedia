@@ -9,18 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.*
 import com.stathis.moviepedia.databinding.FragmentMoviesBinding
 import com.stathis.moviepedia.models.*
+import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.recyclerviews.*
-import kotlinx.android.synthetic.main.fragment_movies.*
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
 
 
 class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {

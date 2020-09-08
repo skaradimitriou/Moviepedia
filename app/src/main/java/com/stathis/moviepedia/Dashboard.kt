@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.FrameLayout
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -23,6 +25,7 @@ import com.stathis.moviepedia.recyclerviews.GenresAdapter
 import com.stathis.moviepedia.recyclerviews.PopularMoviesAdapter
 import com.stathis.moviepedia.recyclerviews.UpcomingMoviesAdapter
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import okhttp3.Call
 import okhttp3.MultipartBody.Part.Companion.create
 import okhttp3.OkHttpClient
@@ -39,6 +42,7 @@ class Dashboard : AppCompatActivity() {
     private lateinit var moviesFragment: MoviesFragment
     private lateinit var tvSeriesFragment: TvSeriesFragment
     private lateinit var binding:ActivityDashboardBinding
+    private var userViewModel: UserViewModel = UserViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +53,13 @@ class Dashboard : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        getUserProfileImg()
+        userViewModel.retrieveUserImg().observe(this, Observer<Bitmap>{ img ->
+            Log.d("profile image path", img.toString())
+            binding.userProfileImg.setImageBitmap(img)
+        })
+
+        userViewModel.retrieveUserImg()
+
         binding.userProfileImg.setOnClickListener{
             startActivity(Intent(this, UserProfile::class.java))
         }
@@ -119,23 +129,5 @@ class Dashboard : AppCompatActivity() {
             bottomNav.selectedItemId = R.id.nav_home
             false
         })
-    }
-
-    private fun getUserProfileImg() {
-        storage = FirebaseStorage.getInstance()
-        var imageRef: StorageReference =
-            storage.reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
-        imageRef.getBytes(1024 * 1024).addOnSuccessListener { bytes ->
-            val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-            binding.userProfileImg.setImageBitmap(bitmap)
-
-        }.addOnFailureListener {
-            // Handle any errors
-        }
-        imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
-            Log.d("DownloadUrl", downloadUrl.toString())
-        }.addOnFailureListener { it ->
-            Log.d("DownloadUrl", it.toString())
-        }
     }
 }

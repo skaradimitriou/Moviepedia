@@ -9,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.RoomDatabase
 import com.stathis.moviepedia.GenresInfoScreen
-import com.stathis.moviepedia.MovieInfoScreen
+import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.MovAndTvSeriesViewModel
-import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
@@ -38,7 +38,6 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         listAdapter = ListAdapter(this@DashboardFragment)
 
         moviesViewModel.UpComingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
@@ -60,9 +59,10 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
         moviesViewModel.TopRatedMoviesCall().observe(this, object : Observer<MutableList<Movies>> {
             override fun onChanged(t: MutableList<Movies>?) {
                 Log.d("T", t.toString())
-                val topRatedAdapter:TopRatedAdapter = TopRatedAdapter(this@DashboardFragment)
+                val topRatedAdapter: TopRatedAdapter = TopRatedAdapter(this@DashboardFragment)
                 topRatedAdapter.submitList(t?.sortedWith(
-                    compareBy { it.vote_average })?.reversed())
+                    compareBy { it.vote_average })?.reversed()
+                )
 //                sorting list by rating and passing it to the adapter
                 binding.topRatedRecView.adapter = topRatedAdapter
 
@@ -73,23 +73,26 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
             }
         })
 
-        moviesViewModel.getFavoriteMovies().observe(this, object : Observer<MutableList<FavoriteMovies>> {
-            override fun onChanged(t: MutableList<FavoriteMovies>?) {
-                if (t?.size == 0){
-                    userFav.visibility = View.GONE
-                } else {
-                    binding.favoriteMoviesRV.adapter =
-                        FavoriteMoviesAdapter(t, this@DashboardFragment)
+        moviesViewModel.getFavoriteMovies()
+            .observe(this, object : Observer<MutableList<FavoriteMovies>> {
+                override fun onChanged(t: MutableList<FavoriteMovies>?) {
+                    if (t?.size == 0) {
+                        userFav.visibility = View.GONE
+                    } else {
+                        val favoriteAdapter = FavoriteAdapter(this@DashboardFragment)
+                        favoriteAdapter.submitList(t as List<Any?>)
+                        binding.favoriteMoviesRV.adapter = favoriteAdapter
+                    }
                 }
-            }
-        })
+            })
 
-        moviesViewModel.getMovieGenres().observe(viewLifecycleOwner, object : Observer<MutableList<MovieGenres>> {
-            override fun onChanged(t: MutableList<MovieGenres>?) {
-                binding.genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
-            }
+        moviesViewModel.getMovieGenres()
+            .observe(viewLifecycleOwner, object : Observer<MutableList<MovieGenres>> {
+                override fun onChanged(t: MutableList<MovieGenres>?) {
+                    binding.genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
+                }
 
-        })
+            })
 
         moviesViewModel.UpComingMoviesCall()
         moviesViewModel.TrendingMoviesCall()

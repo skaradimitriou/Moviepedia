@@ -6,17 +6,12 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.GestureDetector
-import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.models.*
+import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.recyclerviews.ItemClickListener
 import com.stathis.moviepedia.recyclerviews.MoviesAdapter
 import okhttp3.Call
@@ -34,7 +29,6 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
     private val apiKey = "?api_key=b36812048cc4b54d559f16a2ff196bc5"
     private lateinit var header: TextView
     private var movieList: MutableList<Movies> = mutableListOf()
-    private lateinit var moviesGridRecView: RecyclerView
     private lateinit var binding: ActivityGenresInfoScreenBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

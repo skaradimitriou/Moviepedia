@@ -2,27 +2,21 @@ package com.stathis.moviepedia
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
+import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
+import com.stathis.moviepedia.recyclerviews.FavoriteAdapter
 import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
-import com.stathis.moviepedia.recyclerviews.FavoriteMoviesAdapter
-import com.stathis.moviepedia.recyclerviews.FavoriteTvSeriesAdapter
-import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
@@ -30,6 +24,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     private val REQUEST_IMAGE_CAPTURE = 100
     private lateinit var imageUri: Uri
     private var userViewModel: UserViewModel = UserViewModel()
+    private lateinit var favoriteAdapter:FavoriteAdapter
     private lateinit var binding:ActivityUserProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +43,9 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         userViewModel.getUserFavoriteMovies().observe(this, Observer<MutableList<FavoriteMovies>>{ t->
             Log.d("User Fav Movies",t.toString())
             if (t.size > 0){
-                binding.favGridRecView.adapter = FavoriteMoviesAdapter(t,this@UserProfile)
+                favoriteAdapter = FavoriteAdapter(this@UserProfile)
+                favoriteAdapter.submitList(t as List<Any>?)
+                binding.favGridRecView.adapter = favoriteAdapter
             } else {
                 //display empty favorites
             }
@@ -57,7 +54,9 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         userViewModel.getUserFavoriteTvSeries().observe(this,Observer<MutableList<FavoriteTvSeries>>{c->
             Log.d("User Fav Tv Series",c.toString())
             if (c.size > 0){
-                binding.favGridRecView.adapter = FavoriteTvSeriesAdapter(c,this@UserProfile)
+                favoriteAdapter = FavoriteAdapter(this@UserProfile)
+                favoriteAdapter.submitList(c as List<Any>?)
+                binding.favGridRecView.adapter = favoriteAdapter
             }else {
                 //display empty favorites
             }

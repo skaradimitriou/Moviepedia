@@ -15,7 +15,7 @@
         <activity android:name=".UserProfile" />
         <activity android:name=".SearchInfo" />
         <activity android:name=".TvSeriesInfoScreen" />
-        <activity android:name=".MovieInfoScreen" />
+        <activity android:name=".movieInfoScreen.MovieInfoScreen" />
         <activity android:name=".Dashboard" />
         <activity android:name=".GenresInfoScreen" />
         <activity android:name=".IntroScreen" />
