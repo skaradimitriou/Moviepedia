@@ -4,8 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import com.stathis.moviepedia.loginAndRegister.IntroScreen
+import com.stathis.moviepedia.roomDatabase.DbMovies
+import com.stathis.moviepedia.roomDatabase.DbMoviesDao
+import com.stathis.moviepedia.roomDatabase.DbMoviesDatabase
 
 class SplashScreen : AppCompatActivity(), LifecycleOwner {
 
