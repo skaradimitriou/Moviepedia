@@ -27,4 +27,5 @@ Model - View - ViewModel (MVVM)
 [Glide](https://github.com/bumptech/glide) <br/>
 [Gson](https://github.com/google/gson) <br/>
 [OkHttp](https://square.github.io/okhttp/) <br/>
-[Firebase](https://firebase.google.com/) Authentication | Realtime Database | Storage
+[Firebase](https://firebase.google.com/) Authentication | Realtime Database | Storage <br>
+[Room](https://developer.android.com/topic/libraries/architecture/room) Local Database
