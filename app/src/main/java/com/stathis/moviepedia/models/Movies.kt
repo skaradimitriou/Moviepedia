@@ -1,5 +1,7 @@
 package com.stathis.moviepedia.models
 
+import androidx.room.Entity
+
 class Movies (
     val id:Int,
     val video:Boolean,

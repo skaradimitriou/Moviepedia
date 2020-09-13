@@ -46,7 +46,7 @@ class PersonalizeAccount : AppCompatActivity() {
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-            .child(string).setValue(string)
+            .child("username").setValue(string)
     }
 
     private fun takePictureIntent(){

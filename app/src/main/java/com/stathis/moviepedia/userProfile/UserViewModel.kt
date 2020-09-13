@@ -19,11 +19,12 @@ class UserViewModel : ViewModel() {
     private lateinit var imageUri: Uri
     private lateinit var storage: FirebaseStorage
     private lateinit var databaseReference: DatabaseReference
-    private var userFavoriteMovies:MutableList<FavoriteMovies> = mutableListOf()
-    private var userFavoriteTvSeries:MutableList<FavoriteTvSeries> = mutableListOf()
-    private var favoriteMovies : MutableLiveData<MutableList<FavoriteMovies>> = MutableLiveData()
-    private var favoriteTvSeries : MutableLiveData<MutableList<FavoriteTvSeries>> = MutableLiveData()
-    private var userImgPath : MutableLiveData<Bitmap> = MutableLiveData()
+    private var userFavoriteMovies: MutableList<FavoriteMovies> = mutableListOf()
+    private var userFavoriteTvSeries: MutableList<FavoriteTvSeries> = mutableListOf()
+    private var favoriteMovies: MutableLiveData<MutableList<FavoriteMovies>> = MutableLiveData()
+    private var favoriteTvSeries: MutableLiveData<MutableList<FavoriteTvSeries>> = MutableLiveData()
+    private var userImgPath: MutableLiveData<Bitmap> = MutableLiveData()
+    private var username: MutableLiveData<String> = MutableLiveData()
 
     fun getUserFavoriteMovies(): MutableLiveData<MutableList<FavoriteMovies>> {
         //adds a new favorite to the favorite movie list
@@ -31,7 +32,7 @@ class UserViewModel : ViewModel() {
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteMovieList")
-            .addListenerForSingleValueEvent(object: ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     //
                 }
@@ -40,13 +41,13 @@ class UserViewModel : ViewModel() {
                     if (p0.exists()) {
                         /*viewModel was creating duplicated objects so I clear the list
                             if the list size contains elements inside*/
-                        if (userFavoriteMovies.isNotEmpty()){
+                        if (userFavoriteMovies.isNotEmpty()) {
                             userFavoriteMovies.clear()
                         }
                         for (i in p0.children) {
                             val fav = i.getValue(FavoriteMovies::class.java)
                             userFavoriteMovies.add(fav!!)
-                            Log.d("i",i.toString())
+                            Log.d("i", i.toString())
                             //display data
                         }
                         favoriteMovies.postValue(userFavoriteMovies)
@@ -57,25 +58,24 @@ class UserViewModel : ViewModel() {
     }
 
     fun getUserFavoriteTvSeries(): MutableLiveData<MutableList<FavoriteTvSeries>> {
-        //adds a new favorite to the favorite movie list
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteTvSeries")
-            .addListenerForSingleValueEvent(object: ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
                     //
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.exists()) {
-                        if (userFavoriteTvSeries.isNotEmpty()){
+                        if (userFavoriteTvSeries.isNotEmpty()) {
                             userFavoriteTvSeries.clear()
                         }
                         for (i in p0.children) {
                             val fav = i.getValue(FavoriteTvSeries::class.java)
                             userFavoriteTvSeries.add(fav!!)
-                            Log.d("i",i.toString())
+                            Log.d("i", i.toString())
                         }
                         favoriteTvSeries.postValue(userFavoriteTvSeries)
                     }
@@ -86,22 +86,45 @@ class UserViewModel : ViewModel() {
 
     fun retrieveUserImg(): MutableLiveData<Bitmap> {
         storage = FirebaseStorage.getInstance()
-        var imageRef: StorageReference = storage.reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
-        imageRef.getBytes(1024*1024).addOnSuccessListener {bytes ->
+        var imageRef: StorageReference =
+            storage.reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
+        imageRef.getBytes(1024 * 1024).addOnSuccessListener { bytes ->
 
-            val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.size)
+            val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
             userImgPath.postValue(bitmap)
 //            userPhoto.setImageBitmap(bitmap)
 
         }.addOnFailureListener {
             // Handle any errors
         }
-        imageRef.downloadUrl.addOnSuccessListener {downloadUrl ->
+        imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
             Log.d("DownloadUrl", downloadUrl.toString())
 
-        }.addOnFailureListener {it->
+        }.addOnFailureListener { it ->
             Log.d("DownloadUrl", it.toString())
         }
         return userImgPath
+    }
+
+    fun retrieveUsername(): MutableLiveData<String> {
+        databaseReference = FirebaseDatabase.getInstance().reference
+        databaseReference.child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .child("username")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    //
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if(p0.exists()){
+                        for (i in p0.children){
+                            username.postValue(i.value.toString())
+                        }
+                    }
+                }
+            })
+
+        return username
     }
 }

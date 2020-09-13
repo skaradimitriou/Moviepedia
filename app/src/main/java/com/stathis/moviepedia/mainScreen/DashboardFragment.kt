@@ -1,6 +1,10 @@
 package com.stathis.moviepedia.mainScreen
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
+import com.stathis.moviepedia.databinding.NoConnectionScreenBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
@@ -37,6 +42,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         listAdapter = ListAdapter(this@DashboardFragment)
 
         moviesViewModel.UpComingMoviesCall().observe(this, object : Observer<MutableList<Movies>> {

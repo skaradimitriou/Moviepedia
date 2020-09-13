@@ -1,12 +1,15 @@
 package com.stathis.moviepedia.mainScreen
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.models.*
+import com.stathis.moviepedia.roomDatabase.DbMoviesDatabase
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request

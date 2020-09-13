@@ -3,6 +3,8 @@
     package="com.stathis.moviepedia">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +15,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".PersonalizeAccount"></activity>
         <activity android:name=".userProfile.UserProfile" />
-        <activity android:name=".SearchInfo" />
         <activity android:name=".tvSeriesInfoScreen.TvSeriesInfoScreen" />
         <activity android:name=".movieInfoScreen.MovieInfoScreen" />
         <activity android:name=".Dashboard" />

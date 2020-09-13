@@ -55,7 +55,7 @@
         android:layout_width="298dp"
         android:layout_height="45dp"
         android:layout_marginTop="90dp"
-        android:background="@color/red"
+        android:background="@drawable/round_button"
         android:text="Login to your account"
         android:textAllCaps="false"
         android:textColor="#fff"
