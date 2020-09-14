@@ -54,7 +54,6 @@ class SearchScreenViewModel : ViewModel() {
                 val body = response.body?.string()
                 val gson = GsonBuilder().create()
                 Log.d("RESPONSE", body.toString())
-
                 val searchItem = gson.fromJson(body, SearchItemsFeed::class.java)
                 searchItems = ArrayList(searchItem.results)
                 Log.d("TV", searchItems.toString())
@@ -73,6 +72,7 @@ class SearchScreenViewModel : ViewModel() {
     }
 
     fun getRecentUserQueries(): MutableLiveData<MutableList<Query>> {
+
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
@@ -84,6 +84,11 @@ class SearchScreenViewModel : ViewModel() {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.exists()) {
+
+                        if(userQueries.isNotEmpty()){
+                            userQueries.clear()
+                        }
+
                         for (i in p0.children) {
                             val query = i.getValue(Query::class.java)
                             Log.d("q",query.toString())

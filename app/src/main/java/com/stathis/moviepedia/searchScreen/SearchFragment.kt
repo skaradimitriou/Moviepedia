@@ -53,32 +53,31 @@ class SearchFragment : Fragment(), SearchItemClickListener {
         query = Query(bundle)
 
         //Observers
-
         searchScreenViewModel.getRecentUserQueries().observe(this,Observer<MutableList<Query>>{queries ->
             Log.d("Queries",queries.toString())
             binding.searchResultsRecView.adapter = QueryAdapter(queries,this@SearchFragment)
         })
 
-        /*if bundle is empty means that the user didn't search for something
-        so I will show him his recent searches in a vertical recycler view*/
-        if (bundle == "null") {
-            searchScreenViewModel.getRecentUserQueries()
-        }
-
-    }
-
-    override fun onQueryClick(query: Query) {
-        queryTxt.visibility = View.GONE
         searchScreenViewModel.getQueryInfo(query)
             .observe(this, Observer<MutableList<SearchItem>> { searchItem ->
                 Log.d("Search Item",searchItem.toString())
                 binding.searchResultsRecView.adapter = SearchAdapter(searchItem as ArrayList<SearchItem>,this@SearchFragment)
             })
+
+        /*if bundle is empty means that the user didn't search for something
+        so I will show him his recent searches in a vertical recycler view*/
+        if (bundle == "null") {
+            searchScreenViewModel.getRecentUserQueries()
+        } else {
+            searchScreenViewModel.getQueryInfo(query)
+        }
+    }
+
+    override fun onQueryClick(query: Query) {
         searchScreenViewModel.getQueryInfo(query)
     }
 
     override fun onSearchItemClick(searchItem: SearchItem) {
-
         when (searchItem.media_type) {
             "movie" -> {
                 val movieIntent = Intent(activity, MovieInfoScreen::class.java)

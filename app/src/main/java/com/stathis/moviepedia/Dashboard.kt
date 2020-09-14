@@ -1,10 +1,15 @@
 package com.stathis.moviepedia
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
@@ -25,7 +30,7 @@ class Dashboard : AppCompatActivity() {
     private lateinit var dashboardFragment: DashboardFragment
     private lateinit var moviesFragment: MoviesFragment
     private lateinit var tvSeriesFragment: TvSeriesFragment
-    private lateinit var binding:ActivityDashboardBinding
+    private lateinit var binding: ActivityDashboardBinding
     private var userViewModel: UserViewModel =
         UserViewModel()
 
@@ -38,26 +43,27 @@ class Dashboard : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        userViewModel.retrieveUserImg().observe(this, Observer<Bitmap>{ img ->
+        userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
             Log.d("profile image path", img.toString())
             binding.userProfileImg.setImageBitmap(img)
         })
 
         userViewModel.retrieveUserImg()
 
-        binding.userProfileImg.setOnClickListener{
+        binding.userProfileImg.setOnClickListener {
             startActivity(Intent(this, UserProfile::class.java))
         }
 
-        binding.searchView.setOnClickListener{
+        binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
         }
 
-        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 binding.searchView.clearFocus()
-                binding.searchView.setQuery("",false)
-                Log.d("HELLO",query)
+                binding.searchView.setQuery("", false)
+                Log.d("HELLO", query)
                 val bundle = bundleOf("QUERY" to query)
                 searchFragment =
                     SearchFragment()
@@ -65,7 +71,7 @@ class Dashboard : AppCompatActivity() {
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit()
                 searchFragment.arguments = bundle
-                Log.d("BUNDLE",bundle.toString())
+                Log.d("BUNDLE", bundle.toString())
                 return true
             }
 
@@ -75,10 +81,16 @@ class Dashboard : AppCompatActivity() {
 
         })
 
-        dashboardFragment = DashboardFragment()
-        supportFragmentManager.beginTransaction().replace(R.id.content, dashboardFragment)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
+        if (isNetworkAvailable(this)) {
+            Log.d("Internet OK", "Internet OK")
+            dashboardFragment = DashboardFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.content, dashboardFragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit()
+        } else {
+            Log.d("No Internet", "No Internet")
+        }
+
 
         val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
         bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
@@ -86,7 +98,8 @@ class Dashboard : AppCompatActivity() {
                 R.id.nav_home -> {
                     dashboardFragment =
                         DashboardFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.content, dashboardFragment)
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.content, dashboardFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                     return@OnNavigationItemSelectedListener true
@@ -100,9 +113,10 @@ class Dashboard : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_tv -> {
-                   tvSeriesFragment =
-                       TvSeriesFragment()
-                    supportFragmentManager.beginTransaction().replace(R.id.content, tvSeriesFragment)
+                    tvSeriesFragment =
+                        TvSeriesFragment()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.content, tvSeriesFragment)
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit()
                     return@OnNavigationItemSelectedListener true
@@ -119,5 +133,38 @@ class Dashboard : AppCompatActivity() {
             bottomNav.selectedItemId = R.id.nav_home
             false
         })
+    }
+
+    override fun onBackPressed() {
+        // You can't go back | Logout if you want to leave
+    }
+
+    private fun isNetworkAvailable(context: Context?): Boolean {
+        if (context == null) return false
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                when {
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                        return true
+                    }
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                        return true
+                    }
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
+                        return true
+                    }
+                }
+            }
+        } else {
+            val activeNetworkInfo = connectivityManager.activeNetworkInfo
+            if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
+                return true
+            }
+        }
+        return false
     }
 }
