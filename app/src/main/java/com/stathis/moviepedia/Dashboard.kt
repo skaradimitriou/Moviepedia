@@ -91,7 +91,6 @@ class Dashboard : AppCompatActivity() {
             Log.d("No Internet", "No Internet")
         }
 
-
         val bottomNav: BottomNavigationView = findViewById(R.id.bottom_nav)
         bottomNav.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

@@ -72,7 +72,6 @@ class SearchScreenViewModel : ViewModel() {
     }
 
     fun getRecentUserQueries(): MutableLiveData<MutableList<Query>> {
-
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
@@ -84,11 +83,6 @@ class SearchScreenViewModel : ViewModel() {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     if (p0.exists()) {
-
-                        if(userQueries.isNotEmpty()){
-                            userQueries.clear()
-                        }
-
                         for (i in p0.children) {
                             val query = i.getValue(Query::class.java)
                             Log.d("q",query.toString())

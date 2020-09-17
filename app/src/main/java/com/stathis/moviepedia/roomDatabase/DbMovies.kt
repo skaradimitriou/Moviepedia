@@ -25,6 +25,8 @@ data class DbMovies (
         val original_language:String,
         @ColumnInfo(name = "original_title")
         val original_title:String,
+        @ColumnInfo(name = "genre_ids")
+        val genre_ids: List<Int>,
         @ColumnInfo(name = "backdrop_path")
         val backdrop_path:String,
         @ColumnInfo(name = "adult")

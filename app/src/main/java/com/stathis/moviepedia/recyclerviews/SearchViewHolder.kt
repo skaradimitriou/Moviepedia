@@ -3,11 +3,13 @@ package com.stathis.moviepedia.recyclerviews
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.search.SearchItem
+import kotlin.math.roundToInt
 
 class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -15,6 +17,7 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val searchName: TextView = itemView.findViewById(R.id.searchName)
     val searchType: TextView = itemView.findViewById(R.id.searchType)
     val ratingTxt:TextView = itemView.findViewById(R.id.ratingTxt)
+    val test_progressbar:ProgressBar = itemView.findViewById(R.id.test_progressbar)
 
     fun bind(searchItem: SearchItem, listener: SearchItemClickListener) {
 
@@ -41,6 +44,7 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         searchType.text = searchItem.media_type
-        ratingTxt.text = searchItem.vote_average.toString()
+        test_progressbar.progress = (searchItem.vote_average*10).roundToInt()
+        ratingTxt.text = searchItem.vote_average.roundToInt().toString()
     }
 }

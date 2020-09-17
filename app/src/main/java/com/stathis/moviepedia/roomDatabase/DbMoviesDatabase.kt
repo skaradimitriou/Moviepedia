@@ -4,9 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.stathis.moviepedia.models.Movies
 
-@Database(entities = [DbMovies::class], version = 1, exportSchema = false)
+@Database(
+    entities = [DbMovies::class],
+    version = 1,
+    exportSchema = false)
+
+
+@TypeConverters(Converters::class)
 abstract class DbMoviesDatabase : RoomDatabase() {
 
     abstract fun dbMoviesDao(): DbMoviesDao

@@ -111,6 +111,8 @@ class MovAndTvSeriesViewModel : ViewModel() {
 
     fun getFavoriteMovies(): MutableLiveData<MutableList<FavoriteMovies>> {
         databaseReference = FirebaseDatabase.getInstance().reference
+        //offline use
+        databaseReference.keepSynced(true)
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteMovieList")

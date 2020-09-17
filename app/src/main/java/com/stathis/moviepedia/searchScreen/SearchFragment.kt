@@ -66,7 +66,7 @@ class SearchFragment : Fragment(), SearchItemClickListener {
 
         /*if bundle is empty means that the user didn't search for something
         so I will show him his recent searches in a vertical recycler view*/
-        if (bundle == "null") {
+        if (query.queryName == "null" || query.queryName == "" || bundle =="" || bundle.isNullOrEmpty() || bundle.isNullOrBlank()) {
             searchScreenViewModel.getRecentUserQueries()
         } else {
             searchScreenViewModel.getQueryInfo(query)

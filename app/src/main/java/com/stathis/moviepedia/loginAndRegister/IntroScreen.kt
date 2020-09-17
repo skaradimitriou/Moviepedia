@@ -8,6 +8,7 @@ import android.os.Handler
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -21,12 +22,14 @@ import kotlinx.android.synthetic.main.register_view.view.*
 class IntroScreen : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding:ActivityIntroScreenBinding
+    private lateinit var binding: ActivityIntroScreenBinding
+    private lateinit var introScreenViewModel: IntroScreenViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityIntroScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        introScreenViewModel = ViewModelProvider(this).get(IntroScreenViewModel::class.java)
         auth = FirebaseAuth.getInstance()
     }
 
@@ -52,53 +55,38 @@ class IntroScreen : AppCompatActivity() {
     private fun showLoginDialogue() {
         //Inflate the dialog with custom view
         val loginDialog = LayoutInflater.from(this).inflate(R.layout.login_view, null)
-        //AlertDialogBuilder
         val loginBuilder = AlertDialog.Builder(this)
             .setView(loginDialog)
-        //show dialog
         val loginDial = loginBuilder.show()
         //login button click of custom layout
         loginDialog.loginAccBtn.setOnClickListener {
             val emailField: TextInputEditText = loginDialog.findViewById(R.id.loginEmailField)
             val passwordField: TextInputEditText = loginDialog.findViewById(R.id.loginPasswordField)
 
-            if (emailField.text.toString().isEmpty()) {
-                emailField.error = "Please enter your e-mail"
-                emailField.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text.toString()).matches()) {
-                emailField.error = "Please enter a valid e-mail address"
-                emailField.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (passwordField.text.toString().isEmpty()) {
-                passwordField.error = "Please enter your password"
-                passwordField.requestFocus()
-                return@setOnClickListener
-            }
-
-            auth.signInWithEmailAndPassword(
-                emailField.text.toString(),
-                passwordField.text.toString()
-            )
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        updateUI(user)
-//                        startActivity(Intent(this, Dashboard::class.java))
-//                        finish() //kills IntroScreenApp
-                        loginDial.dismiss()
-                        startActivity(Intent(this, Dashboard::class.java))
-                    } else {
-                        val toast = Toast.makeText(applicationContext, "Please enter valid credentials", Toast.LENGTH_LONG)
-                        toast.show()
-                        updateUI(null)
-                    }
+            when(introScreenViewModel.validateLoginCredentials(emailField,passwordField)){
+                true -> {
+                    auth.signInWithEmailAndPassword(
+                        emailField.text.toString(),
+                        passwordField.text.toString()
+                    )
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                // Sign in success, update UI with the signed-in user's information
+                                val user = auth.currentUser
+                                updateUI(user)
+                            } else {
+                                val toast = Toast.makeText(
+                                    applicationContext,
+                                    "Please enter valid credentials",
+                                    Toast.LENGTH_LONG
+                                )
+                                toast.show()
+                                updateUI(null)
+                            }
+                        }
                 }
+                false -> {return@setOnClickListener}
+            }
         }
     }
 
@@ -117,50 +105,49 @@ class IntroScreen : AppCompatActivity() {
             val passwordConfigField: TextInputEditText =
                 registerDialog.findViewById(R.id.registerPasswordConfirmField)
 
-            if (emailField.text.toString().isEmpty()) {
-                emailField.error = "Please enter your e-mail"
-                emailField.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(emailField.text.toString()).matches()) {
-                emailField.error = "Please enter a valid e-mail address"
-                emailField.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (passwordField.text.toString().isEmpty()) {
-                passwordField.error = "Please enter your password"
-                passwordField.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (passwordConfigField.text.toString().isEmpty()) {
-                passwordConfigField.error = "Please confirm your password"
-                passwordConfigField.requestFocus()
-                return@setOnClickListener
-            }
-
-            if (passwordField.text.toString() == passwordConfigField.text.toString()) {
-                auth.createUserWithEmailAndPassword(
-                    emailField.text.toString(),
-                    passwordField.text.toString()
-                )
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            registerDialog.dismiss()
-                            showSuccessAccountDialog()
-                        } else {
-                            val toast = Toast.makeText(applicationContext, "Please enter valid credentials", Toast.LENGTH_LONG)
-                            toast.show()
-                        }
+            when(introScreenViewModel.validateRegisterCredentials(emailField,passwordField,passwordConfigField)){
+                true -> {
+                    //if the 2 passwords match, I am registering him to the RealTime Db
+                    if (passwordField.text.toString() == passwordConfigField.text.toString()) {
+                        auth.createUserWithEmailAndPassword(
+                            emailField.text.toString(),
+                            passwordField.text.toString()
+                        )
+                            .addOnCompleteListener(this) { task ->
+                                if (task.isSuccessful) {
+                                    registerDialog.dismiss()
+                                    showSuccessAccountDialog()
+                                } else {
+                                    val toast = Toast.makeText(
+                                        applicationContext,
+                                        "Please enter valid credentials",
+                                        Toast.LENGTH_LONG
+                                    )
+                                    toast.show()
+                                }
+                            }
                     }
+                }
+                false -> { return@setOnClickListener }
             }
         }
     }
 
     private fun updateUI(user: FirebaseUser?) {
-
+        //loading
+        val loadingDialog = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null)
+        val builder = AlertDialog.Builder(this).setView(loadingDialog)
+        builder.setCancelable(true)
+        builder.show()
+        Handler().postDelayed({
+            if (user != null) {
+                //logging in successful
+                startActivity(Intent(this, Dashboard::class.java))
+            } else {
+                val toast = Toast.makeText(applicationContext, "Login failed", Toast.LENGTH_LONG)
+                toast.show()
+            }
+        }, 2000)
     }
 
     private fun showSuccessAccountDialog() {
