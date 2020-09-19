@@ -14,7 +14,6 @@ import com.stathis.moviepedia.roomDatabase.DbMoviesDatabase
 
 class SplashScreen : AppCompatActivity(), LifecycleOwner {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

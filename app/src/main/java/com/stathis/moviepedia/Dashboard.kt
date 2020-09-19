@@ -48,8 +48,6 @@ class Dashboard : AppCompatActivity() {
             binding.userProfileImg.setImageBitmap(img)
         })
 
-        userViewModel.retrieveUserImg()
-
         binding.userProfileImg.setOnClickListener {
             startActivity(Intent(this, UserProfile::class.java))
         }

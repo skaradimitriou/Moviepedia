@@ -15,20 +15,20 @@ import com.google.firebase.storage.StorageReference
 import com.stathis.moviepedia.loginAndRegister.IntroScreen
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
+import java.io.ByteArrayOutputStream
 
 class UserViewModel : ViewModel() {
 
-    private val REQUEST_IMAGE_CAPTURE = 100
     private lateinit var imageUri: Uri
     private lateinit var storage: FirebaseStorage
     private lateinit var databaseReference: DatabaseReference
-    private lateinit var auth: FirebaseAuth
     private var userFavoriteMovies: MutableList<FavoriteMovies> = mutableListOf()
     private var userFavoriteTvSeries: MutableList<FavoriteTvSeries> = mutableListOf()
     private var favoriteMovies: MutableLiveData<MutableList<FavoriteMovies>> = MutableLiveData()
     private var favoriteTvSeries: MutableLiveData<MutableList<FavoriteTvSeries>> = MutableLiveData()
     private var userImgPath: MutableLiveData<Bitmap> = MutableLiveData()
     private var username: MutableLiveData<String> = MutableLiveData()
+    private var downloadUrl : MutableLiveData<Bitmap> = MutableLiveData()
 
     fun getUserFavoriteMovies(): MutableLiveData<MutableList<FavoriteMovies>> {
         //adds a new favorite to the favorite movie list
@@ -123,12 +123,37 @@ class UserViewModel : ViewModel() {
                 override fun onDataChange(p0: DataSnapshot) {
                     if(p0.exists()){
                         for (i in p0.children){
+                            val name =i.value.toString()
+                            Log.d("name",name)
                             username.postValue(i.value.toString())
                         }
                     }
                 }
             })
-
         return username
+    }
+
+    fun uploadAndSaveBitmapUri(bitmap: Bitmap): MutableLiveData<Bitmap> {
+        val baos = ByteArrayOutputStream()
+        val storageRef = FirebaseStorage.getInstance()
+            .reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val image = baos.toByteArray()
+        val upload = storageRef.putBytes(image)
+        upload.addOnCompleteListener { uploadTask ->
+            if (uploadTask.isSuccessful) {
+                storageRef.downloadUrl.addOnCompleteListener { urlTask ->
+                    urlTask.result?.let {
+                        imageUri = it
+                        downloadUrl.postValue(bitmap)
+                    }
+                }
+            } else {
+                uploadTask.exception?.let {
+                    //
+                }
+            }
+        }
+        return downloadUrl
     }
 }

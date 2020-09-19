@@ -31,7 +31,6 @@ import java.io.IOException
 
 class SearchFragment : Fragment(), SearchItemClickListener {
 
-    private lateinit var bundle: String
     private lateinit var query: Query
     private lateinit var binding: FragmentSearchBinding
     private var searchScreenViewModel = SearchScreenViewModel()
@@ -49,32 +48,31 @@ class SearchFragment : Fragment(), SearchItemClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         //getting the QUERY from the search bar
-        bundle = this.arguments?.getString("QUERY").toString()
-        query = Query(bundle)
-
-        //Observers
-        searchScreenViewModel.getRecentUserQueries().observe(this,Observer<MutableList<Query>>{queries ->
-            Log.d("Queries",queries.toString())
-            binding.searchResultsRecView.adapter = QueryAdapter(queries,this@SearchFragment)
-        })
-
-        searchScreenViewModel.getQueryInfo(query)
-            .observe(this, Observer<MutableList<SearchItem>> { searchItem ->
-                Log.d("Search Item",searchItem.toString())
-                binding.searchResultsRecView.adapter = SearchAdapter(searchItem as ArrayList<SearchItem>,this@SearchFragment)
-            })
+        query = Query(this.arguments?.getString("QUERY").toString())
+        Log.d("QUERY", query.toString())
 
         /*if bundle is empty means that the user didn't search for something
         so I will show him his recent searches in a vertical recycler view*/
-        if (query.queryName == "null" || query.queryName == "" || bundle =="" || bundle.isNullOrEmpty() || bundle.isNullOrBlank()) {
-            searchScreenViewModel.getRecentUserQueries()
+        if (query.queryName == "null" || query.queryName == "" || query.queryName.isEmpty()) {
+            searchScreenViewModel.getRecentUserQueries().observe(this,Observer<MutableList<Query>>{queries ->
+                Log.d("Queries",queries.toString())
+                binding.searchResultsRecView.adapter = QueryAdapter(queries,this@SearchFragment)
+            })
         } else {
             searchScreenViewModel.getQueryInfo(query)
+                .observe(this, Observer<MutableList<SearchItem>> { searchItem ->
+                    Log.d("Search Item",searchItem.toString())
+                    binding.searchResultsRecView.adapter = SearchAdapter(searchItem as ArrayList<SearchItem>,this@SearchFragment)
+                })
         }
     }
 
     override fun onQueryClick(query: Query) {
         searchScreenViewModel.getQueryInfo(query)
+            .observe(this, Observer<MutableList<SearchItem>> { searchItem ->
+                Log.d("Search Item",searchItem.toString())
+                binding.searchResultsRecView.adapter = SearchAdapter(searchItem as ArrayList<SearchItem>,this@SearchFragment)
+            })
     }
 
     override fun onSearchItemClick(searchItem: SearchItem) {

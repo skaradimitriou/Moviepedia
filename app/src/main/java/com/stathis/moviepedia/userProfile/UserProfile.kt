@@ -31,7 +31,6 @@ import kotlin.math.log
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
     private val REQUEST_IMAGE_CAPTURE = 100
-    private lateinit var imageUri: Uri
     private lateinit var auth: FirebaseAuth
     private var userViewModel: UserViewModel =
         UserViewModel()
@@ -49,6 +48,14 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        binding.logout.setOnClickListener {
+            askForLogout()
+        }
+
+        userViewModel.retrieveUsername().observe(this,Observer<String> { username ->
+            binding.profileName.text = username
+        })
+
         userViewModel.getUserFavoriteMovies()
 
         userViewModel.getUserFavoriteMovies()
@@ -63,18 +70,6 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
                 }
             })
 
-        userViewModel.getUserFavoriteTvSeries()
-            .observe(this, Observer<MutableList<FavoriteTvSeries>> { c ->
-                Log.d("User Fav Tv Series", c.toString())
-                if (c.size > 0) {
-                    favoriteAdapter = FavoriteAdapter(this@UserProfile)
-                    favoriteAdapter.submitList(c as List<Any>?)
-                    binding.favGridRecView.adapter = favoriteAdapter
-                } else {
-                    //display empty favorites
-                }
-            })
-
         userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
             Log.d("profile image path", img.toString())
             binding.profileImg.setImageBitmap(img)
@@ -83,20 +78,38 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         binding.favMov.setOnClickListener {
             binding.favMov.alpha = 1F
             binding.favTv.alpha = 0.5F
+//            userViewModel.getUserFavoriteMovies()
             userViewModel.getUserFavoriteMovies()
-        }
-
-        binding.logout.setOnClickListener {
-            askForLogout()
+                .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
+                    Log.d("User Fav Movies", t.toString())
+                    if (t.size > 0) {
+                        favoriteAdapter = FavoriteAdapter(this@UserProfile)
+                        favoriteAdapter.submitList(t as List<Any>?)
+                        binding.favGridRecView.adapter = favoriteAdapter
+                    } else {
+                        //display empty favorites
+                    }
+                })
         }
 
         binding.favTv.setOnClickListener {
             binding.favTv.alpha = 1F
             binding.favMov.alpha = 0.5F
+//            userViewModel.getUserFavoriteTvSeries()
             userViewModel.getUserFavoriteTvSeries()
+                .observe(this, Observer<MutableList<FavoriteTvSeries>> { c ->
+                    Log.d("User Fav Tv Series", c.toString())
+                    if (c.size > 0) {
+                        favoriteAdapter = FavoriteAdapter(this@UserProfile)
+                        favoriteAdapter.submitList(c as List<Any>?)
+                        binding.favGridRecView.adapter = favoriteAdapter
+                    } else {
+                        //display empty favorites
+                    }
+                })
         }
 
-        userViewModel.retrieveUserImg()
+//        userViewModel.retrieveUserImg()
 
         binding.profileImg.setOnClickListener {
             takePictureIntent()
@@ -116,30 +129,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             val imgBitmap = data?.extras?.get("data") as Bitmap
-            uploadAndSaveBitmapUri(imgBitmap)
-        }
-    }
-
-    private fun uploadAndSaveBitmapUri(bitmap: Bitmap) {
-        val baos = ByteArrayOutputStream()
-        val storageRef = FirebaseStorage.getInstance()
-            .reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val image = baos.toByteArray()
-        val upload = storageRef.putBytes(image)
-        upload.addOnCompleteListener { uploadTask ->
-            if (uploadTask.isSuccessful) {
-                storageRef.downloadUrl.addOnCompleteListener { urlTask ->
-                    urlTask.result?.let {
-                        imageUri = it
-                        binding.profileImg.setImageBitmap(bitmap)
-                    }
-                }
-            } else {
-                uploadTask.exception?.let {
-                    //
-                }
-            }
+            userViewModel.uploadAndSaveBitmapUri(imgBitmap)
         }
     }
 
@@ -153,6 +143,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }
 
         builder.setNegativeButton("CANCEL") { dialog, which ->
+            dialog.dismiss()
         }
         builder.show()
     }
@@ -198,5 +189,4 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         movieIntent.putExtra("TV_SERIES_RATING", rating)
         startActivity(movieIntent)
     }
-
 }
