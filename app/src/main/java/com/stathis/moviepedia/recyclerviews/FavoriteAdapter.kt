@@ -22,10 +22,6 @@ class FavoriteAdapter(
         if (viewType == FAVORITE_MOVIES) {
             val view = PopularItemRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
             return FavoriteMoviesViewHolder(view)
-//            FavoriteMoviesViewHolder(
-//                LayoutInflater.from(parent.context)
-//                    .inflate(R.layout.popular_item_row, parent, false)
-//            )
         } else {
             return FavoriteTvSeriesViewHolder(
                 LayoutInflater.from(parent.context)

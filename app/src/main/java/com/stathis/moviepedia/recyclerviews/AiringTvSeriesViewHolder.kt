@@ -2,17 +2,19 @@ package com.stathis.moviepedia.recyclerviews
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
+import kotlin.math.roundToInt
 
 class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     val movieName: TextView = itemView.findViewById(R.id.movie_title)
-    val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
+    val test_progressbar:ProgressBar = itemView.findViewById(R.id.test_progressbar)
     val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
     val ratingTxt: TextView = itemView.findViewById(R.id.ratingTxt)
 
@@ -33,6 +35,7 @@ class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
             movieName.text = tvSeriesFeed.name
         }
 
+        test_progressbar.progress = (tvSeriesFeed.vote_average*10).roundToInt()
         ratingTxt.text = tvSeriesFeed.vote_average.toString()
 
         itemView.setOnClickListener{

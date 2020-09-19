@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,8 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +28,7 @@ import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.recyclerviews.FavoriteAdapter
 import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
 import com.stathis.moviepedia.tvSeriesInfoScreen.TvSeriesInfoScreen
+import kotlinx.android.synthetic.main.logout_item.*
 import java.io.ByteArrayOutputStream
 import kotlin.math.log
 
@@ -48,15 +52,24 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        binding.logout.setOnClickListener {
-            askForLogout()
+        binding.profileName.text = "skaradimitriou"
+
+        binding.backButton.setOnClickListener{ onBackPressed() }
+
+        //handling onClickListener for included layout
+        binding.logout.apply {
+            binding.logout.logoutIcon.setOnClickListener { askForLogout() }
+            binding.logout.logoutText.setOnClickListener { askForLogout() }
         }
 
         userViewModel.retrieveUsername().observe(this,Observer<String> { username ->
-            binding.profileName.text = username
+            Log.d("username",username)
+            if(username.isNullOrEmpty()){
+                binding.profileName.text = "skaradimitriou"
+            }else {
+                binding.profileName.text = username
+            }
         })
-
-        userViewModel.getUserFavoriteMovies()
 
         userViewModel.getUserFavoriteMovies()
             .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
@@ -78,7 +91,6 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         binding.favMov.setOnClickListener {
             binding.favMov.alpha = 1F
             binding.favTv.alpha = 0.5F
-//            userViewModel.getUserFavoriteMovies()
             userViewModel.getUserFavoriteMovies()
                 .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
                     Log.d("User Fav Movies", t.toString())
@@ -95,7 +107,6 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         binding.favTv.setOnClickListener {
             binding.favTv.alpha = 1F
             binding.favMov.alpha = 0.5F
-//            userViewModel.getUserFavoriteTvSeries()
             userViewModel.getUserFavoriteTvSeries()
                 .observe(this, Observer<MutableList<FavoriteTvSeries>> { c ->
                     Log.d("User Fav Tv Series", c.toString())
@@ -109,13 +120,14 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
                 })
         }
 
-//        userViewModel.retrieveUserImg()
-
         binding.profileImg.setOnClickListener {
             takePictureIntent()
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
     private fun takePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent ->
             pictureIntent.resolveActivity(this.packageManager!!)?.also {
