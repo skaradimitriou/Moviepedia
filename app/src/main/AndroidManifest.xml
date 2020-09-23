@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PersonalizeAccount"></activity>
+        <activity android:name=".forgotPassword.ForgotPassword"></activity>
+        <activity android:name=".personalizeAccount.PersonalizeAccount" />
         <activity android:name=".userProfile.UserProfile" />
         <activity android:name=".tvSeriesInfoScreen.TvSeriesInfoScreen" />
         <activity android:name=".movieInfoScreen.MovieInfoScreen" />

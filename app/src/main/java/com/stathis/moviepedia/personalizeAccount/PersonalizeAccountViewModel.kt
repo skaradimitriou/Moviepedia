@@ -1,4 +1,4 @@
-package com.stathis.moviepedia
+package com.stathis.moviepedia.personalizeAccount
 
 import android.graphics.Bitmap
 import android.net.Uri

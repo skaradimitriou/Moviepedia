@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +12,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.stathis.moviepedia.Dashboard
-import com.stathis.moviepedia.PersonalizeAccount
+import com.stathis.moviepedia.personalizeAccount.PersonalizeAccount
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityIntroScreenBinding
 import kotlinx.android.synthetic.main.login_view.view.loginAccBtn
