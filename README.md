@@ -10,6 +10,7 @@ b) Personalise their account by adding a profile image <br/>
 c) Search for Movies & TV Series and learn more information about them. <br/>
 d) Add a movie as a favorite <br/>
 e) Share a movie
+f) Reset their password (In Progress)
 
 ### Programming Language 
 
