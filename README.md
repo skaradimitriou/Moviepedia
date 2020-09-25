@@ -9,7 +9,7 @@ a) Sign-up (Register) & Sign-in (Login) <br/>
 b) Personalise their account by adding a profile image <br/>
 c) Search for Movies & TV Series and learn more information about them. <br/>
 d) Add a movie as a favorite <br/>
-e) Share a movie
+e) Share a movie <br/>
 f) Reset their password (In Progress)
 
 ### Programming Language 
