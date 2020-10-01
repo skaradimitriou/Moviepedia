@@ -1,36 +1,26 @@
 package com.stathis.moviepedia.userProfile
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
-import com.stathis.moviepedia.loginAndRegister.IntroScreen
+import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.recyclerviews.FavoriteAdapter
 import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
 import com.stathis.moviepedia.tvSeriesInfoScreen.TvSeriesInfoScreen
-import kotlinx.android.synthetic.main.logout_item.*
-import java.io.ByteArrayOutputStream
-import kotlin.math.log
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
 

@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.loginAndRegister
+package com.stathis.moviepedia.ui.loginAndRegister
 
 import android.app.AlertDialog
 import android.content.Intent

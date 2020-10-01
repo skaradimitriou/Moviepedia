@@ -1,18 +1,15 @@
 package com.stathis.moviepedia.userProfile
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.stathis.moviepedia.loginAndRegister.IntroScreen
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import java.io.ByteArrayOutputStream

@@ -21,7 +21,7 @@
         <activity android:name=".movieInfoScreen.MovieInfoScreen" />
         <activity android:name=".Dashboard" />
         <activity android:name=".genresInfoScreen.GenresInfoScreen" />
-        <activity android:name=".loginAndRegister.IntroScreen" />
+        <activity android:name="com.stathis.moviepedia.ui.loginAndRegister.IntroScreen" />
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
