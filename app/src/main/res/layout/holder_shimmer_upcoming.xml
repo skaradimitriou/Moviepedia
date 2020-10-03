@@ -1,0 +1,59 @@
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="250dp"
+    android:layout_height="160dp"
+    app:shimmer_auto_start="true"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/upcom_movieImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:src="@drawable/default_img"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <RatingBar
+            android:id="@+id/ratingStars"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:saveEnabled="true"
+            android:focusable="false"
+            android:clickable="false"
+            android:isIndicator="true"
+            android:theme="@style/RatingBar"
+            android:progressBackgroundTint="@color/white"
+            android:progressTint="@color/red"
+            style="?android:attr/ratingBarStyleSmall"
+            android:transformPivotX="0dp"
+            app:layout_constraintBottom_toTopOf="@id/upcom_movie_title"
+            app:layout_constraintLeft_toLeftOf="@id/upcom_movie_title"/>
+
+        <TextView
+            android:id="@+id/upcom_movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="10dp"
+            android:textSize="12sp"
+            android:gravity="left"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="25dp"
+            tools:text="The Hobbit: The Battle of the Five Armies"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

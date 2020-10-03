@@ -43,45 +43,35 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
 
         tvSeriesViewModel = ViewModelProvider(this).get(TvSeriesViewModel::class.java)
 
-        tvSeriesViewModel.getFeaturedTvSeries().observe(this,object :
-            Observer<MutableList<TvSeries>> {
-            override fun onChanged(t: MutableList<TvSeries>?) {
+        tvSeriesViewModel.getFeaturedTvSeries().observe(this,
+            Observer<MutableList<TvSeries>> { t ->
                 Log.d("Featured TvSeries",t.toString())
-                binding.upcomingTvSeriesRecView.adapter = FeaturedTvSeriesAdapter(t, this@TvSeriesFragment)
-            }
-        })
+                val adapter = UpcomingAdapter(this@TvSeriesFragment)
+                binding.upcomingTvSeriesRecView.adapter = adapter
+                adapter.submitList(t as List<Any>?)
+            })
 
-        tvSeriesViewModel.getAiringTodayTvSeries().observe(this,object :
-            Observer<MutableList<TvSeries>> {
-            override fun onChanged(t: MutableList<TvSeries>?) {
-                binding.onTheAirRecView.adapter = AiringTvSeriesAdapter(t, this@TvSeriesFragment)
-            }
-        })
+        tvSeriesViewModel.getAiringTodayTvSeries().observe(this,
+            Observer<MutableList<TvSeries>> { t -> binding.onTheAirRecView.adapter = AiringTvSeriesAdapter(t, this@TvSeriesFragment) })
 
-        tvSeriesViewModel.getTopRatedTvSeries().observe(this,object :
-            Observer<MutableList<TvSeries>> {
-            override fun onChanged(t: MutableList<TvSeries>?) {
+        tvSeriesViewModel.getTopRatedTvSeries().observe(this,
+            Observer<MutableList<TvSeries>> { t ->
                 val topRatedAdapter:TopRatedAdapter = TopRatedAdapter( this@TvSeriesFragment)
                 topRatedAdapter.submitList(t as List<Any>?)
                 binding.topRatedTvRecView.adapter = topRatedAdapter
-            }
-        })
+            })
 
-        tvSeriesViewModel.getPopularTvSeries().observe(this,object :
-            Observer<MutableList<TvSeries>> {
-            override fun onChanged(t: MutableList<TvSeries>?) {
+        tvSeriesViewModel.getPopularTvSeries().observe(this,
+            Observer<MutableList<TvSeries>> { t ->
                 binding.popularTvRecView.adapter =
-                        AiringTvSeriesAdapter(t, this@TvSeriesFragment)
-            }
-        })
+                    AiringTvSeriesAdapter(t, this@TvSeriesFragment)
+            })
 
-        tvSeriesViewModel.getTvGenres().observe(this,object :
-            Observer<MutableList<MovieGenres>> {
-            override fun onChanged(t: MutableList<MovieGenres>?) {
+        tvSeriesViewModel.getTvGenres().observe(this,
+            Observer<MutableList<MovieGenres>> { t ->
                 binding.genresTvRecView.adapter =
-                        GenresAdapter(t, this@TvSeriesFragment)
-            }
-        })
+                    GenresAdapter(t, this@TvSeriesFragment)
+            })
 
 
             tvSeriesViewModel.getFeaturedTvSeries()

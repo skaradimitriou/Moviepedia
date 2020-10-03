@@ -39,8 +39,9 @@ class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
         //viewModel lamda expression for upcoming movies
         moviesViewModel.getUpcomingMovies().observe(viewLifecycleOwner,
             Observer<MutableList<Movies>> { t ->
-                binding.upcomingMoviesRecView.adapter =
-                    UpcomingMoviesAdapter(t, this@MoviesFragment)
+                val upcomingAdapter = UpcomingAdapter(this@MoviesFragment)
+                binding.upcomingMoviesRecView.adapter = upcomingAdapter
+                upcomingAdapter.submitList(t as List<Any>?)
             })
 
         //viewModel lamda expression for trending movies

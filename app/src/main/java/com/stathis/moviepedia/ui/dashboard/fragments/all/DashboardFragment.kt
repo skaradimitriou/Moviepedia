@@ -2,6 +2,7 @@ package com.stathis.moviepedia.ui.dashboard.fragments.all
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,12 +16,15 @@ import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.recyclerviews.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+import okhttp3.internal.notify
 
 
 class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
     FavoriteClickListener {
 
-    private lateinit var listAdapter: ListAdapter
+    private lateinit var upcomingAdapter: UpcomingAdapter
+    private lateinit var trendingAdapter: TrendingAdapter
+    private lateinit var topRatedAdapter : TopRatedAdapter
     private var moviesViewModel: MovAndTvSeriesViewModel =
         MovAndTvSeriesViewModel()
     private lateinit var binding: FragmentDashboardBinding
@@ -38,48 +42,50 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        upcomingAdapter = UpcomingAdapter(this@DashboardFragment)
+        binding.upcomingMoviesRecView.adapter = upcomingAdapter
+
+        trendingAdapter = TrendingAdapter(this@DashboardFragment)
+        binding.popularRecView.adapter = trendingAdapter
+
+        topRatedAdapter = TopRatedAdapter(this@DashboardFragment)
+        binding.topRatedRecView.adapter = topRatedAdapter
+
+        //adapter items start shimmering until they observe the movies
+        setShimmer()
         observeData()
+
     }
 
-    private fun observeData(){
-        listAdapter = ListAdapter(this@DashboardFragment)
-
-        moviesViewModel.UpComingMoviesCall().observe(viewLifecycleOwner, object : Observer<MutableList<Movies>> {
-            override fun onChanged(t: MutableList<Movies>?) {
+    private fun observeData() {
+        moviesViewModel.UpComingMoviesCall().observe(viewLifecycleOwner,
+            Observer<MutableList<Movies>> { t ->
                 Log.d("T", t.toString())
-                binding.upcomingMoviesRecView.adapter =
-                    UpcomingMoviesAdapter(t, this@DashboardFragment)
-            }
-        })
+                upcomingAdapter.submitList(t as List<Any>?)
+                upcomingAdapter.notifyDataSetChanged()
+            })
 
-        moviesViewModel.TrendingMoviesCall().observe(viewLifecycleOwner, object : Observer<MutableList<Movies>> {
-            override fun onChanged(t: MutableList<Movies>?) {
+        moviesViewModel.TrendingMoviesCall().observe(viewLifecycleOwner,
+            Observer<MutableList<Movies>> { t ->
                 Log.d("T", t.toString())
-                listAdapter.submitList(t as List<Any>?)
-                binding.popularRecView.adapter = listAdapter
-            }
-        })
+                trendingAdapter.submitList(t as List<Any>?)
+                trendingAdapter.notifyDataSetChanged()
+            })
 
-        moviesViewModel.TopRatedMoviesCall().observe(viewLifecycleOwner, object : Observer<MutableList<Movies>> {
-            override fun onChanged(t: MutableList<Movies>?) {
+        moviesViewModel.TopRatedMoviesCall().observe(viewLifecycleOwner,
+            Observer<MutableList<Movies>> { t ->
                 Log.d("T", t.toString())
-                val topRatedAdapter: TopRatedAdapter = TopRatedAdapter(this@DashboardFragment)
-                topRatedAdapter.submitList(t?.sortedWith(
-                    compareBy { it.vote_average })?.reversed()
+                // sorting list by rating and passing it to the adapter
+                topRatedAdapter.submitList(
+                    t?.sortedWith(
+                        compareBy { it.vote_average })?.reversed()
                 )
-//                sorting list by rating and passing it to the adapter
-                binding.topRatedRecView.adapter = topRatedAdapter
-
-                Log.d(
-                    "SortedList", t?.sortedWith(
-                        compareBy { it.vote_average })?.reversed().toString()
-                )
-            }
-        })
+                topRatedAdapter.notifyDataSetChanged()
+            })
 
         moviesViewModel.getFavoriteMovies()
-            .observe(viewLifecycleOwner, object : Observer<MutableList<FavoriteMovies>> {
-                override fun onChanged(t: MutableList<FavoriteMovies>?) {
+            .observe(viewLifecycleOwner,
+                Observer<MutableList<FavoriteMovies>> { t ->
                     if (t?.size == 0) {
                         userFav.visibility = View.GONE
                     } else {
@@ -87,22 +93,26 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
                         favoriteAdapter.submitList(t as List<Any?>)
                         binding.favoriteMoviesRV.adapter = favoriteAdapter
                     }
-                }
-            })
+                })
 
         moviesViewModel.getMovieGenres()
-            .observe(viewLifecycleOwner, object : Observer<MutableList<MovieGenres>> {
-                override fun onChanged(t: MutableList<MovieGenres>?) {
+            .observe(viewLifecycleOwner,
+                Observer<MutableList<MovieGenres>> { t ->
                     binding.genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
-                }
-
-            })
+                })
 
         moviesViewModel.UpComingMoviesCall()
         moviesViewModel.TrendingMoviesCall()
         moviesViewModel.TopRatedMoviesCall()
         moviesViewModel.getFavoriteMovies()
         moviesViewModel.getMovieGenres()
+    }
+
+
+    private fun setShimmer() {
+        upcomingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
+        trendingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
+        topRatedAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
     }
 
     /* handles movie clicks.

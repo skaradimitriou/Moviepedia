@@ -29,6 +29,20 @@ class MovAndTvSeriesViewModel : ViewModel() {
     private var streamGenres : MutableLiveData<MutableList<MovieGenres>> = MutableLiveData()
     private var streamThree : MutableLiveData<MutableList<Movies>> = MutableLiveData()
     private var favoriteMovies : MutableLiveData<MutableList<FavoriteMovies>> = MutableLiveData()
+    private var emptyModelList: MutableList<EmptyModel> = mutableListOf()
+
+    init{
+        setShimmer()
+    }
+
+    fun setShimmer(): MutableList<EmptyModel> {
+        val emptyModel = EmptyModel("")
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        return emptyModelList
+    }
 
     fun UpComingMoviesCall(): MutableLiveData<MutableList<Movies>> {
         url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"

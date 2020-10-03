@@ -17,7 +17,7 @@
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg_movie_img"
-                app:tint="#60000000"
+                android:tint="#60000000"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
