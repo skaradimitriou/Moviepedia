@@ -42,6 +42,7 @@
         android:layout_marginRight="31dp"
         android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
+        android:alpha="0.7"
         android:text="Search movies &amp; TV Series."
         android:textColor="#ffffff"
         android:textSize="16sp"
@@ -101,6 +102,23 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/noAcc"
         app:layout_constraintTop_toBottomOf="@id/login_btn" />
+
+    <TextView
+        android:id="@+id/forgot_login_credentials"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="2sp"
+        android:text="Forgot Password?"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/registerBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

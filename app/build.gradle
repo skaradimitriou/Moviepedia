@@ -87,6 +87,15 @@ dependencies {
 
     //custom progress bar
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
+
+    // Swipe 2 Refresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //OTP (PinView)
+    implementation 'com.chaos.view:pinview:1.4.4'
+
+    //Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }
 
 //firebase

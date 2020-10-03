@@ -11,10 +11,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.stathis.moviepedia.Dashboard
-import com.stathis.moviepedia.personalizeAccount.PersonalizeAccount
+import com.stathis.moviepedia.ui.dashboard.Dashboard
+import com.stathis.moviepedia.ui.personalizeAccount.PersonalizeAccount
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityIntroScreenBinding
+import com.stathis.moviepedia.ui.forgotPassword.forgotPass.ForgotPassword
 import kotlinx.android.synthetic.main.login_view.view.loginAccBtn
 import kotlinx.android.synthetic.main.register_view.view.*
 
@@ -42,6 +43,10 @@ class IntroScreen : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        binding.forgotLoginCredentials.setOnClickListener{
+            startActivity(Intent(this, ForgotPassword::class.java))
+        }
+
         binding.loginBtn.setOnClickListener {
             showLoginDialogue()
         }
@@ -62,7 +67,7 @@ class IntroScreen : AppCompatActivity() {
             val emailField: TextInputEditText = loginDialog.findViewById(R.id.loginEmailField)
             val passwordField: TextInputEditText = loginDialog.findViewById(R.id.loginPasswordField)
 
-            when(introScreenViewModel.validateLoginCredentials(emailField,passwordField)){
+            when (introScreenViewModel.validateLoginCredentials(emailField, passwordField)) {
                 true -> {
                     auth.signInWithEmailAndPassword(
                         emailField.text.toString(),
@@ -84,7 +89,9 @@ class IntroScreen : AppCompatActivity() {
                             }
                         }
                 }
-                false -> {return@setOnClickListener}
+                false -> {
+                    return@setOnClickListener
+                }
             }
         }
     }
@@ -104,7 +111,11 @@ class IntroScreen : AppCompatActivity() {
             val passwordConfigField: TextInputEditText =
                 registerDialog.findViewById(R.id.registerPasswordConfirmField)
 
-            when(introScreenViewModel.validateRegisterCredentials(emailField,passwordField,passwordConfigField)){
+            when (introScreenViewModel.validateRegisterCredentials(
+                emailField,
+                passwordField,
+                passwordConfigField
+            )) {
                 true -> {
                     //if the 2 passwords match, I am registering him to the RealTime Db
                     if (passwordField.text.toString() == passwordConfigField.text.toString()) {
@@ -127,26 +138,18 @@ class IntroScreen : AppCompatActivity() {
                             }
                     }
                 }
-                false -> { return@setOnClickListener }
+                false -> {
+                    return@setOnClickListener
+                }
             }
         }
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        //loading
-        val loadingDialog = LayoutInflater.from(this).inflate(R.layout.loading_dialog, null)
-        val builder = AlertDialog.Builder(this).setView(loadingDialog)
-        builder.setCancelable(true)
-        builder.show()
-        Handler().postDelayed({
-            if (user != null) {
-                //logging in successful
-                startActivity(Intent(this, Dashboard::class.java))
-            } else {
-                val toast = Toast.makeText(applicationContext, "Login failed", Toast.LENGTH_LONG)
-                toast.show()
-            }
-        }, 2000)
+        if (user != null) {
+            //logging in successful
+            startActivity(Intent(this, Dashboard::class.java))
+        }
     }
 
     private fun showSuccessAccountDialog() {

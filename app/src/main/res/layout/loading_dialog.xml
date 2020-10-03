@@ -8,7 +8,6 @@
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
 
-
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"

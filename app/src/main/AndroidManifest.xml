@@ -7,22 +7,22 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".FirebaseOffline"
+        android:name=".ui.FirebaseOffline"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".forgotPassword.ForgotPassword"></activity>
-        <activity android:name=".personalizeAccount.PersonalizeAccount" />
-        <activity android:name=".userProfile.UserProfile" />
-        <activity android:name=".tvSeriesInfoScreen.TvSeriesInfoScreen" />
-        <activity android:name=".movieInfoScreen.MovieInfoScreen" />
-        <activity android:name=".Dashboard" />
-        <activity android:name=".genresInfoScreen.GenresInfoScreen" />
-        <activity android:name="com.stathis.moviepedia.ui.loginAndRegister.IntroScreen" />
-        <activity android:name=".SplashScreen">
+        <activity android:name="com.stathis.moviepedia.ui.forgotPassword.forgotPass.ForgotPassword" />
+        <activity android:name=".ui.personalizeAccount.PersonalizeAccount" />
+        <activity android:name="com.stathis.moviepedia.ui.userProfile.UserProfile" />
+        <activity android:name=".ui.tvSeriesInfoScreen.TvSeriesInfoScreen" />
+        <activity android:name=".ui.movieInfoScreen.MovieInfoScreen" />
+        <activity android:name=".ui.dashboard.Dashboard" />
+        <activity android:name="com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen" />
+        <activity android:name=".ui.loginAndRegister.IntroScreen" />
+        <activity android:name=".ui.splashScreen.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
