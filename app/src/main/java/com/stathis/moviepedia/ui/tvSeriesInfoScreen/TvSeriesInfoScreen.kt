@@ -107,7 +107,6 @@ class TvSeriesInfoScreen : AppCompatActivity() {
     private fun setTvSeriesRating() {
         //converting rating toDouble()
         var rating = tvSeriesRating.toDouble()
-        binding.rating.text = "$rating/10"
         //applying rating to the ratingBar
         binding.ratingBar.rating = rating.toFloat() / 2
     }

@@ -78,17 +78,6 @@
                 app:layout_constraintBottom_toBottomOf="@id/releaseDate"
                 tools:src="@drawable/default_img" />
 
-            <TextView
-                android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="8.0/10"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                app:layout_constraintLeft_toRightOf="@+id/releaseDate"
-                app:layout_constraintTop_toTopOf="@+id/releaseDate" />
-
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
@@ -102,8 +91,8 @@
                 android:scaleX="0.4"
                 android:scaleY="0.4"
                 android:transformPivotX="0dp"
-                app:layout_constraintLeft_toRightOf="@+id/rating"
-                app:layout_constraintTop_toTopOf="@+id/rating" />
+                app:layout_constraintLeft_toRightOf="@+id/releaseDate"
+                app:layout_constraintTop_toTopOf="@+id/releaseDate" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/genresInfoRecView"

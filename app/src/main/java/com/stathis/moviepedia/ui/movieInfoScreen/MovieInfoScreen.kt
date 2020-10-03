@@ -107,7 +107,6 @@ class MovieInfoScreen : AppCompatActivity() {
     private fun setMovieRating() {
         //converting rating toDouble()
         var rating = intent.getStringExtra("RATING").toDouble()
-        binding.rating.text = "$rating/10"
         //applying rating to the ratingBar
         binding.ratingBar.rating = rating.toFloat() / 2
     }
