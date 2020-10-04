@@ -2,7 +2,6 @@ package com.stathis.moviepedia.ui.dashboard.fragments.all
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,9 +13,8 @@ import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.recyclerviews.*
+import com.stathis.moviepedia.adapters.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
-import okhttp3.internal.notify
 
 
 class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
@@ -24,7 +22,8 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
     private lateinit var upcomingAdapter: UpcomingAdapter
     private lateinit var trendingAdapter: TrendingAdapter
-    private lateinit var topRatedAdapter : TopRatedAdapter
+    private lateinit var topRatedAdapter: TopRatedAdapter
+    private lateinit var genresAdapter: GenresAdapter
     private var moviesViewModel: MovAndTvSeriesViewModel =
         MovAndTvSeriesViewModel()
     private lateinit var binding: FragmentDashboardBinding
@@ -47,6 +46,9 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
 
         trendingAdapter = TrendingAdapter(this@DashboardFragment)
         binding.popularRecView.adapter = trendingAdapter
+
+        genresAdapter = GenresAdapter(this@DashboardFragment)
+        binding.genresRecView.adapter = genresAdapter
 
         topRatedAdapter = TopRatedAdapter(this@DashboardFragment)
         binding.topRatedRecView.adapter = topRatedAdapter
@@ -98,7 +100,8 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
         moviesViewModel.getMovieGenres()
             .observe(viewLifecycleOwner,
                 Observer<MutableList<MovieGenres>> { t ->
-                    binding.genresRecView.adapter = GenresAdapter(t, this@DashboardFragment)
+                    genresAdapter.submitList(t as List<Any>?)
+                    genresAdapter.notifyDataSetChanged()
                 })
 
         moviesViewModel.UpComingMoviesCall()
@@ -113,6 +116,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
         upcomingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
         trendingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
         topRatedAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
+        genresAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
     }
 
     /* handles movie clicks.
@@ -142,7 +146,7 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
     }
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
-        TODO("Not yet implemented")
+        //
     }
 
     override fun onClick(v: View?) {

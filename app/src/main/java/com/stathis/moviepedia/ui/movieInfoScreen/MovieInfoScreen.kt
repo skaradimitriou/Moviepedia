@@ -13,8 +13,8 @@ import com.stathis.moviepedia.databinding.ActivityMovieInfoScreenBinding
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.cast.Cast
-import com.stathis.moviepedia.recyclerviews.CastAdapter
-import com.stathis.moviepedia.recyclerviews.ReviewsAdapter
+import com.stathis.moviepedia.adapters.CastAdapter
+import com.stathis.moviepedia.adapters.ReviewsAdapter
 
 class MovieInfoScreen : AppCompatActivity() {
 
@@ -77,7 +77,6 @@ class MovieInfoScreen : AppCompatActivity() {
     }
 
     private fun getIntentInfo() {
-//        movieId = intent.getIntExtra("MOVIE_ID",movieId)
         moviePhoto = intent.getStringExtra("MOVIE_PHOTO")
         movieTitle = intent.getStringExtra("MOVIE_NAME")
         movieRating = intent.getStringExtra("RATING")
@@ -187,10 +186,10 @@ class MovieInfoScreen : AppCompatActivity() {
     }
 
     private fun share() {
-        val shareIntent = Intent()
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-        startActivity(shareIntent)
+        startActivity(Intent().apply{
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+        })
     }
 }

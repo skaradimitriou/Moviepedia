@@ -18,8 +18,8 @@ import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.recyclerviews.FavoriteAdapter
-import com.stathis.moviepedia.recyclerviews.FavoriteClickListener
+import com.stathis.moviepedia.adapters.FavoriteAdapter
+import com.stathis.moviepedia.adapters.FavoriteClickListener
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {

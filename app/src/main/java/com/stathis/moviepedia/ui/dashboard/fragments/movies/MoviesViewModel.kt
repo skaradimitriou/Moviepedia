@@ -24,6 +24,20 @@ class MoviesViewModel : ViewModel() {
     private var trendingMovies : MutableLiveData<MutableList<Movies>> = MutableLiveData()
     private var movieGenres : MutableLiveData<MutableList<MovieGenres>> = MutableLiveData()
     private var topRatedMovies : MutableLiveData<MutableList<Movies>> = MutableLiveData()
+    private var emptyModelList: MutableList<EmptyModel> = mutableListOf()
+
+    init{
+        setShimmer()
+    }
+
+    fun setShimmer(): MutableList<EmptyModel> {
+        val emptyModel = EmptyModel("")
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        return emptyModelList
+    }
 
     fun getUpcomingMovies(): MutableLiveData<MutableList<Movies>> {
         url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
@@ -35,7 +49,7 @@ class MoviesViewModel : ViewModel() {
                 Log.d("Call Failed", call.toString())
             }
 
-            override fun onResponse(call: Call, response: okhttp3.Response) {
+            override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 println(body)
 
@@ -62,7 +76,7 @@ class MoviesViewModel : ViewModel() {
                 Log.d("Call Failed", call.toString())
             }
 
-            override fun onResponse(call: Call, response: okhttp3.Response) {
+            override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 val gson = GsonBuilder().create()
                 val popularMovies = gson.fromJson(body, MovieFeed::class.java)

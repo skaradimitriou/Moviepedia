@@ -13,19 +13,17 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.storage.FirebaseStorage
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityDashboardBinding
 import com.stathis.moviepedia.ui.dashboard.fragments.all.DashboardFragment
 import com.stathis.moviepedia.ui.dashboard.fragments.movies.MoviesFragment
-import com.stathis.moviepedia.ui.searchScreen.SearchFragment
+import com.stathis.moviepedia.ui.dashboard.fragments.search.SearchFragment
 import com.stathis.moviepedia.ui.dashboard.fragments.tvSeries.TvSeriesFragment
 import com.stathis.moviepedia.ui.userProfile.UserProfile
 import com.stathis.moviepedia.ui.userProfile.UserViewModel
 
 class Dashboard : AppCompatActivity() {
 
-    private lateinit var storage: FirebaseStorage
     private lateinit var searchFragment: SearchFragment
     private lateinit var dashboardFragment: DashboardFragment
     private lateinit var moviesFragment: MoviesFragment

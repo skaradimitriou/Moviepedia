@@ -33,7 +33,7 @@
             app:layout_constraintLeft_toRightOf="@+id/position"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:src="@drawable/default_img" />
+            android:src="@drawable/default_img" />
 
         <TextView
             android:id="@+id/movie_title"

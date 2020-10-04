@@ -14,8 +14,8 @@ import com.stathis.moviepedia.databinding.ActivityTvSeriesInfoScreenBinding
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.cast.Cast
-import com.stathis.moviepedia.recyclerviews.CastAdapter
-import com.stathis.moviepedia.recyclerviews.ReviewsAdapter
+import com.stathis.moviepedia.adapters.CastAdapter
+import com.stathis.moviepedia.adapters.ReviewsAdapter
 
 class TvSeriesInfoScreen : AppCompatActivity() {
 

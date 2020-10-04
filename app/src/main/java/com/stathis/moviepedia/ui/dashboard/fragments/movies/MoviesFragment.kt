@@ -13,7 +13,7 @@ import com.stathis.moviepedia.databinding.FragmentMoviesBinding
 import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.recyclerviews.*
+import com.stathis.moviepedia.adapters.*
 
 
 class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
@@ -21,6 +21,10 @@ class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
     private var moviesViewModel: MoviesViewModel =
         MoviesViewModel()
     private lateinit var binding: FragmentMoviesBinding
+    private lateinit var upcomingAdapter: UpcomingAdapter
+    private lateinit var trendingAdapter: TrendingAdapter
+    private lateinit var topRatedAdapter: TopRatedAdapter
+    private lateinit var genresAdapter: GenresAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,47 +40,65 @@ class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //viewModel lamda expression for upcoming movies
+        upcomingAdapter = UpcomingAdapter(this@MoviesFragment)
+        binding.upcomingMoviesRecView.adapter = upcomingAdapter
+
+        trendingAdapter = TrendingAdapter(this@MoviesFragment)
+        binding.popularRecView.adapter = trendingAdapter
+
+        topRatedAdapter = TopRatedAdapter(this@MoviesFragment)
+        binding.topRatedRecView.adapter = topRatedAdapter
+
+        genresAdapter = GenresAdapter( this@MoviesFragment)
+        binding.genresRecView.adapter = genresAdapter
+
+        setShimmer()
+        observeData()
+
+    }
+
+    private fun observeData(){
         moviesViewModel.getUpcomingMovies().observe(viewLifecycleOwner,
             Observer<MutableList<Movies>> { t ->
-                val upcomingAdapter = UpcomingAdapter(this@MoviesFragment)
-                binding.upcomingMoviesRecView.adapter = upcomingAdapter
                 upcomingAdapter.submitList(t as List<Any>?)
+                upcomingAdapter.notifyDataSetChanged()
             })
 
-        //viewModel lamda expression for trending movies
         moviesViewModel.getTrendingMovies()
             .observe(viewLifecycleOwner, Observer<MutableList<Movies>> { t ->
-                binding.popularRecView.adapter =
-                    PopularMoviesAdapter(t, this@MoviesFragment)
+                trendingAdapter.submitList(t as List<Any>?)
+                trendingAdapter.notifyDataSetChanged()
             })
 
-        //viewModel lamda expression for top rated movies
         moviesViewModel.getTopRatedMovies()
             .observe(viewLifecycleOwner, Observer<MutableList<Movies>> { t ->
                 //sorting list by rating and passing it to the adapter
-                binding.topRatedRecView.adapter = PopularMoviesAdapter(
-                    t.sortedWith(
-                        compareBy { it.vote_average }).reversed() as MutableList<Movies>,
-                    this@MoviesFragment
-                )
+                topRatedAdapter.submitList(t.sortedWith(
+                        compareBy { it.vote_average }).reversed())
+                topRatedAdapter.notifyDataSetChanged()
                 Log.d(
                     "SortedList", t.sortedWith(
                         compareBy { it.vote_average }).reversed().toString()
                 )
             })
 
-        //viewModel lambda expression for Movie Genres
         moviesViewModel.getMovieGenres()
             .observe(viewLifecycleOwner, Observer<MutableList<MovieGenres>> { t ->
-                binding.genresRecView.adapter = GenresAdapter(t, this@MoviesFragment)
+                genresAdapter.submitList(t as List<Any>?)
+                genresAdapter.notifyDataSetChanged()
             })
 
-        // Calling my ViewModel functions
         moviesViewModel.getUpcomingMovies()
         moviesViewModel.getMovieGenres()
         moviesViewModel.getTopRatedMovies()
         moviesViewModel.getTrendingMovies()
+    }
+
+    private fun setShimmer(){
+        upcomingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
+        trendingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
+        topRatedAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
+        genresAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
     }
 
     override fun onItemClick(movies: Movies) {

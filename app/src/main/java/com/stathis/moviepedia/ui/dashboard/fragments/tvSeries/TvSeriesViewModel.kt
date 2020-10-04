@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.models.MovieGenres
-import com.stathis.moviepedia.models.MovieGenresFeed
-import com.stathis.moviepedia.models.TvSeries
-import com.stathis.moviepedia.models.TvSeriesFeed
+import com.stathis.moviepedia.models.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,6 +22,20 @@ class TvSeriesViewModel : ViewModel() {
     private var topRated : MutableLiveData<MutableList<TvSeries>> = MutableLiveData()
     private var popularTvSeries : MutableLiveData<MutableList<TvSeries>> = MutableLiveData()
     private var tvSeriesGenres : MutableLiveData<MutableList<MovieGenres>> = MutableLiveData()
+    private var emptyModelList: MutableList<EmptyModel> = mutableListOf()
+
+    init{
+        setShimmer()
+    }
+
+    fun setShimmer(): MutableList<EmptyModel> {
+        val emptyModel = EmptyModel("")
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        emptyModelList.add(emptyModel)
+        return emptyModelList
+    }
 
     fun getFeaturedTvSeries(): MutableLiveData<MutableList<TvSeries>> {
         url = "https://api.themoviedb.org/3/tv/on_the_air?api_key=$apiKey"

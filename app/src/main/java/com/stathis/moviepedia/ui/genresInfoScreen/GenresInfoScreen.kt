@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.recyclerviews.ItemClickListener
-import com.stathis.moviepedia.recyclerviews.MoviesAdapter
+import com.stathis.moviepedia.adapters.ItemClickListener
+import com.stathis.moviepedia.adapters.MoviesAdapter
 
 class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
 
