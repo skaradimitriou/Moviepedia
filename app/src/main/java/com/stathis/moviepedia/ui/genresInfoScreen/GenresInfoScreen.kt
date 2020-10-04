@@ -12,12 +12,13 @@ import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.adapters.ItemClickListener
-import com.stathis.moviepedia.adapters.MoviesAdapter
+import com.stathis.moviepedia.ui.genresInfoScreen.adapters.MoviesAdapter
 
 class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
 
 
     private var genreId: Int = 0
+    private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var genreName: String
     private lateinit var binding: ActivityGenresInfoScreenBinding
     private var genresInfoScreenViewModel: GenresInfoScreenViewModel = GenresInfoScreenViewModel()
@@ -30,13 +31,19 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
+
+        moviesAdapter = MoviesAdapter(this@GenresInfoScreen)
+
+        binding.genresGridRecView.adapter = moviesAdapter
+        moviesAdapter.submitList(genresInfoScreenViewModel.startShimmer() as List<Any>?)
+
         genreId = intent.getIntExtra("GENRE_ID", genreId)
         genreName = intent.getStringExtra("GENRE_NAME")
 
         genresInfoScreenViewModel.getResultsForThisGenre(genreId).observe(this, Observer<MutableList<Movies>>{ movies ->
             Log.d("RESULT",movies.toString())
-            binding.genresGridRecView.adapter =
-                        MoviesAdapter(movies as ArrayList<Movies>, this@GenresInfoScreen)
+            moviesAdapter.submitList(movies as List<Any>?)
+            moviesAdapter.notifyDataSetChanged()
         })
 
         //api call

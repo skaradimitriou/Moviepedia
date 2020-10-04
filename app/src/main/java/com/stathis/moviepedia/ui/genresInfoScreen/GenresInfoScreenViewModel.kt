@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
+import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.GenreMoviesFeed
 import com.stathis.moviepedia.models.Movies
 import okhttp3.Call
@@ -20,7 +21,24 @@ class GenresInfoScreenViewModel : ViewModel() {
     private val apiKey = "?api_key=b36812048cc4b54d559f16a2ff196bc5"
     private var movieList: MutableList<Movies> = mutableListOf()
     private var movies: MutableLiveData<MutableList<Movies>> = MutableLiveData()
-    private lateinit var binding: ActivityGenresInfoScreenBinding
+    private lateinit var emptyModelList: MutableList<EmptyModel>
+
+    init{
+        startShimmer()
+    }
+
+    fun startShimmer(): MutableList<EmptyModel> {
+        emptyModelList = mutableListOf(
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel("")
+        )
+        return emptyModelList
+    }
 
     fun getResultsForThisGenre(genreId: Int): MutableLiveData<MutableList<Movies>> {
         url = "https://api.themoviedb.org/3/discover/movie$apiKey&with_genres=$genreId"
