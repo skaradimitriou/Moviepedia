@@ -43,6 +43,7 @@ class TvSeriesInfoScreen : AppCompatActivity() {
         super.onPostCreate(savedInstanceState)
 
         castAdapter = CastAdapter()
+        startShimmer()
 
         getIntentInfo()
 
@@ -50,6 +51,7 @@ class TvSeriesInfoScreen : AppCompatActivity() {
             .observe(this, Observer<MutableList<Cast>> {cast ->
                 Log.d("cast is:",cast.toString())
                 binding.castRecView.adapter = castAdapter
+                castAdapter.submitList(cast as List<Any>?)
                 castAdapter.notifyDataSetChanged()
             })
 
@@ -78,6 +80,10 @@ class TvSeriesInfoScreen : AppCompatActivity() {
         binding.shareBtn.setOnClickListener {
             share()
         }
+    }
+
+    private fun startShimmer(){
+        castAdapter.submitList(tvSeriesInfoScreenViewModel.setShimmer() as List<Any>?)
     }
 
     private fun getIntentInfo() {

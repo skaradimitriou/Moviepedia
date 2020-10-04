@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.cast.Cast
@@ -21,6 +22,25 @@ class TvSeriesInfoScreenViewModel : ViewModel() {
     private var castInfo: MutableList<Cast> = mutableListOf()
     private var cast: MutableLiveData<MutableList<Cast>> = MutableLiveData()
     private var reviews: MutableLiveData<MutableList<Reviews>> = MutableLiveData()
+    private lateinit var emptyModelList: MutableList<EmptyModel>
+
+    init{
+        setShimmer()
+    }
+
+    fun setShimmer(): MutableList<EmptyModel> {
+        emptyModelList = mutableListOf(
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel("")
+        )
+        return emptyModelList
+    }
+
 
     fun getCastInfo(tvSeriesId: Int): MutableLiveData<MutableList<Cast>> {
         url =
