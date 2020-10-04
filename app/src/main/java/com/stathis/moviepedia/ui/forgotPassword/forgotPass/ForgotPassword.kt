@@ -35,8 +35,6 @@ class ForgotPassword : AppCompatActivity() {
 
         send_activation_email.setOnClickListener {
             verifyEmail()
-
-
         }
     }
 

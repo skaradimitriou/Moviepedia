@@ -46,6 +46,8 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         binding.backButton.setOnClickListener{ onBackPressed() }
 
+        favoriteAdapter = FavoriteAdapter(this@UserProfile)
+
         //handling onClickListener for included layout
         binding.logout.apply {
             binding.logout.logoutIcon.setOnClickListener { askForLogout() }
@@ -61,59 +63,68 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             }
         })
 
-        userViewModel.getUserFavoriteMovies()
-            .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
-                Log.d("User Fav Movies", t.toString())
-                if (t.size > 0) {
-                    favoriteAdapter = FavoriteAdapter(this@UserProfile)
-                    favoriteAdapter.submitList(t as List<Any>?)
-                    binding.favGridRecView.adapter = favoriteAdapter
-                } else {
-                    //display empty favorites
-                }
-            })
-
         userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
             Log.d("profile image path", img.toString())
             binding.profileImg.setImageBitmap(img)
         })
 
+        startShimmer()
+        observeUserFavoriteTvSeries()
+
         binding.favMov.setOnClickListener {
             binding.favMov.alpha = 1F
             binding.favTv.alpha = 0.5F
-            userViewModel.getUserFavoriteMovies()
-                .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
-                    Log.d("User Fav Movies", t.toString())
-                    if (t.size > 0) {
-                        favoriteAdapter = FavoriteAdapter(this@UserProfile)
-                        favoriteAdapter.submitList(t as List<Any>?)
-                        binding.favGridRecView.adapter = favoriteAdapter
-                    } else {
-                        //display empty favorites
-                    }
-                })
+
+            startShimmer()
+            observerUserFavMovies()
         }
 
         binding.favTv.setOnClickListener {
             binding.favTv.alpha = 1F
             binding.favMov.alpha = 0.5F
-            userViewModel.getUserFavoriteTvSeries()
-                .observe(this, Observer<MutableList<FavoriteTvSeries>> { c ->
-                    Log.d("User Fav Tv Series", c.toString())
-                    if (c.size > 0) {
-                        favoriteAdapter = FavoriteAdapter(this@UserProfile)
-                        favoriteAdapter.submitList(c as List<Any>?)
-                        binding.favGridRecView.adapter = favoriteAdapter
-                    } else {
-                        //display empty favorites
-                    }
-                })
+
+            startShimmer()
+            observeUserFavoriteTvSeries()
+
         }
 
         binding.profileImg.setOnClickListener {
             takePictureIntent()
         }
     }
+
+    private fun startShimmer(){
+        favoriteAdapter.submitList(userViewModel.startShimmer() as List<Any>?)
+        favoriteAdapter.notifyDataSetChanged()
+    }
+
+    private fun observerUserFavMovies(){
+        userViewModel.getUserFavoriteMovies()
+            .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
+                Log.d("User Fav Movies", t.toString())
+                if (t.size > 0) {
+                    favoriteAdapter.submitList(t as List<Any>?)
+                    favoriteAdapter.notifyDataSetChanged()
+                    binding.favGridRecView.adapter = favoriteAdapter
+                } else {
+                    //display empty favorites
+                }
+            })
+    }
+
+    private fun observeUserFavoriteTvSeries(){
+        userViewModel.getUserFavoriteTvSeries()
+            .observe(this, Observer<MutableList<FavoriteTvSeries>> { c ->
+                Log.d("User Fav Tv Series", c.toString())
+                if (c.size > 0) {
+                    favoriteAdapter.submitList(c as List<Any>?)
+                    binding.favGridRecView.adapter = favoriteAdapter
+                } else {
+                    //display empty favorites
+                }
+            })
+    }
+
     private fun takePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent ->
             pictureIntent.resolveActivity(this.packageManager!!)?.also {

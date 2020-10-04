@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import java.io.ByteArrayOutputStream
@@ -26,6 +27,24 @@ class UserViewModel : ViewModel() {
     private var userImgPath: MutableLiveData<Bitmap> = MutableLiveData()
     private var username: MutableLiveData<String> = MutableLiveData()
     private var downloadUrl : MutableLiveData<Bitmap> = MutableLiveData()
+    private lateinit var emptyModelList: MutableList<EmptyModel>
+
+    init{
+        startShimmer()
+    }
+
+    fun startShimmer(): MutableList<EmptyModel> {
+        emptyModelList = mutableListOf(
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel("")
+        )
+        return emptyModelList
+    }
 
     fun getUserFavoriteMovies(): MutableLiveData<MutableList<FavoriteMovies>> {
         //adds a new favorite to the favorite movie list

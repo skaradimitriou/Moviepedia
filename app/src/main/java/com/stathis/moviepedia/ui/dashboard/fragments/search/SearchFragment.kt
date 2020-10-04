@@ -54,7 +54,6 @@ class SearchFragment : Fragment(), SearchItemClickListener {
             })
         } else {
             startShimmer()
-            
             searchScreenViewModel.getQueryInfo(query)
                 .observe(this, Observer<MutableList<SearchItem>> { searchItem ->
                     Log.d("Search Item",searchItem.toString())
