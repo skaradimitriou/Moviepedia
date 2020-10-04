@@ -24,18 +24,19 @@ class MoviesViewModel : ViewModel() {
     private var trendingMovies : MutableLiveData<MutableList<Movies>> = MutableLiveData()
     private var movieGenres : MutableLiveData<MutableList<MovieGenres>> = MutableLiveData()
     private var topRatedMovies : MutableLiveData<MutableList<Movies>> = MutableLiveData()
-    private var emptyModelList: MutableList<EmptyModel> = mutableListOf()
+    private lateinit var emptyModelList: MutableList<EmptyModel>
 
     init{
         setShimmer()
     }
 
     fun setShimmer(): MutableList<EmptyModel> {
-        val emptyModel = EmptyModel("")
-        emptyModelList.add(emptyModel)
-        emptyModelList.add(emptyModel)
-        emptyModelList.add(emptyModel)
-        emptyModelList.add(emptyModel)
+        emptyModelList = mutableListOf(
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel(""),
+            EmptyModel("")
+        )
         return emptyModelList
     }
 

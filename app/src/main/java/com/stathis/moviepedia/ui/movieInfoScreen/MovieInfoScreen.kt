@@ -18,11 +18,13 @@ import com.stathis.moviepedia.adapters.ReviewsAdapter
 
 class MovieInfoScreen : AppCompatActivity() {
 
+    private var movieId : Int = 0
     private lateinit var moviePhoto: String
     private lateinit var movieTitle: String
     private lateinit var movieRating: String
     private lateinit var movieReleaseDate: String
     private lateinit var movieDescription: String
+    private lateinit var castAdapter : CastAdapter
     private lateinit var databaseReference: DatabaseReference
     private lateinit var binding: ActivityMovieInfoScreenBinding
     private var movieInfoScreenViewModel = MovieInfoScreenViewModel()
@@ -36,17 +38,19 @@ class MovieInfoScreen : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        castAdapter = CastAdapter()
+        startShimmer()
+
         //getting info about the movie from intent
         getIntentInfo()
         getFavoritesFromDb()
 
-        var movieId: Int = 1
-        movieId = intent.getIntExtra("MOVIE_ID", movieId)
-
         movieInfoScreenViewModel.getMovieCastInfo(movieId)
             .observe(this, androidx.lifecycle.Observer<MutableList<Cast>> { cast ->
                 Log.d("CAST", cast.toString())
-                binding.castRecView.adapter = CastAdapter(cast)
+                castAdapter.submitList(cast as List<Any>?)
+                binding.castRecView.adapter = castAdapter
+                castAdapter.notifyDataSetChanged()
             })
 
         movieInfoScreenViewModel.getMovieReviews(movieId)
@@ -76,7 +80,12 @@ class MovieInfoScreen : AppCompatActivity() {
         }
     }
 
+    private fun startShimmer(){
+        castAdapter.submitList(movieInfoScreenViewModel.setShimmer() as List<Any>?)
+    }
+
     private fun getIntentInfo() {
+        movieId = intent.getIntExtra("MOVIE_ID", movieId)
         moviePhoto = intent.getStringExtra("MOVIE_PHOTO")
         movieTitle = intent.getStringExtra("MOVIE_NAME")
         movieRating = intent.getStringExtra("RATING")
@@ -175,6 +184,7 @@ class MovieInfoScreen : AppCompatActivity() {
             .child("favoriteMovieList")
             .child(movieTitle).setValue(
                 FavoriteMovies(
+                    movieId,
                     moviePhoto,
                     movieTitle,
                     movieRating.toDouble(),

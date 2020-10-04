@@ -89,7 +89,12 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }
 
         binding.profileImg.setOnClickListener {
+            // show Bottom Sheet Fragment
+//            showUpdatePhotoOptions()
+
+            //take picture from camera
             takePictureIntent()
+
         }
     }
 

@@ -16,6 +16,7 @@ import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
+import okhttp3.internal.notify
 
 class TvSeriesInfoScreen : AppCompatActivity() {
 
@@ -24,6 +25,7 @@ class TvSeriesInfoScreen : AppCompatActivity() {
     private lateinit var tvSeriesTitle: String
     private lateinit var tvSeriesRating: String
     private lateinit var tvSeriesReleaseDate: String
+    private lateinit var castAdapter : CastAdapter
     private lateinit var tvSeriesDescription: String
     private lateinit var databaseReference: DatabaseReference
     private lateinit var binding: ActivityTvSeriesInfoScreenBinding
@@ -40,12 +42,15 @@ class TvSeriesInfoScreen : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        castAdapter = CastAdapter()
+
         getIntentInfo()
 
         tvSeriesInfoScreenViewModel.getCastInfo(tvSeriesId)
             .observe(this, Observer<MutableList<Cast>> {cast ->
                 Log.d("cast is:",cast.toString())
-                binding.castRecView.adapter = CastAdapter(cast)
+                binding.castRecView.adapter = castAdapter
+                castAdapter.notifyDataSetChanged()
             })
 
         tvSeriesInfoScreenViewModel.getTvSeriesReviews(tvSeriesId).observe(this, Observer<MutableList<Reviews>>{reviews ->
