@@ -1,4 +1,5 @@
 # Moviepedia
+![GitHub Logo](/images/logo.png)
 An application that lets you search for movies and learn more about them.
 
 ## Main Goal
