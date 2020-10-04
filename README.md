@@ -1,4 +1,5 @@
 # Moviepedia
+![GitHub Logo](/images/logo.png)
 An application that lets you search for movies and learn more about them.
 
 ## Main Goal
@@ -10,7 +11,7 @@ b) Personalise their account by adding a profile image <br/>
 c) Search for Movies & TV Series and learn more information about them. <br/>
 d) Add a movie as a favorite <br/>
 e) Share a movie <br/>
-f) Reset their password (In Progress)
+f) Reset their password (with reset e-mail from Firebase Authentication)
 
 ### Programming Language 
 
@@ -29,4 +30,4 @@ Model - View - ViewModel (MVVM)
 [Gson](https://github.com/google/gson) <br/>
 [OkHttp](https://square.github.io/okhttp/) <br/>
 [Firebase](https://firebase.google.com/) Authentication | Realtime Database | Storage <br>
-[Room](https://developer.android.com/topic/libraries/architecture/room) Local Database
+[Shimmer for Android](https://github.com/facebook/shimmer-android) Shimmer Effect while we wait for the data from the API
