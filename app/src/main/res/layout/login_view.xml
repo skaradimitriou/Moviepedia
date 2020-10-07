@@ -24,7 +24,7 @@
                 android:id="@+id/loginTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="sans-serif"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="4sp"
@@ -50,6 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_mail_icon"
+                    android:singleLine="true"
                     android:drawablePadding="15dp"
                     android:hint="E-mail" />
 
@@ -69,11 +70,27 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_password_icon"
                     android:drawablePadding="15dp"
+                    android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:hint="Password" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/forgot_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:fontFamily="sans-serif"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="2sp"
+                android:text="Forgot Password?"
+                android:textColor="@color/dark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/loginPassword"
+                app:layout_constraintEnd_toEndOf="@id/loginPassword"/>
 
             <Button
                 android:id="@+id/loginAccBtn"

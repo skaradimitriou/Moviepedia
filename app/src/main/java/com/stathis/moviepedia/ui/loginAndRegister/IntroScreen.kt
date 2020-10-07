@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
@@ -57,12 +58,14 @@ class IntroScreen : AppCompatActivity() {
     }
 
     private fun showLoginDialogue() {
-        //Inflate the dialog with custom view
         val loginDialog = LayoutInflater.from(this).inflate(R.layout.login_view, null)
         val loginBuilder = AlertDialog.Builder(this)
             .setView(loginDialog)
         val loginDial = loginBuilder.show()
-        //login button click of custom layout
+        val forgotPass:TextView = loginDialog.findViewById(R.id.forgot_login)
+        forgotPass.setOnClickListener {
+            startActivity(Intent(this,ForgotPassword::class.java))
+        }
         loginDialog.loginAccBtn.setOnClickListener {
             val emailField: TextInputEditText = loginDialog.findViewById(R.id.loginEmailField)
             val passwordField: TextInputEditText = loginDialog.findViewById(R.id.loginPasswordField)
@@ -97,12 +100,9 @@ class IntroScreen : AppCompatActivity() {
     }
 
     private fun showRegisterDialogue() {
-        //Inflate the dialog with custom view
         val registerDialogView = LayoutInflater.from(this).inflate(R.layout.register_view, null)
-        //AlertDialogBuilder
         val registerBuilder = AlertDialog.Builder(this)
             .setView(registerDialogView)
-        //show dialog
         val registerDialog = registerBuilder.show()
         registerDialogView.registerAccBtn.setOnClickListener {
             val emailField: TextInputEditText = registerDialog.findViewById(R.id.registerEmailField)
