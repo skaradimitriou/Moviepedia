@@ -79,9 +79,11 @@
 
 
     <!-- User Profile Activity -->
-    <string name="user_profile_username"></string>
     <string name="user_profie_fav_movies">Favorite Movies</string>
     <string name="user_profie_fav_tvseries">Favorite TvSeries</string>
+
+    <string name="uploadFromGallery">Upload Photo from Gallery</string>
+    <string name="uploadFromCamera">Upload Photo from Camera</string>
 
     <!-- Success dialog -->
     <string name="success_dialog_header">Success</string>

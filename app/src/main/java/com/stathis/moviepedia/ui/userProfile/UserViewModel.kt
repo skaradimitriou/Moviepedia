@@ -133,16 +133,15 @@ class UserViewModel : ViewModel() {
             .child("username")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    //
+                    Log.d("p0","p0")
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
                     if(p0.exists()){
-                        for (i in p0.children){
-                            val name =i.value.toString()
-                            Log.d("name",name)
-                            username.postValue(i.value.toString())
-                        }
+                        Log.d("P0","")
+                        val name = p0.value
+                        Log.d("NAME", name.toString())
+                        username.postValue(name.toString())
                     }
                 }
             })

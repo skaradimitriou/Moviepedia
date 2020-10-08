@@ -1,7 +1,9 @@
 package com.stathis.moviepedia.ui.userProfile
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,8 +11,10 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
@@ -21,10 +25,13 @@ import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.adapters.FavoriteAdapter
 import com.stathis.moviepedia.adapters.FavoriteClickListener
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
+import kotlinx.android.synthetic.main.bottom_sheet_choose_option.view.*
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
     private val REQUEST_IMAGE_CAPTURE = 100
+    private val IMAGE_PICK_CODE = 200;
+    private val PERMISSION_CODE = 201;
     private lateinit var auth: FirebaseAuth
     private var userViewModel: UserViewModel =
         UserViewModel()
@@ -42,8 +49,6 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        binding.profileName.text = "skaradimitriou"
-
         binding.backButton.setOnClickListener{ onBackPressed() }
 
         favoriteAdapter = FavoriteAdapter(this@UserProfile)
@@ -55,11 +60,11 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }
 
         userViewModel.retrieveUsername().observe(this,Observer<String> { username ->
-            Log.d("username",username)
-            if(username.isNullOrEmpty()){
-                binding.profileName.text = "skaradimitriou"
+            Log.d("username", username.toString())
+            if(username.toString().isNullOrEmpty()){
+                binding.profileName.text = "User"
             }else {
-                binding.profileName.text = username
+                binding.profileName.text = username.toString()
             }
         })
 
@@ -90,17 +95,27 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         binding.profileImg.setOnClickListener {
             // show Bottom Sheet Fragment
-//            showUpdatePhotoOptions()
-
-            //take picture from camera
-            takePictureIntent()
-
+            showUploadPhotoOptions()
         }
     }
 
     private fun startShimmer(){
         favoriteAdapter.submitList(userViewModel.startShimmer() as List<Any>?)
         favoriteAdapter.notifyDataSetChanged()
+    }
+
+
+    private fun showUploadPhotoOptions() {
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_choose_option, null)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(view)
+        dialog.show()
+        view.uploadFromCamera.setOnClickListener {
+            takePictureIntent()
+        }
+        view.uploadFromGallery.setOnClickListener {
+            uploadFromGallery()
+        }
     }
 
     private fun observerUserFavMovies(){
@@ -138,12 +153,43 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }
     }
 
+    private fun uploadFromGallery() {
+        Intent(Intent.ACTION_PICK).also { uploadFromCamera ->
+            uploadFromCamera.resolveActivity(this.packageManager!!)?.also {
+                startActivityForResult(uploadFromCamera, IMAGE_PICK_CODE)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             val imgBitmap = data?.extras?.get("data") as Bitmap
             userViewModel.uploadAndSaveBitmapUri(imgBitmap)
+        } else if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            val imgBitmap = data?.extras?.get("data") as Bitmap
+            userViewModel.uploadAndSaveBitmapUri(imgBitmap)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when(requestCode){
+            PERMISSION_CODE -> {
+                if (grantResults.size >0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    //permission from popup granted
+                    uploadFromGallery()
+                }
+                else{
+                    //permission from popup denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

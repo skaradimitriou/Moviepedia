@@ -41,7 +41,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/default_img" />
+            android:src="@drawable/default_img" />
 
         <ImageView
             android:id="@+id/back_button"
