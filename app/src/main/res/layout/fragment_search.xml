@@ -14,7 +14,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:fontFamily="sans-serif"
-            android:text="Recent searches"
+            android:text="@string/search_recent_searches"
             android:textColor="#ffffff"
             android:textSize="16sp"
             android:textStyle="bold"

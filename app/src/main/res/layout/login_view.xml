@@ -28,7 +28,7 @@
                 android:fontFamily="sans-serif"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="4sp"
-                android:text="Login to your account"
+                android:text="@string/login_dialog_header"
                 android:textColor="#1d1d1d"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -52,7 +52,7 @@
                     android:drawableStart="@drawable/ic_mail_icon"
                     android:singleLine="true"
                     android:drawablePadding="15dp"
-                    android:hint="E-mail" />
+                    android:hint="@string/login_dialog_email_hint" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +73,7 @@
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
-                    android:hint="Password" />
+                    android:hint="@string/login_dialog_pass_hint" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,7 +85,7 @@
                 android:fontFamily="sans-serif"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="2sp"
-                android:text="Forgot Password?"
+                android:text="@string/login_dialog_forgot_pass_btn"
                 android:textColor="@color/dark"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -98,12 +98,12 @@
                 android:layout_height="45dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/round_button"
-                android:text="Login"
+                android:text="@string/login_dialog_login_btn"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

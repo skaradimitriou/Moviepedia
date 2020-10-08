@@ -28,12 +28,12 @@
                 android:fontFamily="sans-serif"
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="4sp"
-                android:text="Register for a new account"
+                android:text="@string/register_dialog_register_header"
                 android:textColor="#1d1d1d"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +52,7 @@
                     android:singleLine="true"
                     android:drawableStart="@drawable/ic_mail_icon"
                     android:drawablePadding="15dp"
-                    android:hint="E-mail" />
+                    android:hint="@string/register_dialog_email_hint" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +73,7 @@
                     android:drawablePadding="15dp"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
-                    android:hint="Password" />
+                    android:hint="@string/register_dialog_pass_hint" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +94,7 @@
                     android:drawablePadding="15dp"
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
-                    android:hint="Confirm password" />
+                    android:hint="@string/register_dialog_conf_pass_hint" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,11 +104,11 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/round_button"
-                android:text="Create account"
+                android:text="@string/register_dialog_register_btn"
                 android:textAllCaps="false"
                 android:textColor="#fff"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registerPasswordConfirm" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

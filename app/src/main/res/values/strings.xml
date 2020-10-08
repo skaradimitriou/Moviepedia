@@ -1,9 +1,28 @@
 <resources>
     <string name="app_name">Moviepedia</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="query_hint">test</string>
+    <!-- Intro Screen -->
+    <string name="intro_screen_app_name">Moviepedia</string>
+    <string name="intro_screen_sub_text">Search movies &amp; TV Series.</string>
+    <string name="intro_screen_login_btn">Login to your account</string>
+    <string name="intro_screen_register">Don\'t have an account yet?</string>
+    <string name="intro_screen_register_btn">Register</string>
+    <string name="intro_screen_forgot_pass">Forgot Password?</string>
+
+    <!-- Login -->
+    <string name="login_dialog_header">Login to your account</string>
+    <string name="login_dialog_email_hint">E-mail</string>
+    <string name="login_dialog_pass_hint">Password</string>
+    <string name="login_dialog_forgot_pass_btn">Forgot Password?</string>
+    <string name="login_dialog_login_btn">Login</string>
+
+    <!-- Register -->
+    <string name="register_dialog_header"></string>
+    <string name="register_dialog_register_header">Register for a new account</string>
+    <string name="register_dialog_email_hint">E-mail</string>
+    <string name="register_dialog_pass_hint">Password</string>
+    <string name="register_dialog_conf_pass_hint">Confirm Password</string>
+    <string name="register_dialog_register_btn">Create account</string>
 
     <!-- Forgot Password Activity-->
     <string name="forgot_pass_main_txt">Forgot your password?</string>
@@ -12,10 +31,60 @@
     <string name="verify_your_account">Verify your account</string>
     <string name="verify_your_account_button">Verify</string>
 
-    <string name="enter_new_pass">Enter new password</string>
-    <string name="enter_new_pass_hint_txt">New Password</string>
-    <string name="enter_new_pass_hint_txt_conf">Confirm New Password</string>
-    <string name="enter_new_pass_btn">Update my password</string>
 
+    <!-- Dashboard Activity -->
+    <string name="dashboard_query_hint">Search</string>
+
+    <!-- Movies & TvSeries Fragment -->
+    <string name="all_popular_header">Most Popular</string>
+    <string name="all_genres_header">Genres</string>
+    <string name="all_toprated_header">Top Rated Movies</string>
+    <string name="all_favorite_header">Your Favorite Movies</string>
+
+    <!-- TvSeries Fragment -->
+    <string name="tvseries_popular_header">Popular</string>
+    <string name="tvseries_genres_header">TV Series Genres</string>
+    <string name="tvseries_ontheair_header">TV on the Air</string>
+    <string name="tvseries_toprated_header">Top Rated</string>
+
+    <!-- Search Fragment -->
+    <string name="search_recent_searches">Recent searches</string>
+
+    <!-- Movies Fragment -->
+    <string name="movies_popular_header">Most Popular</string>
+    <string name="movies_genres_header">Genres</string>
+    <string name="movies_toprated_header">Top Rated Movies</string>
+    <string name="movies_favorite_header">Your Favorite Movies</string>
+
+    <!-- Genres Info Activity -->
+
+
+    <!-- Movie Info Activity -->
+    <string name="movie_title">This is a cool movie title</string>
+    <string name="movie_date">2020-08-04</string>
+    <string name="movie_description_header">Description</string>
+    <string name="movie_description">Ten years ago, Slade Wilson-aka the super-assassin called Deathstroke-made</string>
+    <string name="movie_cast_header">Cast</string>
+    <string name="movie_reviews_header">Reviews</string>
+
+    <!-- Tv Series Activity -->
+    <string name="tvSeries_title">This is a cool movie title</string>
+    <string name="tvSeries_date">2020-08-04</string>
+    <string name="tvSeries_description_header">Description</string>
+    <string name="tvSeries_description">Ten years ago, Slade Wilson-aka the super-assassin called Deathstroke-made</string>
+    <string name="tvSeries_cast_header">Cast</string>
+    <string name="tvSeries_reviews_header">Reviews</string>
+
+    <!-- Personalize Account Activity -->
+
+
+    <!-- User Profile Activity -->
+    <string name="user_profile_username"></string>
+    <string name="user_profie_fav_movies">Favorite Movies</string>
+    <string name="user_profie_fav_tvseries">Favorite TvSeries</string>
+
+    <!-- Success dialog -->
+    <string name="success_dialog_header">Success</string>
+    <string name="success_dialog_txt">You can now login to your account</string>
 
 </resources>
