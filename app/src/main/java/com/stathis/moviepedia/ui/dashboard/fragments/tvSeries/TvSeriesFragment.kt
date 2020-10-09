@@ -113,30 +113,25 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
     }
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
-        val movieIntent = Intent(activity, TvSeriesInfoScreen::class.java)
-        val name = tvSeries.name
-        val original_name = tvSeries.original_name
-        //converting rating toString() so I can pass it. Double was throwing error
-        val rating = tvSeries.vote_average.toString()
-        Log.d("rating", rating)
-        if (name.isNullOrBlank()) {
-            movieIntent.putExtra("TV_SERIES_NAME", original_name)
-            Log.d("Movie Name Clicked", original_name)
-        } else {
-            movieIntent.putExtra("TV_SERIES_NAME", name)
-            Log.d("Movie Name Clicked", name)
-        }
+        startActivity(Intent(activity, TvSeriesInfoScreen::class.java).apply{
+            if (tvSeries.name.isNullOrBlank()) {
+                putExtra("TV_SERIES_NAME", tvSeries.original_name)
+                Log.d("Movie Name Clicked", tvSeries.original_name)
+            } else {
+                putExtra("TV_SERIES_NAME", tvSeries.name)
+                Log.d("Movie Name Clicked", tvSeries.name)
+            }
 
-        if (tvSeries.poster_path.isNullOrBlank()) {
-            movieIntent.putExtra("TV_SERIES_PHOTO", tvSeries.backdrop_path)
-        } else {
-            movieIntent.putExtra("TV_SERIES_PHOTO", tvSeries.poster_path)
-        }
-        movieIntent.putExtra("TV_SERIES_ID", tvSeries.id)
-        movieIntent.putExtra("TV_SERIES_RELEASE_DATE", tvSeries.first_air_date)
-        movieIntent.putExtra("TV_SERIES_DESCRIPTION", tvSeries.overview)
-        movieIntent.putExtra("TV_SERIES_RATING", rating)
-        startActivity(movieIntent)
+            if (tvSeries.poster_path.isNullOrBlank()) {
+                putExtra("TV_SERIES_PHOTO", tvSeries.backdrop_path)
+            } else {
+                putExtra("TV_SERIES_PHOTO", tvSeries.poster_path)
+            }
+            putExtra("TV_SERIES_ID", tvSeries.id)
+            putExtra("TV_SERIES_RELEASE_DATE", tvSeries.first_air_date)
+            putExtra("TV_SERIES_DESCRIPTION", tvSeries.overview)
+            putExtra("TV_SERIES_RATING", tvSeries.vote_average.toString())
+        })
     }
 
     override fun onClick(v: View?) {
@@ -144,9 +139,9 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
     }
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        val genresIntent = Intent(activity, GenresInfoScreen::class.java)
-        genresIntent.putExtra("GENRE_ID", movieGenres.id)
-        genresIntent.putExtra("GENRE_NAME", movieGenres.name)
-        startActivity(genresIntent)
+        startActivity(Intent(activity, GenresInfoScreen::class.java).apply{
+            putExtra("GENRE_ID", movieGenres.id)
+            putExtra("GENRE_NAME", movieGenres.name)
+        })
     }
 }

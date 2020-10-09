@@ -15,6 +15,7 @@ import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
+import com.stathis.moviepedia.models.Movies
 
 class MovieInfoScreen : AppCompatActivity() {
 
@@ -199,7 +200,7 @@ class MovieInfoScreen : AppCompatActivity() {
         startActivity(Intent().apply{
             action = Intent.ACTION_SEND
             type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+            putExtra(Intent.EXTRA_TEXT, movieTitle)
         })
     }
 }

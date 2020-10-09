@@ -102,26 +102,21 @@ class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
     }
 
     override fun onItemClick(movies: Movies) {
-        val movieIntent = Intent(activity, MovieInfoScreen::class.java)
-        val name = movies.name
-        val title = movies.title
-        //converting rating toString() so I can pass it. Double was throwing error
-        val rating = movies.vote_average.toString()
-        Log.d("rating", rating)
-        if (name.isNullOrBlank()) {
-            movieIntent.putExtra("MOVIE_NAME", title)
-            Log.d("Movie Name Clicked", title)
-        } else {
-            movieIntent.putExtra("MOVIE_NAME", name)
-            Log.d("Movie Name Clicked", name)
-        }
-        movieIntent.putExtra("MOVIE_ID", movies.id)
-        movieIntent.putExtra("MOVIE_PHOTO", movies.backdrop_path)
-        movieIntent.putExtra("MOVIE_PHOTO", movies.poster_path)
-        movieIntent.putExtra("RELEASE_DATE", movies.release_date)
-        movieIntent.putExtra("DESCRIPTION", movies.overview)
-        movieIntent.putExtra("RATING", rating)
-        startActivity(movieIntent)
+        startActivity( Intent(activity, MovieInfoScreen::class.java).apply{
+            if (movies.name.isNullOrBlank()) {
+                putExtra("MOVIE_NAME", movies.title)
+                Log.d("Movie Name Clicked", movies.title)
+            } else {
+                putExtra("MOVIE_NAME", movies.name)
+                Log.d("Movie Name Clicked", movies.name)
+            }
+            putExtra("MOVIE_ID", movies.id)
+            putExtra("MOVIE_PHOTO", movies.backdrop_path)
+            putExtra("MOVIE_PHOTO", movies.poster_path)
+            putExtra("RELEASE_DATE", movies.release_date)
+            putExtra("DESCRIPTION", movies.overview)
+            putExtra("RATING", movies.vote_average.toString())
+        })
     }
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
@@ -133,9 +128,9 @@ class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
     }
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        val genresIntent = Intent(activity, GenresInfoScreen::class.java)
-        genresIntent.putExtra("GENRE_ID", movieGenres.id)
-        genresIntent.putExtra("GENRE_NAME", movieGenres.name)
-        startActivity(genresIntent)
+        startActivity(Intent(activity, GenresInfoScreen::class.java).apply{
+            putExtra("GENRE_ID", movieGenres.id)
+            putExtra("GENRE_NAME", movieGenres.name)
+        })
     }
 }

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/bg_movie_img"
+            android:background="@drawable/default_img"
             android:tint="#60000000"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -53,7 +53,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@id/releaseDate"
             app:layout_constraintLeft_toLeftOf="parent"
-            tools:src="@drawable/default_img" />
+            android:background="@drawable/default_img" />
 
         <TextView
             android:id="@+id/tvSeriesTxt"

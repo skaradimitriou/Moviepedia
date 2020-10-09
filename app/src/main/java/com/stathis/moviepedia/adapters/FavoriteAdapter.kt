@@ -31,8 +31,11 @@ class FavoriteAdapter(
             }
             FAVORITE_TVSERIES -> {
                 return FavoriteTvSeriesViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.popular_item_row, parent, false)
+                    PopularItemRowBinding.inflate(
+                        LayoutInflater.from(
+                            parent.context
+                        ), parent, false
+                    )
                 )
             }
             EMPTY_MODEL -> {

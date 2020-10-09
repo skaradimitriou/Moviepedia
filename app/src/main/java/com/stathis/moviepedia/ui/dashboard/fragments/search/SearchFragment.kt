@@ -87,52 +87,42 @@ class SearchFragment : Fragment(), SearchItemClickListener {
     override fun onSearchItemClick(searchItem: SearchItem) {
         when (searchItem.media_type) {
             "movie" -> {
-                val movieIntent = Intent(activity, MovieInfoScreen::class.java)
-                val name = searchItem.name
-                val title = searchItem.title
-                //converting rating toString() so I can pass it. Double was throwing error
-                val rating = searchItem.vote_average.toString()
-                Log.d("rating", rating)
-                if (name.isNullOrBlank()) {
-                    movieIntent.putExtra("MOVIE_NAME", title)
-                    Log.d("Movie Name Clicked", title)
-                } else {
-                    movieIntent.putExtra("MOVIE_NAME", name)
-                    Log.d("Movie Name Clicked", name)
-                }
-                movieIntent.putExtra("MOVIE_ID", searchItem.id)
-                movieIntent.putExtra("MOVIE_PHOTO", searchItem.backdrop_path)
-                movieIntent.putExtra("MOVIE_PHOTO", searchItem.poster_path)
-                movieIntent.putExtra("RELEASE_DATE", searchItem.release_date)
-                movieIntent.putExtra("DESCRIPTION", searchItem.overview)
-                movieIntent.putExtra("RATING", rating)
-                startActivity(movieIntent)
+                startActivity(Intent(activity, MovieInfoScreen::class.java).apply{
+                    if (searchItem.name.isNullOrBlank()) {
+                        putExtra("MOVIE_NAME", searchItem.title)
+                        Log.d("Movie Name Clicked", searchItem.title)
+                    } else {
+                        putExtra("MOVIE_NAME", searchItem.name)
+                        Log.d("Movie Name Clicked", searchItem.name)
+                    }
+                    putExtra("MOVIE_ID", searchItem.id)
+                    putExtra("MOVIE_PHOTO", searchItem.backdrop_path)
+                    putExtra("MOVIE_PHOTO", searchItem.poster_path)
+                    putExtra("RELEASE_DATE", searchItem.release_date)
+                    putExtra("DESCRIPTION", searchItem.overview)
+                    putExtra("RATING", searchItem.vote_average.toString())
+                })
             }
             "tv" -> {
-                val movieIntent = Intent(activity, TvSeriesInfoScreen::class.java)
-                val name = searchItem.name
-                val original_name = searchItem.original_name
-                //converting rating toString() so I can pass it. Double was throwing error
-                val rating = searchItem.vote_average.toString()
-                Log.d("rating", rating)
-                if (name.isNullOrBlank()) {
-                    movieIntent.putExtra("TV_SERIES_NAME", original_name)
-                    Log.d("Movie Name Clicked", original_name)
-                } else {
-                    movieIntent.putExtra("TV_SERIES_NAME", name)
-                    Log.d("Movie Name Clicked", name)
-                }
+                startActivity(Intent(activity, TvSeriesInfoScreen::class.java).apply{
+                    if (searchItem.name.isNullOrBlank()) {
+                        putExtra("TV_SERIES_NAME", searchItem.original_name)
+                        Log.d("Movie Name Clicked", searchItem.original_name)
+                    } else {
+                        putExtra("TV_SERIES_NAME", searchItem.name)
+                        Log.d("Movie Name Clicked", searchItem.name)
+                    }
 
-                if (searchItem.poster_path.isNullOrBlank()) {
-                    movieIntent.putExtra("TV_SERIES_PHOTO", searchItem.backdrop_path)
-                } else {
-                    movieIntent.putExtra("TV_SERIES_PHOTO", searchItem.poster_path)
-                }
-                movieIntent.putExtra("TV_SERIES_ID", searchItem.id)
-                movieIntent.putExtra("TV_SERIES_RELEASE_DATE", searchItem.first_air_date)
-                movieIntent.putExtra("TV_SERIES_DESCRIPTION", searchItem.overview)
-                movieIntent.putExtra("TV_SERIES_RATING", rating)
-                startActivity(movieIntent)
+                    if (searchItem.poster_path.isNullOrBlank()) {
+                        putExtra("TV_SERIES_PHOTO", searchItem.backdrop_path)
+                    } else {
+                        putExtra("TV_SERIES_PHOTO", searchItem.poster_path)
+                    }
+                    putExtra("TV_SERIES_ID", searchItem.id)
+                    putExtra("TV_SERIES_RELEASE_DATE", searchItem.first_air_date)
+                    putExtra("TV_SERIES_DESCRIPTION", searchItem.overview)
+                    putExtra("TV_SERIES_RATING", searchItem.vote_average.toString())
+                })
             }
             else -> {
                 //

@@ -199,10 +199,10 @@ class TvSeriesInfoScreen : AppCompatActivity() {
     }
 
     private fun share() {
-        val shareIntent = Intent()
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-        startActivity(shareIntent)
+        startActivity(Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, tvSeriesTitle)
+        })
     }
 }

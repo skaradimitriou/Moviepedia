@@ -36,7 +36,6 @@ class PersonalizeAccount : AppCompatActivity() {
 
         binding.personalisePhoto.setOnClickListener{
             showUploadPhotoOptions()
-//            takePictureIntent()
         }
 
         binding.getStartedBtn.setOnClickListener{

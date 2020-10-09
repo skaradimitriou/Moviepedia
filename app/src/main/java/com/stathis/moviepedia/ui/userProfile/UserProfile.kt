@@ -224,28 +224,24 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     }
 
     override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
-        val movieIntent = Intent(this, MovieInfoScreen::class.java)
-        //converting rating toString() so I can pass it. Double was throwing an error
-        val rating = favoriteMovies.movie_rating.toString()
-        movieIntent.putExtra("MOVIE_NAME", favoriteMovies.title)
-        movieIntent.putExtra("MOVIE_PHOTO", favoriteMovies.photo)
-        movieIntent.putExtra("RELEASE_DATE", favoriteMovies.releaseDate)
-        movieIntent.putExtra("DESCRIPTION", favoriteMovies.description)
-        movieIntent.putExtra("RATING", rating)
-        startActivity(movieIntent)
+        startActivity(Intent(this, MovieInfoScreen::class.java).apply{
+            putExtra("MOVIE_ID", favoriteMovies.id)
+            putExtra("MOVIE_NAME", favoriteMovies.title)
+            putExtra("MOVIE_PHOTO", favoriteMovies.photo)
+            putExtra("RELEASE_DATE", favoriteMovies.releaseDate)
+            putExtra("DESCRIPTION", favoriteMovies.description)
+            putExtra("RATING", favoriteMovies.movie_rating.toString())
+        })
     }
 
     override fun onFavoriteTvSeriesClick(favoriteTvSeries: FavoriteTvSeries) {
-        val movieIntent = Intent(this, TvSeriesInfoScreen::class.java)
-        //converting rating toString() so I can pass it. Double was throwing error
-        val rating = favoriteTvSeries.movie_rating.toString()
-        Log.d("rating", rating)
-        movieIntent.putExtra("TV_SERIES_NAME", favoriteTvSeries.title)
-        movieIntent.putExtra("TV_SERIES_PHOTO", favoriteTvSeries.photo)
-        movieIntent.putExtra("TV_SERIES_ID", favoriteTvSeries.id)
-        movieIntent.putExtra("TV_SERIES_RELEASE_DATE", favoriteTvSeries.releaseDate)
-        movieIntent.putExtra("TV_SERIES_DESCRIPTION", favoriteTvSeries.description)
-        movieIntent.putExtra("TV_SERIES_RATING", rating)
-        startActivity(movieIntent)
+        startActivity(Intent(this, TvSeriesInfoScreen::class.java).apply {
+            putExtra("TV_SERIES_NAME", favoriteTvSeries.title)
+            putExtra("TV_SERIES_PHOTO", favoriteTvSeries.photo)
+            putExtra("TV_SERIES_ID", favoriteTvSeries.id)
+            putExtra("TV_SERIES_RELEASE_DATE", favoriteTvSeries.releaseDate)
+            putExtra("TV_SERIES_DESCRIPTION", favoriteTvSeries.description)
+            putExtra("TV_SERIES_RATING", favoriteTvSeries.movie_rating.toString())
+        })
     }
 }

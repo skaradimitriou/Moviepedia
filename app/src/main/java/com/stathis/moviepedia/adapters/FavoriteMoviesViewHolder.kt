@@ -15,6 +15,7 @@ class FavoriteMoviesViewHolder(var binding:PopularItemRowBinding) : RecyclerView
 
         binding.testProgressbar.progress = (favoriteMovies.movie_rating*10).roundToInt()
         binding.movieTitle.text = favoriteMovies.title
+        binding.ratingTxt.text = favoriteMovies.movie_rating.toString()
 
         itemView.setOnClickListener{
             listener.onFavoriteMoviesClick(favoriteMovies)
