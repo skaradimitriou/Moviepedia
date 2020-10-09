@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.stathis.moviepedia.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -71,6 +72,8 @@ class UserViewModel : ViewModel() {
                             //display data
                         }
                         favoriteMovies.postValue(userFavoriteMovies)
+                    } else {
+                        Log.d("Empty Favorites","Empty Favorites")
                     }
                 }
             })
@@ -98,6 +101,8 @@ class UserViewModel : ViewModel() {
                             Log.d("i", i.toString())
                         }
                         favoriteTvSeries.postValue(userFavoriteTvSeries)
+                    } else {
+                        Log.d("Empty Favorites","Empty Favorites")
                     }
                 }
             })
@@ -171,4 +176,5 @@ class UserViewModel : ViewModel() {
         }
         return downloadUrl
     }
+
 }

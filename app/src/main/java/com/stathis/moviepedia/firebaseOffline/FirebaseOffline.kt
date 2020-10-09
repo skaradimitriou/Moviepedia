@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.ui
+package com.stathis.moviepedia.firebaseOffline
 
 import android.app.Application
 import com.google.firebase.database.FirebaseDatabase

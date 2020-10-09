@@ -58,7 +58,7 @@
         android:indeterminate="false"
         android:layout_marginRight="5dp"
         android:progressDrawable="@drawable/custom_progress_bar"
-        android:progress="70"
+        tools:progress="70"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         app:layout_constraintRight_toRightOf="parent"/>
 
@@ -66,7 +66,7 @@
         android:id="@+id/ratingTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="9.1"
+        tools:text="9.1"
         android:textColor="#fff"
         android:textSize="14sp"
         android:textStyle="bold"

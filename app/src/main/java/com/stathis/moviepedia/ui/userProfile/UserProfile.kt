@@ -11,9 +11,12 @@ import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.stathis.moviepedia.R
@@ -26,6 +29,7 @@ import com.stathis.moviepedia.adapters.FavoriteAdapter
 import com.stathis.moviepedia.adapters.FavoriteClickListener
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import kotlinx.android.synthetic.main.bottom_sheet_choose_option.view.*
+import okhttp3.internal.notify
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
@@ -49,7 +53,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        binding.backButton.setOnClickListener{ onBackPressed() }
+        binding.backButton.setOnClickListener { onBackPressed() }
 
         favoriteAdapter = FavoriteAdapter(this@UserProfile)
 
@@ -59,11 +63,11 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             binding.logout.logoutText.setOnClickListener { askForLogout() }
         }
 
-        userViewModel.retrieveUsername().observe(this,Observer<String> { username ->
+        userViewModel.retrieveUsername().observe(this, Observer<String> { username ->
             Log.d("username", username.toString())
-            if(username.toString().isNullOrEmpty()){
+            if (username.toString().isNullOrEmpty()) {
                 binding.profileName.text = "User"
-            }else {
+            } else {
                 binding.profileName.text = username.toString()
             }
         })
@@ -74,7 +78,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         })
 
         startShimmer()
-        observeUserFavoriteTvSeries()
+        observerUserFavMovies()
 
         binding.favMov.setOnClickListener {
             binding.favMov.alpha = 1F
@@ -90,18 +94,17 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
             startShimmer()
             observeUserFavoriteTvSeries()
-
         }
 
         binding.profileImg.setOnClickListener {
             // show Bottom Sheet Fragment
             showUploadPhotoOptions()
         }
+
     }
 
-    private fun startShimmer(){
+    private fun startShimmer() {
         favoriteAdapter.submitList(userViewModel.startShimmer() as List<Any>?)
-        favoriteAdapter.notifyDataSetChanged()
     }
 
 
@@ -118,7 +121,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }
     }
 
-    private fun observerUserFavMovies(){
+    private fun observerUserFavMovies() {
         userViewModel.getUserFavoriteMovies()
             .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
                 Log.d("User Fav Movies", t.toString())
@@ -126,21 +129,17 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
                     favoriteAdapter.submitList(t as List<Any>?)
                     favoriteAdapter.notifyDataSetChanged()
                     binding.favGridRecView.adapter = favoriteAdapter
-                } else {
-                    //display empty favorites
                 }
             })
     }
 
-    private fun observeUserFavoriteTvSeries(){
+    private fun observeUserFavoriteTvSeries() {
         userViewModel.getUserFavoriteTvSeries()
             .observe(this, Observer<MutableList<FavoriteTvSeries>> { c ->
                 Log.d("User Fav Tv Series", c.toString())
                 if (c.size > 0) {
                     favoriteAdapter.submitList(c as List<Any>?)
                     binding.favGridRecView.adapter = favoriteAdapter
-                } else {
-                    //display empty favorites
                 }
             })
     }
@@ -178,14 +177,14 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when(requestCode){
+        when (requestCode) {
             PERMISSION_CODE -> {
-                if (grantResults.size >0 && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
+                if (grantResults.size > 0 && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
+                ) {
                     //permission from popup granted
                     uploadFromGallery()
-                }
-                else{
+                } else {
                     //permission from popup denied
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
@@ -221,7 +220,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             startActivity(Intent(this, IntroScreen::class.java))
             overridePendingTransition(0, 0)
             finish()
-        },3000)
+        }, 3000)
     }
 
     override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
