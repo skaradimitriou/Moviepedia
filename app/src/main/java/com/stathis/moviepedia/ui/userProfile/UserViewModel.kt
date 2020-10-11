@@ -27,10 +27,12 @@ class UserViewModel : ViewModel() {
     private var favoriteTvSeries: MutableLiveData<MutableList<FavoriteTvSeries>> = MutableLiveData()
     private var userImgPath: MutableLiveData<Bitmap> = MutableLiveData()
     private var username: MutableLiveData<String> = MutableLiveData()
-    private var downloadUrl : MutableLiveData<Bitmap> = MutableLiveData()
+    private var downloadUrl: MutableLiveData<Bitmap> = MutableLiveData()
     private lateinit var emptyModelList: MutableList<EmptyModel>
+    private lateinit var imgUrl: String
+    private var imageDownloadLink: MutableLiveData<String> = MutableLiveData()
 
-    init{
+    init {
         startShimmer()
     }
 
@@ -73,7 +75,7 @@ class UserViewModel : ViewModel() {
                         }
                         favoriteMovies.postValue(userFavoriteMovies)
                     } else {
-                        Log.d("Empty Favorites","Empty Favorites")
+                        Log.d("Empty Favorites", "Empty Favorites")
                     }
                 }
             })
@@ -102,7 +104,7 @@ class UserViewModel : ViewModel() {
                         }
                         favoriteTvSeries.postValue(userFavoriteTvSeries)
                     } else {
-                        Log.d("Empty Favorites","Empty Favorites")
+                        Log.d("Empty Favorites", "Empty Favorites")
                     }
                 }
             })
@@ -138,12 +140,12 @@ class UserViewModel : ViewModel() {
             .child("username")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    Log.d("p0","p0")
+                    Log.d("p0", "p0")
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    if(p0.exists()){
-                        Log.d("P0","")
+                    if (p0.exists()) {
+                        Log.d("P0", "")
                         val name = p0.value
                         Log.d("NAME", name.toString())
                         username.postValue(name.toString())
@@ -175,6 +177,50 @@ class UserViewModel : ViewModel() {
             }
         }
         return downloadUrl
+    }
+
+    fun uploadAndSavePhoto(uri: Uri) {
+        val storageRef = FirebaseStorage.getInstance()
+            .reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
+        val upload = storageRef.putFile(uri)
+        upload.addOnSuccessListener {
+            val result = it.metadata!!.reference!!.downloadUrl;
+            result.addOnSuccessListener {
+                val imageLink = it.toString()
+                Log.d("MSG", imageLink)
+                savePhotoToDb(imageLink)
+            }
+        }
+    }
+
+
+    fun savePhotoToDb(string: String) {
+        databaseReference = FirebaseDatabase.getInstance().reference
+        databaseReference.child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .child("userPhoto").setValue(string)
+    }
+
+    fun getUserPhoto(): MutableLiveData<String> {
+        databaseReference = FirebaseDatabase.getInstance().reference
+        databaseReference.child("users")
+            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .child("userPhoto")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        imgUrl = p0.value.toString()
+                        Log.d("URL", imgUrl)
+                        imageDownloadLink.postValue(imgUrl)
+                    }
+                }
+
+                override fun onCancelled(p0: DatabaseError) {
+                    //
+                }
+
+            })
+        return imageDownloadLink
     }
 
 }

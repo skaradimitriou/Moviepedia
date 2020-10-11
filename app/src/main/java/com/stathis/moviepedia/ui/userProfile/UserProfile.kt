@@ -1,35 +1,34 @@
 package com.stathis.moviepedia.ui.userProfile
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
-import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
-import com.stathis.moviepedia.models.FavoriteMovies
-import com.stathis.moviepedia.models.FavoriteTvSeries
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.adapters.FavoriteAdapter
 import com.stathis.moviepedia.adapters.FavoriteClickListener
+import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
+import com.stathis.moviepedia.models.FavoriteMovies
+import com.stathis.moviepedia.models.FavoriteTvSeries
+import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
+import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import kotlinx.android.synthetic.main.bottom_sheet_choose_option.view.*
-import okhttp3.internal.notify
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
@@ -72,9 +71,10 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             }
         })
 
-        userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
+        userViewModel.getUserPhoto().observe(this, Observer<String> { img ->
             Log.d("profile image path", img.toString())
-            binding.profileImg.setImageBitmap(img)
+//            binding.profileImg.setImageBitmap(img)
+            Glide.with(this).load(img).into(binding.profileImg)
         })
 
         startShimmer()
@@ -115,9 +115,20 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         dialog.show()
         view.uploadFromCamera.setOnClickListener {
             takePictureIntent()
+            dialog.dismiss()
         }
         view.uploadFromGallery.setOnClickListener {
-            uploadFromGallery()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    requestPermissions(permissions, PERMISSION_CODE)
+                } else {
+                    uploadFromGallery()
+                }
+            } else {
+                uploadFromGallery()
+            }
+            dialog.dismiss()
         }
     }
 
@@ -153,11 +164,9 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     }
 
     private fun uploadFromGallery() {
-        Intent(Intent.ACTION_PICK).also { uploadFromCamera ->
-            uploadFromCamera.resolveActivity(this.packageManager!!)?.also {
-                startActivityForResult(uploadFromCamera, IMAGE_PICK_CODE)
-            }
-        }
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -167,8 +176,11 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             val imgBitmap = data?.extras?.get("data") as Bitmap
             userViewModel.uploadAndSaveBitmapUri(imgBitmap)
         } else if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            val imgBitmap = data?.extras?.get("data") as Bitmap
-            userViewModel.uploadAndSaveBitmapUri(imgBitmap)
+            // I have to save the url to the db
+            val imageUri = data?.data
+            if (imageUri != null) {
+                userViewModel.uploadAndSavePhoto(imageUri)
+            }
         }
     }
 
@@ -224,7 +236,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
     }
 
     override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
-        startActivity(Intent(this, MovieInfoScreen::class.java).apply{
+        startActivity(Intent(this, MovieInfoScreen::class.java).apply {
             putExtra("MOVIE_ID", favoriteMovies.id)
             putExtra("MOVIE_NAME", favoriteMovies.title)
             putExtra("MOVIE_PHOTO", favoriteMovies.photo)
