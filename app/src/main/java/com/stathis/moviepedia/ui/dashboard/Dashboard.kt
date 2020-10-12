@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityDashboardBinding
@@ -41,9 +42,9 @@ class Dashboard : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
+        userViewModel.getUserPhoto().observe(this, Observer<String> { img ->
             Log.d("profile image path", img.toString())
-            binding.userProfileImg.setImageBitmap(img)
+            Glide.with(this).load(img).into(binding.userProfileImg)
         })
 
         binding.userProfileImg.setOnClickListener {

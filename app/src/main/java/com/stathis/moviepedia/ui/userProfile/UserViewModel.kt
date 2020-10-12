@@ -119,7 +119,6 @@ class UserViewModel : ViewModel() {
 
             val bitmap: Bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
             userImgPath.postValue(bitmap)
-//            userPhoto.setImageBitmap(bitmap)
 
         }.addOnFailureListener {
             // Handle any errors

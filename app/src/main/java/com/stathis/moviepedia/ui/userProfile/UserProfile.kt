@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -73,8 +74,14 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         userViewModel.getUserPhoto().observe(this, Observer<String> { img ->
             Log.d("profile image path", img.toString())
-//            binding.profileImg.setImageBitmap(img)
             Glide.with(this).load(img).into(binding.profileImg)
+        })
+
+        userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
+            Log.d("profile image path", img.toString())
+            if(img !=null){
+                binding.profileImg.setImageBitmap(img)
+            }
         })
 
         startShimmer()
@@ -175,11 +182,14 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             val imgBitmap = data?.extras?.get("data") as Bitmap
             userViewModel.uploadAndSaveBitmapUri(imgBitmap)
+            userViewModel.retrieveUserImg()
+
         } else if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             // I have to save the url to the db
             val imageUri = data?.data
             if (imageUri != null) {
                 userViewModel.uploadAndSavePhoto(imageUri)
+                userViewModel.getUserPhoto()
             }
         }
     }
