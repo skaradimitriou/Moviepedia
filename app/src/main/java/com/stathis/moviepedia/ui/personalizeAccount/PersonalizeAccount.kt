@@ -100,7 +100,7 @@ class PersonalizeAccount : AppCompatActivity() {
             val imageUri = data?.data
             if (imageUri != null) {
                 viewModel.uploadAndSavePhoto(imageUri)
-                userViewModel.getUserPhoto()
+                viewModel.getUserPhoto()
             }
         }
     }
