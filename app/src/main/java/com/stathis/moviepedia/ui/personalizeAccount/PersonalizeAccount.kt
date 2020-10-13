@@ -1,15 +1,18 @@
 package com.stathis.moviepedia.ui.personalizeAccount
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityPersonalizeAccountBinding
@@ -20,8 +23,8 @@ import java.lang.Exception
 class PersonalizeAccount : AppCompatActivity() {
 
     private val REQUEST_IMAGE_CAPTURE = 100
-    private val IMAGE_PICK_CODE = 200;
-    private val PERMISSION_CODE = 201;
+    private val IMAGE_PICK_CODE = 200
+    private val PERMISSION_CODE = 201
     private lateinit var binding: ActivityPersonalizeAccountBinding
     private lateinit var viewModel: PersonalizeAccountViewModel
 
@@ -54,9 +57,20 @@ class PersonalizeAccount : AppCompatActivity() {
         dialog.show()
         view.uploadFromCamera.setOnClickListener {
             takePictureIntent()
+            dialog.dismiss()
         }
         view.uploadFromGallery.setOnClickListener {
-            uploadFromGallery()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    requestPermissions(permissions, PERMISSION_CODE)
+                } else {
+                    uploadFromGallery()
+                }
+            } else {
+                uploadFromGallery()
+            }
+            dialog.dismiss()
         }
     }
 
@@ -69,15 +83,9 @@ class PersonalizeAccount : AppCompatActivity() {
     }
 
     private fun uploadFromGallery() {
-//        val gallery = Intent(Intent.ACTION_PICK)
-//        gallery.putExtra("image/*")
-
-        Intent(Intent.ACTION_GET_CONTENT).also { uploadFromCamera ->
-            uploadFromCamera.type = "image/*"
-            uploadFromCamera.resolveActivity(this.packageManager!!)?.also {
-                startActivityForResult(uploadFromCamera, IMAGE_PICK_CODE)
-            }
-        }
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -86,13 +94,14 @@ class PersonalizeAccount : AppCompatActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             val imgBitmap = data?.extras?.get("data") as Bitmap
             viewModel.uploadAndSaveBitmapUri(imgBitmap)
+            viewModel.retrieveUserImg()
         } else if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            try {
-//                val imgUri: Uri? = data?.data
-                val imgBitmap = data?.extras?.get("data") as Bitmap
-                viewModel.uploadAndSaveBitmapUri(imgBitmap)
-            } catch (e: Exception) {
-                e.printStackTrace()
+            // I have to save the url to the db
+            val imageUri = data?.data
+            if (imageUri != null) {
+                viewModel.uploadAndSavePhoto(imageUri)
+                Glide.with(this).load(viewModel.getUserPhoto()).into(binding.personalisePhoto)
+//                binding.personalisePhoto.setImageURI(imageUri)
             }
         }
     }
@@ -115,5 +124,9 @@ class PersonalizeAccount : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        //
     }
 }

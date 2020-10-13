@@ -3,6 +3,7 @@ package com.stathis.moviepedia.ui.userProfile
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -15,8 +16,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toFile
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.util.FileUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -29,13 +32,17 @@ import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
+import id.zelory.compressor.Compressor
 import kotlinx.android.synthetic.main.bottom_sheet_choose_option.view.*
+import kotlinx.coroutines.Dispatchers
+import java.io.IOException
+import java.util.Date.from
 
 class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
     private val REQUEST_IMAGE_CAPTURE = 100
-    private val IMAGE_PICK_CODE = 200;
-    private val PERMISSION_CODE = 201;
+    private val IMAGE_PICK_CODE = 200
+    private val PERMISSION_CODE = 201
     private lateinit var auth: FirebaseAuth
     private var userViewModel: UserViewModel =
         UserViewModel()
@@ -74,12 +81,14 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         userViewModel.getUserPhoto().observe(this, Observer<String> { img ->
             Log.d("profile image path", img.toString())
-            Glide.with(this).load(img).into(binding.profileImg)
+            if(img !=null){
+                Glide.with(this).load(img).into(binding.profileImg)
+            }
         })
 
         userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
             Log.d("profile image path", img.toString())
-            if(img !=null){
+            if (img != null) {
                 binding.profileImg.setImageBitmap(img)
             }
         })
@@ -189,7 +198,6 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             val imageUri = data?.data
             if (imageUri != null) {
                 userViewModel.uploadAndSavePhoto(imageUri)
-                userViewModel.getUserPhoto()
             }
         }
     }

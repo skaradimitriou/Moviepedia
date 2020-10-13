@@ -14,7 +14,9 @@ import com.google.firebase.storage.StorageReference
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries
+import id.zelory.compressor.Compressor
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class UserViewModel : ViewModel() {
 
@@ -179,11 +181,12 @@ class UserViewModel : ViewModel() {
     }
 
     fun uploadAndSavePhoto(uri: Uri) {
+
         val storageRef = FirebaseStorage.getInstance()
             .reference.child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
         val upload = storageRef.putFile(uri)
         upload.addOnSuccessListener {
-            val result = it.metadata!!.reference!!.downloadUrl;
+            val result = it.metadata!!.reference!!.downloadUrl
             result.addOnSuccessListener {
                 val imageLink = it.toString()
                 Log.d("MSG", imageLink)
@@ -192,12 +195,15 @@ class UserViewModel : ViewModel() {
         }
     }
 
-
     fun savePhotoToDb(string: String) {
         databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("userPhoto").setValue(string)
+            .addOnSuccessListener { it ->
+
+            }
+        getUserPhoto()
     }
 
     fun getUserPhoto(): MutableLiveData<String> {
