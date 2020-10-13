@@ -100,8 +100,7 @@ class PersonalizeAccount : AppCompatActivity() {
             val imageUri = data?.data
             if (imageUri != null) {
                 viewModel.uploadAndSavePhoto(imageUri)
-                Glide.with(this).load(viewModel.getUserPhoto()).into(binding.personalisePhoto)
-//                binding.personalisePhoto.setImageURI(imageUri)
+                userViewModel.getUserPhoto()
             }
         }
     }

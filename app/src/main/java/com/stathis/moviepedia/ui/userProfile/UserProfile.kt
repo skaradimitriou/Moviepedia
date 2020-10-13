@@ -198,6 +198,7 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             val imageUri = data?.data
             if (imageUri != null) {
                 userViewModel.uploadAndSavePhoto(imageUri)
+                userViewModel.getUserPhoto()
             }
         }
     }
