@@ -13,6 +13,11 @@ d) Add a movie as a favorite <br/>
 e) Share a movie <br/>
 f) Reset their password (with reset e-mail from Firebase Authentication)
 
+### Ideas for development 
+
+a) Search for actors & visit their in-app profile
+b) Rate movies/ Tv series
+
 ### Programming Language 
 
 [Kotlin](https://kotlinlang.org/)
