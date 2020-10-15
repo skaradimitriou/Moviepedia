@@ -1,7 +1,7 @@
 # Moviepedia
 
 An application that lets you search for movies and learn more about them.
-![Screenshot](https://ibb.co/0KLThYT)
+![Screenshot](https://user-images.githubusercontent.com/64270931/96137959-f2576900-0f05-11eb-9818-a87db4b3486d.jpg)
 
 ## Main Goal
 
