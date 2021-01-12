@@ -15,9 +15,9 @@ f) Reset their password (with reset e-mail from Firebase Authentication)
 
 ### Ideas for development 
 
-a) Search for actors & visit their in-app profile
-b) Rate movies/ Tv series
-c) Refactor soon
+a) Search for actors & visit their in-app profile <br>
+b) Rate movies/ Tv series <br>
+c) Refactor soon <br>
 
 ### Programming Language 
 
