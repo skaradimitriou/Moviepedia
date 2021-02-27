@@ -4,109 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1d1d1d"
+    android:background="@color/dark"
     tools:context=".ui.personalizeAccount.PersonalizeAccount">
 
     <TextView
         android:id="@+id/profileTxt"
+        style="@style/heading_bold_22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:fontFamily="sans-serif"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:textStyle="bold"
-        android:textColor="#ffffff"
-        android:lineSpacingExtra="4sp"
-        android:gravity="center_horizontal"
-        android:text="Your profile"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        android:layout_margin="25dp"
+        android:text="@string/personalise_profile_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/profileSubTxt"
+        style="@style/paragraph_14_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:fontFamily="sans-serif"
-        android:layout_marginTop="2dp"
-        android:textStyle="normal"
-        android:textColor="#ffffff"
-        android:lineSpacingExtra="3sp"
-        android:text="set up your profile"
-        app:layout_constraintTop_toBottomOf="@+id/profileTxt"
-        app:layout_constraintLeft_toLeftOf="@id/profileTxt" />
+        android:paddingTop="@dimen/padding_5"
+        android:text="@string/set_up_your_profile"
+        app:layout_constraintStart_toStartOf="@id/profileTxt"
+        app:layout_constraintTop_toBottomOf="@+id/profileTxt" />
 
     <TextView
         android:id="@+id/skipBtn"
+        style="@style/paragraph_14_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:fontFamily="sans-serif"
-        android:textStyle="normal"
-        android:textColor="#ffffff"
-        android:layout_marginRight="20dp"
-        android:lineSpacingExtra="3sp"
-        android:text="Skip"
-        app:layout_constraintTop_toTopOf="@+id/profileTxt"
-        app:layout_constraintRight_toRightOf="parent"/>
+        android:padding="@dimen/padding_20"
+        android:text="@string/skip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profileTxt" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/personalisePhoto"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="150dp"
+        android:layout_width="@dimen/image_120"
+        android:layout_height="@dimen/image_120"
+        android:layout_marginTop="@dimen/image_150"
         android:src="@drawable/default_img"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/callYou"
+        style="@style/paragraph_14_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:fontFamily="sans-serif"
-        android:textStyle="normal"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="100dp"
-        android:textColor="#ffffff"
-        android:lineSpacingExtra="3sp"
-        android:text="How shall we call you?"
-        app:layout_constraintTop_toBottomOf="@+id/personalisePhoto"
-        app:layout_constraintLeft_toLeftOf="@+id/username" />
+        android:layout_marginTop="@dimen/margin_50"
+        android:text="@string/how_shall_we_call_you"
+        app:layout_constraintStart_toStartOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/personalisePhoto" />
 
     <EditText
         android:id="@+id/username"
-        android:layout_width="285dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="35dp"
-        android:layout_marginRight="35dp"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#fff"
-        android:drawableStart="@drawable/ic_person_black_24dp"
+        android:layout_margin="@dimen/margin_35"
         android:background="@drawable/round_editext"
+        android:backgroundTint="@color/white"
+        android:drawableStart="@drawable/ic_person_black_24dp"
+        android:drawablePadding="@dimen/padding_10"
         android:ems="10"
+        android:hint="@string/usernane"
         android:inputType="textPersonName"
-        android:padding="10dp"
-        android:hint="Usernane"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:padding="@dimen/padding_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/callYou" />
 
     <Button
         android:id="@+id/getStartedBtn"
-        android:layout_width="285dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/round_button"
-        android:text="Get started"
-        android:textAllCaps="false"
-        android:textColor="#fff"
+        style="@style/red_button_16"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_30"
+        android:layout_marginEnd="@dimen/margin_30"
+        android:layout_marginBottom="@dimen/margin_50"
+        android:text="@string/get_started"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

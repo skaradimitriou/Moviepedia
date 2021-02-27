@@ -165,6 +165,5 @@ class IntroScreenViewModel : ViewModel() {
         val successBuilder = AlertDialog.Builder(context)
             .setView(successDialog).show()
         registerSuccessful.value = true
-
     }
 }

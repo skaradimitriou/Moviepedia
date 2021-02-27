@@ -56,7 +56,6 @@ class DashboardFragment : Fragment(), ItemClickListener, GenresClickListener,
         //adapter items start shimmering until they observe the movies
         setShimmer()
         observeData()
-
     }
 
     private fun observeData() {

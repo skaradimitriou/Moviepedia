@@ -17,7 +17,7 @@
     <string name="login_dialog_login_btn">Login</string>
 
     <!-- Register -->
-    <string name="register_dialog_header"></string>
+    <string name="register_dialog_header"/>
     <string name="register_dialog_register_header">Register for a new account</string>
     <string name="register_dialog_email_hint">E-mail</string>
     <string name="register_dialog_pass_hint">Password</string>
@@ -88,5 +88,12 @@
     <!-- Success dialog -->
     <string name="success_dialog_header">Success</string>
     <string name="success_dialog_txt">You can now login to your account</string>
+    <string name="genres_screen_header">{Action} movies</string>
+    <string name="personalise_profile_header">Your profile</string>
+    <string name="skip">Skip</string>
+    <string name="set_up_your_profile">set up your profile</string>
+    <string name="usernane">Usernane</string>
+    <string name="get_started">Get started</string>
+    <string name="how_shall_we_call_you">How shall we call you?</string>
 
 </resources>

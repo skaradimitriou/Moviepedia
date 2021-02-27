@@ -13,23 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:padding="@dimen/padding_20"
+        android:padding="@dimen/padding_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="{Action} movies" />
+        tools:text="@string/genres_screen_header" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/genresGridRecView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingTop="10dp"
+        android:paddingTop="@dimen/padding_10"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/genresHeaderTxt"
         app:spanCount="2" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

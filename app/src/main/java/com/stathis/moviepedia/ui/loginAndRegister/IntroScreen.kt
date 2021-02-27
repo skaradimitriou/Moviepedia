@@ -1,23 +1,16 @@
 package com.stathis.moviepedia.ui.loginAndRegister
 
-import android.app.AlertDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.stathis.moviepedia.ui.dashboard.Dashboard
-import com.stathis.moviepedia.ui.personalizeAccount.PersonalizeAccount
-import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityIntroScreenBinding
+import com.stathis.moviepedia.ui.dashboard.Dashboard
 import com.stathis.moviepedia.ui.forgotPassword.forgotPass.ForgotPassword
-import kotlinx.android.synthetic.main.register_view.view.*
+import com.stathis.moviepedia.ui.personalizeAccount.PersonalizeAccount
 
 class IntroScreen : AppCompatActivity() {
 
