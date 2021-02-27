@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -60,7 +61,7 @@ class IntroScreen : AppCompatActivity() {
     private fun showLoginDialogue() {
         val loginDialog = LayoutInflater.from(this).inflate(R.layout.login_view, null)
         val loginBuilder = AlertDialog.Builder(this)
-            .setView(loginDialog)
+            .setView(loginDialog).show()
         val loginDial = loginBuilder.show()
         val forgotPass:TextView = loginDialog.findViewById(R.id.forgot_login)
         forgotPass.setOnClickListener {

@@ -9,6 +9,7 @@
     <color name="dark">#1d1d1d</color>
     <color name="darker">#0A0A0A</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000</color>
 
     <color name="shimmer_bg">#dddddd</color>
 

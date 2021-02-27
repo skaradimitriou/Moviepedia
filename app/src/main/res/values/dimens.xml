@@ -1,3 +1,12 @@
 <resources>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="height_350">350dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+    <dimen name="image_120">120dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="image_150">150dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
 </resources>

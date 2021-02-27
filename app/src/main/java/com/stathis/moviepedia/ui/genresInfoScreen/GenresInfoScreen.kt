@@ -16,7 +16,6 @@ import com.stathis.moviepedia.ui.genresInfoScreen.adapters.MoviesAdapter
 
 class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
 
-
     private var genreId: Int = 0
     private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var genreName: String
