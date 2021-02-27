@@ -1,6 +1,6 @@
 # Moviepedia
 
-An application that lets you search for movies and learn more about them.
+![Screenshot](https://user-images.githubusercontent.com/64270931/96138747-c4265900-0f06-11eb-8890-427e7428ccbf.jpg)
 
 ## Main Goal
 
@@ -12,6 +12,12 @@ c) Search for Movies & TV Series and learn more information about them. <br/>
 d) Add a movie as a favorite <br/>
 e) Share a movie <br/>
 f) Reset their password (with reset e-mail from Firebase Authentication)
+
+### Ideas for development 
+
+a) Search for actors & visit their in-app profile <br>
+b) Rate movies/ Tv series <br>
+c) Refactor soon <br>
 
 ### Programming Language 
 
