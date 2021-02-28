@@ -37,11 +37,6 @@ class Dashboard : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        viewModel.getUserPhoto().observe(this, Observer<String> { img ->
-            Log.d("profile image path", img.toString())
-            Glide.with(this).load(img).into(binding.userProfileImg)
-        })
-
         binding.userProfileImg.setOnClickListener {
             startActivity(Intent(this, UserProfile::class.java))
         }
@@ -70,9 +65,16 @@ class Dashboard : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
-
         })
 
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.getUserPhoto().observe(this, Observer<String> { img ->
+            Log.d("profile image path", img.toString())
+            Glide.with(this).load(img).into(binding.userProfileImg)
+        })
     }
 
     override fun onBackPressed() {

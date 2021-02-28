@@ -3,24 +3,19 @@ package com.stathis.moviepedia.ui.genresInfoScreen
 
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
-import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.adapters.ItemClickListener
-import com.stathis.moviepedia.ui.genresInfoScreen.adapters.MoviesAdapter
 
-class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
+class GenresInfoScreen : AppCompatActivity() {
 
     private var genreId: Int = 0
-    private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var genreName: String
     private lateinit var binding: ActivityGenresInfoScreenBinding
-    private var genresInfoScreenViewModel: GenresInfoScreenViewModel = GenresInfoScreenViewModel()
+    private lateinit var viewModel: GenresInfoScreenViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,26 +26,37 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        moviesAdapter = MoviesAdapter(this@GenresInfoScreen)
-
-        binding.genresGridRecView.adapter = moviesAdapter
-        moviesAdapter.submitList(genresInfoScreenViewModel.startShimmer() as List<Any>?)
+        viewModel = ViewModelProvider.AndroidViewModelFactory(application)
+            .create(GenresInfoScreenViewModel::class.java)
 
         genreId = intent.getIntExtra("GENRE_ID", genreId)
         genreName = intent.getStringExtra("GENRE_NAME")
 
-        genresInfoScreenViewModel.getResultsForThisGenre(genreId).observe(this, Observer<MutableList<Movies>>{ movies ->
-            Log.d("RESULT",movies.toString())
-            moviesAdapter.submitList(movies as List<Any>?)
-            moviesAdapter.notifyDataSetChanged()
-        })
+        viewModel.getResultsForThisGenre(genreId)
 
-        //api call
-        genresInfoScreenViewModel.getResultsForThisGenre(genreId)
         setHeader(genreName)
+        binding.genresGridRecView.adapter = viewModel.adapter
+
+        viewModel.observeData(this)
+
+        viewModel.movie.observe(this, Observer { movie ->
+            startActivity(Intent(this, MovieInfoScreen::class.java).also{
+                if (movie.name.isNullOrBlank()) {
+                    it.putExtra("MOVIE_NAME", movie.title)
+                } else {
+                    it.putExtra("MOVIE_NAME", movie.name)
+                }
+                it.putExtra("MOVIE_ID", movie.id)
+                it.putExtra("MOVIE_PHOTO", movie.backdrop_path)
+                it.putExtra("MOVIE_PHOTO", movie.poster_path)
+                it.putExtra("RELEASE_DATE", movie.release_date)
+                it.putExtra("DESCRIPTION", movie.overview)
+                it.putExtra("RATING", movie.vote_average.toString())
+            })
+        })
     }
 
-    private fun setHeader(genreName:String){
+    private fun setHeader(genreName: String) {
         when (genreName) {
             "Action" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#4f5fef"))
             "Adventure" -> binding.genresHeaderTxt.setBackgroundColor(Color.parseColor("#23B993"))
@@ -74,36 +80,4 @@ class GenresInfoScreen : AppCompatActivity(), ItemClickListener {
         }
         binding.genresHeaderTxt.text = "$genreName Movies"
     }
-
-    override fun onItemClick(movies: Movies) {
-        val movieIntent = Intent(this, MovieInfoScreen::class.java)
-        val name = movies.name
-        val title = movies.title
-        //converting rating toString() so I can pass it. Double was throwing error
-        val rating = movies.vote_average.toString()
-        Log.d("rating", rating)
-        if (name.isNullOrBlank()) {
-            movieIntent.putExtra("MOVIE_NAME", title)
-            Log.d("Movie Name Clicked", title)
-        } else {
-            movieIntent.putExtra("MOVIE_NAME", name)
-            Log.d("Movie Name Clicked", name)
-        }
-        movieIntent.putExtra("MOVIE_ID", movies.id)
-        movieIntent.putExtra("MOVIE_PHOTO", movies.backdrop_path)
-        movieIntent.putExtra("MOVIE_PHOTO", movies.poster_path)
-        movieIntent.putExtra("RELEASE_DATE", movies.release_date)
-        movieIntent.putExtra("DESCRIPTION", movies.overview)
-        movieIntent.putExtra("RATING", rating)
-        startActivity(movieIntent)
-    }
-
-    override fun onTvSeriesClick(tvSeries: TvSeries) {
-        //
-    }
-
-    override fun onClick(v: View?) {
-        //
-    }
-
 }
