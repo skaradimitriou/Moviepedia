@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_movies"
+        android:name="com.stathis.moviepedia.ui.dashboard.fragments.movies.MoviesFragment"
+        android:label="MoviesFragment" />
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.stathis.moviepedia.ui.dashboard.fragments.all.DashboardFragment"
+        android:label="fragment_movies"
+        tools:layout="@layout/fragment_movies" />
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.stathis.moviepedia.ui.dashboard.fragments.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <argument
+            android:name="QUERY"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_tv"
+        android:name="com.stathis.moviepedia.ui.dashboard.fragments.tvSeries.TvSeriesFragment"
+        android:label="fragment_tv_series"
+        tools:layout="@layout/fragment_tv_series" />
+</navigation>
