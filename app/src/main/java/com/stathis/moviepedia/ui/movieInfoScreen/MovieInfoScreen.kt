@@ -15,20 +15,18 @@ import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
-import com.stathis.moviepedia.models.Movies
 
 class MovieInfoScreen : AppCompatActivity() {
 
-    private var movieId : Int = 0
+    private var movieId: Int = 0
     private lateinit var moviePhoto: String
     private lateinit var movieTitle: String
     private lateinit var movieRating: String
     private lateinit var movieReleaseDate: String
     private lateinit var movieDescription: String
-    private lateinit var castAdapter : CastAdapter
     private lateinit var databaseReference: DatabaseReference
     private lateinit var binding: ActivityMovieInfoScreenBinding
-    private var movieInfoScreenViewModel = MovieInfoScreenViewModel()
+    private var viewModel = MovieInfoScreenViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,30 +37,16 @@ class MovieInfoScreen : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        castAdapter = CastAdapter()
-        startShimmer()
-
-        //getting info about the movie from intent
         getIntentInfo()
         getFavoritesFromDb()
 
-        movieInfoScreenViewModel.getMovieCastInfo(movieId)
-            .observe(this, androidx.lifecycle.Observer<MutableList<Cast>> { cast ->
-                Log.d("CAST", cast.toString())
-                castAdapter.submitList(cast as List<Any>?)
-                binding.castRecView.adapter = castAdapter
-                castAdapter.notifyDataSetChanged()
-            })
+        viewModel.getMovieCastInfo(movieId)
+        viewModel.getMovieReviews(movieId)
 
-        movieInfoScreenViewModel.getMovieReviews(movieId)
-            .observe(this, androidx.lifecycle.Observer<MutableList<Reviews>> {
-                val reviewsAdapter = ReviewsAdapter()
-                reviewsAdapter.submitList(it as List<Any>?)
-                binding.reviewsRecView.adapter = reviewsAdapter
-            })
+        binding.castRecView.adapter = viewModel.adapter
+        binding.reviewsRecView.adapter = viewModel.reviewsAdapter
 
-        movieInfoScreenViewModel.getMovieCastInfo(movieId)
-        movieInfoScreenViewModel.getMovieReviews(movieId)
+        viewModel.observeData(this)
 
         binding.likeBtn.setOnClickListener {
             val whiteFavBtnColor: Drawable.ConstantState? =
@@ -81,51 +65,27 @@ class MovieInfoScreen : AppCompatActivity() {
         }
     }
 
-    private fun startShimmer(){
-        castAdapter.submitList(movieInfoScreenViewModel.setShimmer() as List<Any>?)
-    }
-
     private fun getIntentInfo() {
         movieId = intent.getIntExtra("MOVIE_ID", movieId)
         moviePhoto = intent.getStringExtra("MOVIE_PHOTO")
-        movieTitle = intent.getStringExtra("MOVIE_NAME")
-        movieRating = intent.getStringExtra("RATING")
-        movieDescription = intent.getStringExtra("DESCRIPTION")
-        movieReleaseDate = intent.getStringExtra("RELEASE_DATE")
 
-        setMoviePhoto()
-        setMovieTitle()
-        setMovieRating()
-        setMovieDescription()
-        setMovieReleaseDate()
-    }
-
-    private fun setMoviePhoto() {
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w500$moviePhoto")
+            .placeholder(R.drawable.default_img)
             .into(binding.imgView)
+
         Glide.with(this)
             .load("https://image.tmdb.org/t/p/w500$moviePhoto")
+            .placeholder(R.drawable.default_img)
             .into(binding.movieImg)
-    }
 
-    private fun setMovieTitle() {
-        binding.mainTxt.text = movieTitle
-    }
+        binding.mainTxt.text = intent.getStringExtra("MOVIE_NAME") ?: ""
 
-    private fun setMovieRating() {
-        //converting rating toDouble()
         var rating = intent.getStringExtra("RATING").toDouble()
-        //applying rating to the ratingBar
         binding.ratingBar.rating = rating.toFloat() / 2
-    }
 
-    private fun setMovieDescription() {
-        binding.description.text = movieDescription
-    }
-
-    private fun setMovieReleaseDate() {
-        binding.releaseDate.text = movieReleaseDate
+        binding.description.text = intent.getStringExtra("DESCRIPTION") ?: ""
+        binding.releaseDate.text = intent.getStringExtra("RELEASE_DATE") ?: ""
     }
 
     private fun getFavoritesFromDb() {
@@ -197,7 +157,7 @@ class MovieInfoScreen : AppCompatActivity() {
     }
 
     private fun share() {
-        startActivity(Intent().apply{
+        startActivity(Intent().apply {
             action = Intent.ACTION_SEND
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, movieTitle)
