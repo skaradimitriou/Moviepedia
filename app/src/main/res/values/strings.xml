@@ -31,7 +31,6 @@
     <string name="verify_your_account">Verify your account</string>
     <string name="verify_your_account_button">Verify</string>
 
-
     <!-- Dashboard Activity -->
     <string name="dashboard_query_hint">Search</string>
 
@@ -57,7 +56,7 @@
     <string name="movies_favorite_header">Your Favorite Movies</string>
 
     <!-- Genres Info Activity -->
-
+    <string name="genres_header_title">%s Movies</string>
 
     <!-- Movie Info Activity -->
     <string name="movie_title">This is a cool movie title</string>

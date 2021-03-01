@@ -12,12 +12,14 @@ import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.ui.genresInfoScreen.adapters.MoviesAdapter
+import com.stathis.moviepedia.util.ColorHelper
 
 class GenresInfoScreenViewModel(application: Application) : AndroidViewModel(application),
     ItemClickListener {
 
     private val repo = GenresRepository()
     val movies = repo.movies
+    val headerColor = ColorHelper.color
     val movie = MutableLiveData<Movies>()
     val adapter = MoviesAdapter(this)
 
@@ -47,6 +49,16 @@ class GenresInfoScreenViewModel(application: Application) : AndroidViewModel(app
         })
     }
 
+    fun removeObservers(owner: LifecycleOwner) {
+        headerColor.removeObservers(owner)
+        movie.removeObservers(owner)
+        movies.removeObservers(owner)
+    }
+
+    fun getBackgroundColor(genreName: String) {
+        ColorHelper.getBackgroundColor(genreName)
+    }
+
     override fun onItemClick(movies: Movies) {
         movie.value = movies
     }
@@ -54,4 +66,5 @@ class GenresInfoScreenViewModel(application: Application) : AndroidViewModel(app
     override fun onTvSeriesClick(tvSeries: TvSeries) {}
 
     override fun onClick(v: View?) {}
+
 }
