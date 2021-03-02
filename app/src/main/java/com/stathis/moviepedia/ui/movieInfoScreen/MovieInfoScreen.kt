@@ -3,14 +3,15 @@ package com.stathis.moviepedia.ui.movieInfoScreen
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.abstraction.AbstractActivity
 import com.stathis.moviepedia.databinding.ActivityMovieInfoScreenBinding
 import com.stathis.moviepedia.models.FavoriteMovies
 
-class MovieInfoScreen : AppCompatActivity() {
+class MovieInfoScreen : AbstractActivity() {
 
     private var movieId: Int = 0
     private lateinit var moviePhoto: String
@@ -20,7 +21,7 @@ class MovieInfoScreen : AppCompatActivity() {
     private lateinit var movieDescription: String
 
     private lateinit var binding: ActivityMovieInfoScreenBinding
-    private var viewModel = MovieInfoScreenViewModel()
+    private lateinit var viewModel: MovieInfoScreenViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +29,11 @@ class MovieInfoScreen : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
+    override fun initLayout() {
+        viewModel = ViewModelProvider(this).get(MovieInfoScreenViewModel::class.java)
+    }
 
+    override fun running() {
         getIntentInfo()
         viewModel.getFavoritesFromDb(movieTitle)
 
@@ -39,8 +42,6 @@ class MovieInfoScreen : AppCompatActivity() {
 
         binding.castRecView.adapter = viewModel.adapter
         binding.reviewsRecView.adapter = viewModel.reviewsAdapter
-
-        viewModel.observeData(this)
 
         binding.likeBtn.setOnClickListener {
             val whiteFavBtnColor: Drawable.ConstantState? =
@@ -62,6 +63,8 @@ class MovieInfoScreen : AppCompatActivity() {
             }
         }
 
+        viewModel.observeData(this)
+
         viewModel.isFavorite.observe(this, Observer {
             when (it) {
                 true -> {
@@ -77,6 +80,11 @@ class MovieInfoScreen : AppCompatActivity() {
         binding.shareBtn.setOnClickListener {
             share()
         }
+    }
+
+    override fun stopped() {
+        viewModel.removeObservers(this)
+        viewModel.isFavorite.removeObservers(this)
     }
 
     private fun getIntentInfo() {

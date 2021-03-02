@@ -62,15 +62,20 @@ class MovieInfoScreenViewModel : ViewModel() {
         })
     }
 
+    fun removeObservers(owner: LifecycleOwner) {
+        castInfo.removeObservers(owner)
+        reviews.removeObservers(owner)
+    }
+
     fun getFavoritesFromDb(movieTitle: String) {
         repo.getFavoritesFromDb(movieTitle)
     }
 
-    fun removeFromFavorites(movieTitle: String) {
-        repo.removeFromFavorites(movieTitle)
-    }
-
     fun addToFavorites(movie: FavoriteMovies) {
         repo.addToFavorites(movie)
+    }
+
+    fun removeFromFavorites(movieTitle: String) {
+        repo.removeFromFavorites(movieTitle)
     }
 }
