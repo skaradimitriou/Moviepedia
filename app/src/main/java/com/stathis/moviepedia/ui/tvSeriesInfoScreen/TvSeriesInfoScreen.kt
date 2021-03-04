@@ -86,6 +86,7 @@ class TvSeriesInfoScreen : AbstractActivity() {
 
     override fun stopped() {
         viewModel.removeObservers(this)
+        viewModel.isFavorite.removeObservers(this)
     }
 
     private fun getIntentInfo() {

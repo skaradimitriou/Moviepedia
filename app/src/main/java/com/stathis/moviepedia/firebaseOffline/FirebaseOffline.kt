@@ -10,5 +10,4 @@ class FirebaseOffline : Application() {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
     }
 
-
 }
