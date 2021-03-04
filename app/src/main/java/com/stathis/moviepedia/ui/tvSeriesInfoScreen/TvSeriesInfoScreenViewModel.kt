@@ -1,107 +1,72 @@
 package com.stathis.moviepedia.ui.tvSeriesInfoScreen
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.adapters.CastAdapter
+import com.stathis.moviepedia.adapters.ReviewsAdapter
 import com.stathis.moviepedia.models.EmptyModel
-import com.stathis.moviepedia.models.Reviews
-import com.stathis.moviepedia.models.ReviewsFeed
-import com.stathis.moviepedia.models.cast.Cast
-import com.stathis.moviepedia.models.cast.MovieCastFeed
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.io.IOException
+import com.stathis.moviepedia.models.FavoriteTvSeries
 
 class TvSeriesInfoScreenViewModel : ViewModel() {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private var client: OkHttpClient = OkHttpClient()
-    private var castInfo: MutableList<Cast> = mutableListOf()
-    private var cast: MutableLiveData<MutableList<Cast>> = MutableLiveData()
-    private var reviews: MutableLiveData<MutableList<Reviews>> = MutableLiveData()
-    private lateinit var emptyModelList: MutableList<EmptyModel>
+    private val repo by lazy { TvSeriesInfoRepository() }
+    val castAdapter by lazy { CastAdapter() }
+    val reviewsAdapter by lazy { ReviewsAdapter() }
+    private var cast = repo.cast
+    private var reviews = repo.reviews
+    val isFavorite = repo.isFavorite
 
-    init{
-        setShimmer()
-    }
-
-    fun setShimmer(): MutableList<EmptyModel> {
-        emptyModelList = mutableListOf(
-            EmptyModel(""),
-            EmptyModel(""),
-            EmptyModel(""),
-            EmptyModel(""),
-            EmptyModel(""),
-            EmptyModel(""),
-            EmptyModel("")
+    init {
+        castAdapter.submitList(
+            mutableListOf(
+                EmptyModel(""),
+                EmptyModel(""),
+                EmptyModel(""),
+                EmptyModel(""),
+                EmptyModel(""),
+                EmptyModel(""),
+                EmptyModel("")
+            ) as List<Any>?
         )
-        return emptyModelList
     }
 
-
-    fun getCastInfo(tvSeriesId: Int): MutableLiveData<MutableList<Cast>> {
-        url =
-            "https://api.themoviedb.org/3/tv/$tvSeriesId/credits?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val castFeed = gson.fromJson(body, MovieCastFeed::class.java)
-                Log.d("Response", castFeed.toString())
-
-                if (cast != null) {
-                    castInfo = ArrayList(castFeed.cast)
-                    Log.d("Cast", castInfo.toString())
-                    cast.postValue(castInfo)
-//                    runOnUiThread {
-//                        binding.castRecView.adapter = CastAdapter(castInfo)
-//                    }
-                }
-            }
+    fun observeDataFromApi(owner: LifecycleOwner) {
+        cast.observe(owner, Observer { cast ->
+            Log.d("cast is:", cast.toString())
+            castAdapter.submitList(cast as List<Any>?)
+            castAdapter.notifyDataSetChanged()
         })
-        return cast
-    }
 
-    fun getTvSeriesReviews(tvSeriesId: Int): MutableLiveData<MutableList<Reviews>> {
-        url =
-            "https://api.themoviedb.org/3/tv/$tvSeriesId/reviews?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val review = gson.fromJson(body, ReviewsFeed::class.java)
-                Log.d("Response", review.toString())
-
-                if (review.results != null) {
-                    val reviewsFeed = ArrayList(review.results)
-                    Log.d("this is the list",reviewsFeed.toString())
-                    //display the reviews
-//                    val reviewsAdapter = ReviewsAdapter()
-//                    reviewsAdapter.submitList(reviewsFeed as List<Any>?)
-                    reviews.postValue(reviewsFeed)
-//                    runOnUiThread{
-//                        binding.reviewsRecView.adapter = reviewsAdapter
-//                    }
-                }
-            }
+        reviews.observe(owner, Observer { reviews ->
+            Log.d("reviews:", reviews.toString())
+            reviewsAdapter.submitList(reviews as List<Any>?)
         })
-        return reviews
     }
 
+    fun removeObservers(owner: LifecycleOwner) {
+        cast.removeObservers(owner)
+        reviews.removeObservers(owner)
+    }
+
+    fun getCastInfo(tvSeriesId: Int) {
+        repo.getCastInfo(tvSeriesId)
+    }
+
+    fun getTvSeriesReviews(tvSeriesId: Int) {
+        repo.getTvSeriesReviews(tvSeriesId)
+    }
+
+    fun addToFavorites(favorite : FavoriteTvSeries) {
+        repo.addToFavorites(favorite)
+    }
+
+    fun removeFromFavorites(tvSeriesId: Int) {
+        repo.removeFromFavorites(tvSeriesId)
+    }
+
+    fun getUserFavorites(tvSeriesId: Int) {
+        repo.getUserFavorites(tvSeriesId)
+    }
 }
