@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.API_KEY
 import com.stathis.moviepedia.BASE_URL
+import com.stathis.moviepedia.models.GenreMoviesFeed
+import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.cast.Cast
@@ -21,9 +23,10 @@ object ApiClient {
     private var client: OkHttpClient = OkHttpClient()
     val cast = MutableLiveData<MutableList<Cast>>()
     val reviews = MutableLiveData<MutableList<Reviews>>()
+    val movies = MutableLiveData<List<Movies>>()
 
     fun getMovieCastInfo(movieId: Int) {
-        url = "$BASE_URL/3/movie/$movieId/credits?$API_KEY"
+        url = "$BASE_URL/movie/$movieId/credits?$API_KEY"
         request = Request.Builder().url(url).build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
@@ -44,7 +47,7 @@ object ApiClient {
     }
 
     fun getMovieReviews(movieId: Int) {
-        url = "$BASE_URL/3/movie/$movieId/reviews?$API_KEY"
+        url = "$BASE_URL/movie/$movieId/reviews?$API_KEY"
         request = Request.Builder().url(url).build()
 
         client.newCall(request).enqueue(object : okhttp3.Callback {
@@ -65,7 +68,7 @@ object ApiClient {
     }
 
     fun getCastInfo(tvSeriesId: Int) {
-        url = "$BASE_URL/3/tv/$tvSeriesId/credits?$API_KEY"
+        url = "$BASE_URL/tv/$tvSeriesId/credits?$API_KEY"
         request = Request.Builder().url(url).build()
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -86,7 +89,7 @@ object ApiClient {
     }
 
     fun getTvSeriesReviews(tvSeriesId: Int) {
-        url = "$BASE_URL/3/tv/$tvSeriesId/reviews?$API_KEY"
+        url = "$BASE_URL/tv/$tvSeriesId/reviews?$API_KEY"
         request = Request.Builder().url(url).build()
         client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -102,6 +105,23 @@ object ApiClient {
                 if (review.results != null) {
                     reviews.postValue(ArrayList(review.results))
                 }
+            }
+        })
+    }
+
+    fun getResultsForThisGenre(genreId: Int) {
+        url = "$BASE_URL/discover/movie?$API_KEY&with_genres=$genreId"
+        request = Request.Builder().url(url).build()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("Call Failed", call.toString())
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                val body = response.body?.string()
+                val genres = GsonBuilder().create().fromJson(body, GenreMoviesFeed::class.java)
+                Log.d("Response", genres.toString())
+                movies.postValue(genres.results)
             }
         })
     }
