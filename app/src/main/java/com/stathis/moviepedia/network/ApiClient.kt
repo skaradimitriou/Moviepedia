@@ -11,9 +11,13 @@ import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
+import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
+import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
+import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import java.io.IOException
 
 object ApiClient {
@@ -24,6 +28,7 @@ object ApiClient {
     val cast = MutableLiveData<MutableList<Cast>>()
     val reviews = MutableLiveData<MutableList<Reviews>>()
     val movies = MutableLiveData<List<Movies>>()
+    val recentSearches = MutableLiveData<MutableList<SearchItem>>()
 
     fun getMovieCastInfo(movieId: Int) {
         url = "$BASE_URL/movie/$movieId/credits?$API_KEY"
@@ -77,8 +82,7 @@ object ApiClient {
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
                 val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val castFeed = gson.fromJson(body, MovieCastFeed::class.java)
+                val castFeed = GsonBuilder().create().fromJson(body, MovieCastFeed::class.java)
                 Log.d("Response", castFeed.toString())
 
                 if (castFeed.cast != null) {
@@ -98,9 +102,7 @@ object ApiClient {
 
             override fun onResponse(call: Call, response: okhttp3.Response) {
                 val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val review = gson.fromJson(body, ReviewsFeed::class.java)
-                Log.d("Response", review.toString())
+                val review = GsonBuilder().create().fromJson(body, ReviewsFeed::class.java)
 
                 if (review.results != null) {
                     reviews.postValue(ArrayList(review.results))
@@ -120,8 +122,23 @@ object ApiClient {
             override fun onResponse(call: Call, response: okhttp3.Response) {
                 val body = response.body?.string()
                 val genres = GsonBuilder().create().fromJson(body, GenreMoviesFeed::class.java)
-                Log.d("Response", genres.toString())
                 movies.postValue(genres.results)
+            }
+        })
+    }
+
+    fun getQueryInfo(query: Query) {
+        url = "$BASE_URL/search/multi?$API_KEY&query=${query.queryName}"
+        request = Request.Builder().url(url).build()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                //
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val searchItem = GsonBuilder().create().fromJson(body, SearchItemsFeed::class.java)
+                recentSearches.postValue(ArrayList(searchItem.results))
             }
         })
     }
