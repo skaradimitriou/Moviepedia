@@ -123,10 +123,6 @@ class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
         //
     }
 
-    override fun onClick(v: View?) {
-        //
-    }
-
     override fun onGenreClick(movieGenres: MovieGenres) {
         startActivity(Intent(activity, GenresInfoScreen::class.java).apply{
             putExtra("GENRE_ID", movieGenres.id)

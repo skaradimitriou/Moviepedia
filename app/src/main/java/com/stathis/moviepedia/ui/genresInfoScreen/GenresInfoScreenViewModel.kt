@@ -64,7 +64,4 @@ class GenresInfoScreenViewModel(application: Application) : AndroidViewModel(app
     }
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {}
-
-    override fun onClick(v: View?) {}
-
 }

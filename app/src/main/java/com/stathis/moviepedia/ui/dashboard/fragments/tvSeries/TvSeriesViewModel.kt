@@ -109,16 +109,14 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
     }
 
     override fun onItemClick(movies: Movies) {
-        //
+        callback.onItemClick(movies)
     }
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
-        //
+        callback.onTvSeriesClick(tvSeries)
     }
 
-    override fun onClick(v: View?) {}
-
     override fun onGenreClick(movieGenres: MovieGenres) {
-        //
+        listener.onGenreClick(movieGenres)
     }
 }
