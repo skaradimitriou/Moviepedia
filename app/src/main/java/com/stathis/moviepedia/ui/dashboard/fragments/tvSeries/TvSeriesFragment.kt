@@ -1,119 +1,70 @@
 package com.stathis.moviepedia.ui.dashboard.fragments.tvSeries
 
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.stathis.moviepedia.abstraction.AbstractFragment
+import com.stathis.moviepedia.adapters.GenresClickListener
+import com.stathis.moviepedia.adapters.ItemClickListener
 import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
 
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentTvSeriesBinding
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.adapters.*
 
-class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
+class TvSeriesFragment : AbstractFragment(), ItemClickListener, GenresClickListener {
 
-    private lateinit var upcomingAdapter: UpcomingAdapter
-    private lateinit var trendingAdapter: TrendingAdapter
-    private lateinit var topRatedAdapter: TopRatedAdapter
-    private lateinit var genresAdapter: GenresAdapter
-    private lateinit var database: DatabaseReference
-    private var tvSeriesViewModel: TvSeriesViewModel =
-        TvSeriesViewModel()
+    private lateinit var viewModel: TvSeriesViewModel
     private lateinit var binding: FragmentTvSeriesBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        tvSeriesViewModel = ViewModelProvider(this).get(TvSeriesViewModel::class.java)
-        // Inflate the layout for this fragment
+    override fun created(): View? {
         binding = FragmentTvSeriesBinding.inflate(layoutInflater)
         return binding.root
     }
 
+    override fun initLayout(view: View) {
+        viewModel = ViewModelProvider(this).get(TvSeriesViewModel::class.java)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        database = FirebaseDatabase.getInstance().reference
-
-        upcomingAdapter = UpcomingAdapter(this@TvSeriesFragment)
-        binding.upcomingTvSeriesRecView.adapter = upcomingAdapter
-
-        trendingAdapter = TrendingAdapter(this@TvSeriesFragment)
-        binding.onTheAirRecView.adapter = trendingAdapter
-
-        genresAdapter = GenresAdapter(this@TvSeriesFragment)
-        binding.genresTvRecView.adapter = genresAdapter
-
-        topRatedAdapter = TopRatedAdapter(this@TvSeriesFragment)
-        binding.topRatedTvRecView.adapter = topRatedAdapter
-
-        setShimmer()
-        observeData()
+        viewModel.initListener(this, this)
     }
 
-    private fun observeData() {
-        tvSeriesViewModel.getFeaturedTvSeries().observe(this,
-            Observer<MutableList<TvSeries>> { t ->
-                Log.d("Featured TvSeries", t.toString())
-                upcomingAdapter.submitList(t as List<Any>?)
-                upcomingAdapter.notifyDataSetChanged()
-            })
+    override fun running() {
+        binding.upcomingTvSeriesRecView.adapter = viewModel.upcomingAdapter
+        binding.onTheAirRecView.adapter = viewModel.trendingAdapter
+        binding.genresTvRecView.adapter = viewModel.genresAdapter
+        binding.topRatedTvRecView.adapter = viewModel.topRatedAdapter
+        binding.popularTvRecView.adapter = viewModel.airingAdapter
 
-        tvSeriesViewModel.getAiringTodayTvSeries().observe(this,
-            Observer<MutableList<TvSeries>> { t ->
-                trendingAdapter.submitList(t as List<Any>?)
-                trendingAdapter.notifyDataSetChanged()
-            })
+        setShimmer()
 
-        tvSeriesViewModel.getTopRatedTvSeries().observe(this,
-            Observer<MutableList<TvSeries>> { t ->
-                topRatedAdapter.submitList(t as List<Any>?)
-                topRatedAdapter.notifyDataSetChanged()
-            })
+        callApiForResults()
+        viewModel.observeData(this)
+    }
 
-        tvSeriesViewModel.getPopularTvSeries().observe(this,
-            Observer<MutableList<TvSeries>> { t ->
-                binding.popularTvRecView.adapter =
-                    AiringTvSeriesAdapter(t, this@TvSeriesFragment)
-            })
+    override fun stop() {
+        viewModel.removeObservers(this)
+    }
 
-        tvSeriesViewModel.getTvGenres().observe(this,
-            Observer<MutableList<MovieGenres>> { t ->
-                genresAdapter.submitList(t as List<Any>?)
-                genresAdapter.notifyDataSetChanged()
-            })
-
-
-        tvSeriesViewModel.getFeaturedTvSeries()
-        tvSeriesViewModel.getAiringTodayTvSeries()
-        tvSeriesViewModel.getTvGenres()
-        tvSeriesViewModel.getTopRatedTvSeries()
-        tvSeriesViewModel.getPopularTvSeries()
+    private fun callApiForResults() {
+        viewModel.getFeaturedTvSeries()
+        viewModel.getAiringTodayTvSeries()
+        viewModel.getTvGenres()
+        viewModel.getTopRatedTvSeries()
+        viewModel.getPopularTvSeries()
     }
 
     private fun setShimmer() {
-        upcomingAdapter.submitList(tvSeriesViewModel.setShimmer() as List<Any>?)
-        trendingAdapter.submitList(tvSeriesViewModel.setShimmer() as List<Any>?)
-        topRatedAdapter.submitList(tvSeriesViewModel.setShimmer() as List<Any>?)
-        genresAdapter.submitList(tvSeriesViewModel.setShimmer() as List<Any>?)
+        viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+        viewModel.genresAdapter.submitList(viewModel.setShimmer() as List<Any>?)
     }
 
-    override fun onItemClick(movies: Movies) {
-        //
-    }
+    override fun onItemClick(movies: Movies) {}
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
-        startActivity(Intent(activity, TvSeriesInfoScreen::class.java).apply{
+        startActivity(Intent(activity, TvSeriesInfoScreen::class.java).apply {
             if (tvSeries.name.isNullOrBlank()) {
                 putExtra("TV_SERIES_NAME", tvSeries.original_name)
                 Log.d("Movie Name Clicked", tvSeries.original_name)
@@ -134,12 +85,10 @@ class TvSeriesFragment : Fragment(), ItemClickListener, GenresClickListener {
         })
     }
 
-    override fun onClick(v: View?) {
-        //
-    }
+    override fun onClick(v: View?) {}
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        startActivity(Intent(activity, GenresInfoScreen::class.java).apply{
+        startActivity(Intent(activity, GenresInfoScreen::class.java).apply {
             putExtra("GENRE_ID", movieGenres.id)
             putExtra("GENRE_NAME", movieGenres.name)
         })

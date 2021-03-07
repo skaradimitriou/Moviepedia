@@ -1,14 +1,13 @@
 package com.stathis.moviepedia.ui.splashScreen
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import androidx.lifecycle.LifecycleOwner
+import androidx.appcompat.app.AppCompatActivity
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
 
-class SplashScreen : AppCompatActivity(), LifecycleOwner {
+class SplashScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

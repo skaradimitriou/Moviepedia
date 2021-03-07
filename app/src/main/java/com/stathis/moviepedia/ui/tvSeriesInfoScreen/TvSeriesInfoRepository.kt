@@ -8,7 +8,7 @@ import com.stathis.moviepedia.network.ApiClient
 
 class TvSeriesInfoRepository {
 
-    private lateinit var databaseReference: DatabaseReference
+    private val databaseReference by lazy { FirebaseDatabase.getInstance().reference }
     val cast = ApiClient.cast
     val reviews = ApiClient.reviews
     val isFavorite = MutableLiveData<Boolean>()
@@ -22,7 +22,6 @@ class TvSeriesInfoRepository {
     }
 
     fun addToFavorites(tvSeries: FavoriteTvSeries) {
-        databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteTvSeries")
@@ -31,7 +30,6 @@ class TvSeriesInfoRepository {
     }
 
     fun getUserFavorites(tvSeriesId: Int) {
-        databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteTvSeries")
@@ -54,7 +52,6 @@ class TvSeriesInfoRepository {
     }
 
     fun removeFromFavorites(tvSeriesId: Int) {
-        databaseReference = FirebaseDatabase.getInstance().reference
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteTvSeries")
