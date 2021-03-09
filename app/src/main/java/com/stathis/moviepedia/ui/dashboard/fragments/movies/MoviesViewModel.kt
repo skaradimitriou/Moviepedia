@@ -1,9 +1,12 @@
 package com.stathis.moviepedia.ui.dashboard.fragments.movies
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
+import com.stathis.moviepedia.adapters.*
 import com.stathis.moviepedia.models.*
 import okhttp3.Call
 import okhttp3.OkHttpClient
@@ -11,22 +14,24 @@ import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 
-class MoviesViewModel : ViewModel() {
+class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private lateinit var client: OkHttpClient
-    private var upcomingMoviesList: MutableList<Movies> = mutableListOf()
-    private var trendingMoviesList: MutableList<Movies> = mutableListOf()
-    private var genresList: MutableList<MovieGenres> = mutableListOf()
-    private var topRatedMoviesList: MutableList<Movies> = mutableListOf()
-    private var upcomingMovies : MutableLiveData<MutableList<Movies>> = MutableLiveData()
-    private var trendingMovies : MutableLiveData<MutableList<Movies>> = MutableLiveData()
-    private var movieGenres : MutableLiveData<MutableList<MovieGenres>> = MutableLiveData()
-    private var topRatedMovies : MutableLiveData<MutableList<Movies>> = MutableLiveData()
+    private val repo = MoviesRepository()
+    private var upcomingMovies = repo.upcomingMovies
+    private var trendingMovies = repo.trendingMovies
+    private var movieGenres = repo.movieGenres
+    private var topRatedMovies = repo.topRatedMovies
     private lateinit var emptyModelList: MutableList<EmptyModel>
 
-    init{
+    private lateinit var listener: ItemClickListener
+    private lateinit var genresListener: GenresClickListener
+
+    val upcomingAdapter = UpcomingAdapter(this)
+    val trendingAdapter = TrendingAdapter(this)
+    val topRatedAdapter = TopRatedAdapter(this)
+    val genresAdapter = GenresAdapter(this)
+
+    init {
         setShimmer()
     }
 
@@ -40,109 +45,67 @@ class MoviesViewModel : ViewModel() {
         return emptyModelList
     }
 
-    fun getUpcomingMovies(): MutableLiveData<MutableList<Movies>> {
-        url = "https://api.themoviedb.org/3/movie/upcoming?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                println(body)
-
-                val gson = GsonBuilder().create()
-                val upcomingMovie = gson.fromJson(body, UpcomingMovies::class.java)
-                Log.d("Response", upcomingMovies.toString())
-                upcomingMoviesList = ArrayList(upcomingMovie.results)
-
-                Log.d("this is the list", upcomingMoviesList.toString())
-                upcomingMovies.postValue(upcomingMoviesList)
-            }
-        })
-        return upcomingMovies
+    fun initListeners(listener: ItemClickListener, genresListener: GenresClickListener) {
+        this.listener = listener
+        this.genresListener = genresListener
     }
 
-    fun getTrendingMovies(): MutableLiveData<MutableList<Movies>> {
-        url =
-            "https://api.themoviedb.org/3/trending/movie/day?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val popularMovies = gson.fromJson(body, MovieFeed::class.java)
-                Log.d("Response", popularMovies.toString())
-
-                trendingMoviesList = ArrayList(popularMovies.results)
-                Log.d("this is the list", trendingMoviesList.toString())
-
-                //move from background to ui thread and display data
-                trendingMovies.postValue(trendingMoviesList)
-            }
+    fun observeData(owner: LifecycleOwner) {
+        upcomingMovies.observe(owner, Observer { t ->
+            upcomingAdapter.submitList(t as List<Any>?)
+            upcomingAdapter.notifyDataSetChanged()
         })
-        return trendingMovies
+
+        trendingMovies.observe(owner, Observer { t ->
+            trendingAdapter.submitList(t as List<Any>?)
+            trendingAdapter.notifyDataSetChanged()
+        })
+
+        topRatedMovies.observe(owner, Observer { t ->
+            //sorting list by rating and passing it to the adapter
+            topRatedAdapter.submitList(t.sortedWith(compareBy { it.vote_average }).reversed())
+            topRatedAdapter.notifyDataSetChanged()
+            Log.d("SortedList", t.sortedWith(compareBy { it.vote_average }).reversed().toString())
+        })
+
+        movieGenres.observe(owner, Observer { t ->
+            genresAdapter.submitList(t as List<Any>?)
+            genresAdapter.notifyDataSetChanged()
+        })
     }
 
-    fun getMovieGenres(): MutableLiveData<MutableList<MovieGenres>> {
-        url =
-            "https://api.themoviedb.org/3/genre/movie/list?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Genre call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-
-                val gson = GsonBuilder().create()
-                val movieGenre = gson.fromJson(body, MovieGenresFeed::class.java)
-                Log.d("RESPONSE", movieGenres.toString())
-                genresList = ArrayList(movieGenre.genres)
-
-                movieGenres.postValue(genresList)
-            }
-        })
-        return movieGenres
+    fun removeObservers(owner: LifecycleOwner) {
+        upcomingMovies.removeObservers(owner)
+        trendingMovies.removeObservers(owner)
+        topRatedMovies.removeObservers(owner)
+        movieGenres.removeObservers(owner)
     }
 
-    fun getTopRatedMovies(): MutableLiveData<MutableList<Movies>> {
-        url =
-            "https://api.themoviedb.org/3/movie/top_rated?api_key=b36812048cc4b54d559f16a2ff196bc5"
-        request = Request.Builder().url(url).build()
-
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Top Rated Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                Log.d("TOP RATED MOVIES CALL", body.toString())
-                val gson = GsonBuilder().create()
-                val topRatedMovie = gson.fromJson(body, MovieFeed::class.java)
-                Log.d("Top Rated Call Response", topRatedMovies.toString())
-
-                topRatedMoviesList = ArrayList(topRatedMovie.results)
-                Log.d("this is the list", topRatedMoviesList.toString())
-
-                topRatedMovies.postValue(topRatedMoviesList)
-            }
-        })
-        return topRatedMovies
+    fun getUpcomingMovies() {
+        repo.getUpcomingMovies()
     }
 
+    fun getTrendingMovies() {
+        repo.getTrendingMovies()
+    }
+
+    fun getMovieGenres() {
+        repo.getMovieGenres()
+    }
+
+    fun getTopRatedMovies() {
+        repo.getTopRatedMovies()
+    }
+
+    override fun onItemClick(movies: Movies) {
+        listener.onItemClick(movies)
+    }
+
+    override fun onTvSeriesClick(tvSeries: TvSeries) {
+        listener.onTvSeriesClick(tvSeries)
+    }
+
+    override fun onGenreClick(movieGenres: MovieGenres) {
+        genresListener.onGenreClick(movieGenres)
+    }
 }

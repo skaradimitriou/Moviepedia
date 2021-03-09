@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.databinding.FragmentMoviesBinding
 import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.models.*
@@ -16,93 +16,54 @@ import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.adapters.*
 
 
-class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
+class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListener {
 
-    private var moviesViewModel: MoviesViewModel =
-        MoviesViewModel()
+    private lateinit var viewModel: MoviesViewModel
     private lateinit var binding: FragmentMoviesBinding
-    private lateinit var upcomingAdapter: UpcomingAdapter
-    private lateinit var trendingAdapter: TrendingAdapter
-    private lateinit var topRatedAdapter: TopRatedAdapter
-    private lateinit var genresAdapter: GenresAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Initializing the viewModel for this fragment
-        moviesViewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
-        // Inflate the layout for this fragment
+    override fun created(): View? {
         binding = FragmentMoviesBinding.inflate(layoutInflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initLayout(view: View) {
+        viewModel = ViewModelProvider(this).get(MoviesViewModel::class.java)
+    }
 
-        upcomingAdapter = UpcomingAdapter(this@MoviesFragment)
-        binding.upcomingMoviesRecView.adapter = upcomingAdapter
-
-        trendingAdapter = TrendingAdapter(this@MoviesFragment)
-        binding.popularRecView.adapter = trendingAdapter
-
-        topRatedAdapter = TopRatedAdapter(this@MoviesFragment)
-        binding.topRatedRecView.adapter = topRatedAdapter
-
-        genresAdapter = GenresAdapter( this@MoviesFragment)
-        binding.genresRecView.adapter = genresAdapter
-
+    override fun running() {
         setShimmer()
-        observeData()
 
+        viewModel.initListeners(this,this)
+
+        binding.upcomingMoviesRecView.adapter = viewModel.upcomingAdapter
+        binding.popularRecView.adapter = viewModel.trendingAdapter
+        binding.topRatedRecView.adapter = viewModel.topRatedAdapter
+        binding.genresRecView.adapter = viewModel.genresAdapter
+
+        callApiForResults()
+        viewModel.observeData(this)
     }
 
-    private fun observeData(){
-        moviesViewModel.getUpcomingMovies().observe(viewLifecycleOwner,
-            Observer<MutableList<Movies>> { t ->
-                upcomingAdapter.submitList(t as List<Any>?)
-                upcomingAdapter.notifyDataSetChanged()
-            })
-
-        moviesViewModel.getTrendingMovies()
-            .observe(viewLifecycleOwner, Observer<MutableList<Movies>> { t ->
-                trendingAdapter.submitList(t as List<Any>?)
-                trendingAdapter.notifyDataSetChanged()
-            })
-
-        moviesViewModel.getTopRatedMovies()
-            .observe(viewLifecycleOwner, Observer<MutableList<Movies>> { t ->
-                //sorting list by rating and passing it to the adapter
-                topRatedAdapter.submitList(t.sortedWith(
-                        compareBy { it.vote_average }).reversed())
-                topRatedAdapter.notifyDataSetChanged()
-                Log.d(
-                    "SortedList", t.sortedWith(
-                        compareBy { it.vote_average }).reversed().toString()
-                )
-            })
-
-        moviesViewModel.getMovieGenres()
-            .observe(viewLifecycleOwner, Observer<MutableList<MovieGenres>> { t ->
-                genresAdapter.submitList(t as List<Any>?)
-                genresAdapter.notifyDataSetChanged()
-            })
-
-        moviesViewModel.getUpcomingMovies()
-        moviesViewModel.getMovieGenres()
-        moviesViewModel.getTopRatedMovies()
-        moviesViewModel.getTrendingMovies()
+    override fun stop() {
+        viewModel.removeObservers(this)
     }
 
-    private fun setShimmer(){
-        upcomingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
-        trendingAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
-        topRatedAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
-        genresAdapter.submitList(moviesViewModel.setShimmer() as List<Any>?)
+    private fun callApiForResults() {
+        viewModel.getUpcomingMovies()
+        viewModel.getMovieGenres()
+        viewModel.getTopRatedMovies()
+        viewModel.getTrendingMovies()
+    }
+
+    private fun setShimmer() {
+        viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+        viewModel.genresAdapter.submitList(viewModel.setShimmer() as List<Any>?)
     }
 
     override fun onItemClick(movies: Movies) {
-        startActivity( Intent(activity, MovieInfoScreen::class.java).apply{
+        startActivity(Intent(activity, MovieInfoScreen::class.java).apply {
             if (movies.name.isNullOrBlank()) {
                 putExtra("MOVIE_NAME", movies.title)
                 Log.d("Movie Name Clicked", movies.title)
@@ -120,11 +81,11 @@ class MoviesFragment : Fragment(), ItemClickListener, GenresClickListener {
     }
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
-        //
+        // N/A Here
     }
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        startActivity(Intent(activity, GenresInfoScreen::class.java).apply{
+        startActivity(Intent(activity, GenresInfoScreen::class.java).apply {
             putExtra("GENRE_ID", movieGenres.id)
             putExtra("GENRE_NAME", movieGenres.name)
         })
