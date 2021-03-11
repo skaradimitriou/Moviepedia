@@ -1,5 +1,6 @@
 package com.stathis.moviepedia.network
 
+import com.stathis.moviepedia.models.MovieGenresFeed
 import com.stathis.moviepedia.models.UpcomingMovies
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -19,5 +20,17 @@ object RetrofitApiClient {
 
     fun getCountries(): Call<UpcomingMovies> {
         return api.getUpcomindMovies()
+    }
+
+    fun getTrendingMovies(): Call<UpcomingMovies> {
+        return api.getTrendingMovies()
+    }
+
+    fun getMovieGenres(): Call<MovieGenresFeed> {
+        return api.getMovieGenres()
+    }
+
+    fun getTopRatedMovies(): Call<UpcomingMovies> {
+        return api.getTopRatedMovies()
     }
 }

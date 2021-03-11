@@ -32,57 +32,56 @@ class MoviesRepository {
             }
 
             override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
-                Log.d("", t.message.toString())
+                upcomingMovies.postValue(null)
             }
         })
     }
 
+    fun getTrendingMovies() {
+        RetrofitApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
+            override fun onResponse(
+                call: Call<UpcomingMovies>,
+                response: Response<UpcomingMovies>
+            ) {
+                Log.d("", response.body().toString())
+                trendingMovies.postValue(response.body()?.results)
+            }
 
-//    fun getTrendingMovies() {
-//        url = "$BASE_URL/trending/movie/day?$API_KEY"
-//        request = Request.Builder().url(url).build()
-//        client.newCall(request).enqueue(object : okhttp3.Callback {
-//            override fun onFailure(call: Call, e: IOException) {
-//                Log.d("Call Failed", call.toString())
-//            }
-//
-//            override fun onResponse(call: Call, response: Response) {
-//                val body = response.body?.string()
-//                val popularMovies = GsonBuilder().create().fromJson(body, MovieFeed::class.java)
-//                trendingMovies.postValue(popularMovies.results)
-//            }
-//        })
-//    }
-//
-//    fun getMovieGenres() {
-//        url = "$BASE_URL/genre/movie/list?$API_KEY"
-//        request = Request.Builder().url(url).build()
-//        client.newCall(request).enqueue(object : okhttp3.Callback {
-//            override fun onFailure(call: Call, e: IOException) {
-//                Log.d("Genre call Failed", call.toString())
-//            }
-//
-//            override fun onResponse(call: Call, response: Response) {
-//                val body = response.body?.string()
-//                val movieGenre = GsonBuilder().create().fromJson(body, MovieGenresFeed::class.java)
-//                movieGenres.postValue(movieGenre.genres)
-//            }
-//        })
-//    }
-//
-//    fun getTopRatedMovies() {
-//        url = "$BASE_URL/movie/top_rated?$API_KEY"
-//        request = Request.Builder().url(url).build()
-//        client.newCall(request).enqueue(object : okhttp3.Callback {
-//            override fun onFailure(call: Call, e: IOException) {
-//                Log.d("Top Rated Call Failed", call.toString())
-//            }
-//
-//            override fun onResponse(call: Call, response: Response) {
-//                val body = response.body?.string()
-//                val topRatedMovie = GsonBuilder().create().fromJson(body, MovieFeed::class.java)
-//                topRatedMovies.postValue(topRatedMovie.results)
-//            }
-//        })
-//    }
+            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
+                trendingMovies.postValue(null)
+            }
+        })
+    }
+
+    fun getMovieGenres() {
+        RetrofitApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
+            override fun onResponse(
+                call: Call<MovieGenresFeed>,
+                response: Response<MovieGenresFeed>
+            ) {
+                Log.d("", response.body().toString())
+                movieGenres.postValue(response.body()?.genres)
+            }
+
+            override fun onFailure(call: Call<MovieGenresFeed>, t: Throwable) {
+                movieGenres.postValue(null)
+            }
+        })
+    }
+
+    fun getTopRatedMovies() {
+        RetrofitApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
+            override fun onResponse(
+                call: Call<UpcomingMovies>,
+                response: Response<UpcomingMovies>
+            ) {
+                Log.d("", response.body().toString())
+                topRatedMovies.postValue(response.body()?.results)
+            }
+
+            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
+                topRatedMovies.postValue(null)
+            }
+        })
+    }
 }

@@ -86,15 +86,15 @@ class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
     }
 
     fun getTrendingMovies() {
-//        repo.getTrendingMovies()
+        repo.getTrendingMovies()
     }
 
     fun getMovieGenres() {
-//        repo.getMovieGenres()
+        repo.getMovieGenres()
     }
 
     fun getTopRatedMovies() {
-//        repo.getTopRatedMovies()
+        repo.getTopRatedMovies()
     }
 
     override fun onItemClick(movies: Movies) {
