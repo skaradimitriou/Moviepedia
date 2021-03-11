@@ -11,7 +11,7 @@ class MovAndTvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListe
 
     private val repo = MovAndTvRepository()
     private var upcomingMovies = repo.upcomingMovies
-    private var popularMovies = repo.popularMovies
+    private var popularMovies = repo.trendingMovies
     private var movieGenres = repo.movieGenres
     private var topRatedMovies = repo.topRatedMovies
     private var favoriteMovies = repo.favoriteMovies

@@ -3,94 +3,96 @@ package com.stathis.moviepedia.ui.dashboard.fragments.all
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.API_KEY
-import com.stathis.moviepedia.BASE_URL
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.stathis.moviepedia.models.*
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
+import com.stathis.moviepedia.network.RetrofitApiClient
+import retrofit2.Callback
 
 class MovAndTvRepository {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private val client = OkHttpClient()
-    private lateinit var databaseReference: DatabaseReference
+    private val databaseReference by lazy { FirebaseDatabase.getInstance().reference }
     val upcomingMovies = MutableLiveData<List<Movies>>()
-    val popularMovies = MutableLiveData<List<Movies>>()
+    val trendingMovies = MutableLiveData<List<Movies>>()
     val movieGenres = MutableLiveData<List<MovieGenres>>()
     val topRatedMovies = MutableLiveData<List<Movies>>()
     val favoriteMovies = MutableLiveData<List<FavoriteMovies>>()
     private var userFavMovies: MutableList<FavoriteMovies> = mutableListOf()
 
     fun getUpcomingMovies() {
-        url = "$BASE_URL/movie/upcoming?$API_KEY"
-        request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
+        RetrofitApiClient.getCountries().enqueue(object : Callback<UpcomingMovies> {
+            override fun onResponse(
+                call: retrofit2.Call<UpcomingMovies>,
+                response: retrofit2.Response<UpcomingMovies>
+            ) {
+                Log.d("", response.body().toString())
+                upcomingMovies.postValue(response.body()?.results)
             }
 
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val upcomingMoviesList =
-                    GsonBuilder().create().fromJson(body, UpcomingMovies::class.java)
-                upcomingMovies.postValue(upcomingMoviesList.results)
+            override fun onFailure(call: retrofit2.Call<UpcomingMovies>, t: Throwable) {
+                upcomingMovies.postValue(null)
             }
         })
     }
 
     fun getTrendingMovies() {
-        url = "$BASE_URL/trending/all/day?$API_KEY"
-        request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
+        RetrofitApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
+            override fun onResponse(
+                call: retrofit2.Call<UpcomingMovies>,
+                response: retrofit2.Response<UpcomingMovies>
+            ) {
+                Log.d("", response.body().toString())
+                trendingMovies.postValue(response.body()?.results)
             }
 
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val gson = GsonBuilder().create()
-                val popularMoviesList = gson.fromJson(body, MovieFeed::class.java)
-                Log.d("Response", popularMoviesList.toString())
-                popularMovies.postValue(popularMoviesList.results)
+            override fun onFailure(call: retrofit2.Call<UpcomingMovies>, t: Throwable) {
+                trendingMovies.postValue(null)
+            }
+        })
+    }
+
+    fun getMovieGenres() {
+        RetrofitApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
+            override fun onResponse(
+                call: retrofit2.Call<MovieGenresFeed>,
+                response: retrofit2.Response<MovieGenresFeed>
+            ) {
+                Log.d("", response.body().toString())
+                movieGenres.postValue(response.body()?.genres)
+            }
+
+            override fun onFailure(call: retrofit2.Call<MovieGenresFeed>, t: Throwable) {
+                movieGenres.postValue(null)
             }
         })
     }
 
     fun getTopRatedMovies() {
-        url = "$BASE_URL/movie/top_rated?$API_KEY"
-        request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Top Rated Call Failed", call.toString())
+        RetrofitApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
+            override fun onResponse(
+                call: retrofit2.Call<UpcomingMovies>,
+                response: retrofit2.Response<UpcomingMovies>
+            ) {
+                Log.d("", response.body().toString())
+                topRatedMovies.postValue(response.body()?.results)
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val topRatedMoviesList =
-                    GsonBuilder().create().fromJson(body, MovieFeed::class.java)
-                topRatedMovies.postValue(topRatedMoviesList.results)
+            override fun onFailure(call: retrofit2.Call<UpcomingMovies>, t: Throwable) {
+                topRatedMovies.postValue(null)
             }
         })
     }
 
     fun getFavoriteMovies() {
-        databaseReference = FirebaseDatabase.getInstance().reference
-        //offline use
-        databaseReference.keepSynced(true)
+        databaseReference.keepSynced(true) //offline use
         databaseReference.child("users")
             .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .child("favoriteMovieList")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
-                    //
+                    favoriteMovies.postValue(null)
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
@@ -100,7 +102,7 @@ class MovAndTvRepository {
                         if (userFavMovies.isNotEmpty()) {
                             userFavMovies.clear()
                         }
-                        //adding elements here
+
                         p0.children.forEach {
                             userFavMovies.add(it.getValue(FavoriteMovies::class.java)!!)
                         }
@@ -109,22 +111,5 @@ class MovAndTvRepository {
                     favoriteMovies.postValue(userFavMovies)
                 }
             })
-    }
-
-    fun getMovieGenres() {
-        url = "$BASE_URL/genre/movie/list?$API_KEY"
-        request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Genre call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val movieGenresList =
-                    GsonBuilder().create().fromJson(body, MovieGenresFeed::class.java)
-                movieGenres.postValue(movieGenresList.genres)
-            }
-        })
     }
 }
