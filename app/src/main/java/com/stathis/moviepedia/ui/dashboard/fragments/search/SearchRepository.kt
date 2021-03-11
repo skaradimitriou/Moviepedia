@@ -4,7 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.stathis.moviepedia.network.ApiClient
+import com.stathis.moviepedia.network.RetrofitApiClient
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
+import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchRepository {
 
@@ -14,7 +19,18 @@ class SearchRepository {
     val queries = MutableLiveData<MutableList<Query>>()
 
     fun getQueryInfo(query: Query) {
-        ApiClient.getQueryInfo(query)
+        RetrofitApiClient.getQueryInfo(query.queryName).enqueue(object : Callback<SearchItemsFeed>{
+            override fun onResponse(
+                call: Call<SearchItemsFeed>,
+                response: Response<SearchItemsFeed>
+            ) {
+                recentSearches.postValue(response.body()?.results)
+            }
+
+            override fun onFailure(call: Call<SearchItemsFeed>, t: Throwable) {
+                recentSearches.postValue(null)
+            }
+        })
     }
 
     fun addQueryToDb(query: Query) {

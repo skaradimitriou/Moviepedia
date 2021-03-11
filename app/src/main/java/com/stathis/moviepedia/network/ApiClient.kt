@@ -127,19 +127,19 @@ object ApiClient {
         })
     }
 
-    fun getQueryInfo(query: Query) {
-        url = "$BASE_URL/search/multi?$API_KEY&query=${query.queryName}"
-        request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                //
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val searchItem = GsonBuilder().create().fromJson(body, SearchItemsFeed::class.java)
-                recentSearches.postValue(ArrayList(searchItem.results))
-            }
-        })
-    }
+//    fun getQueryInfo(query: Query) {
+//        url = "$BASE_URL/search/multi?$API_KEY&query=${query.queryName}"
+//        request = Request.Builder().url(url).build()
+//        client.newCall(request).enqueue(object : okhttp3.Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                //
+//            }
+//
+//            override fun onResponse(call: Call, response: Response) {
+//                val body = response.body?.string()
+//                val searchItem = GsonBuilder().create().fromJson(body, SearchItemsFeed::class.java)
+//                recentSearches.postValue(ArrayList(searchItem.results))
+//            }
+//        })
+//    }
 }

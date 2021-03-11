@@ -2,6 +2,7 @@ package com.stathis.moviepedia.network
 
 import com.stathis.moviepedia.models.MovieGenresFeed
 import com.stathis.moviepedia.models.UpcomingMovies
+import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,5 +33,9 @@ object RetrofitApiClient {
 
     fun getTopRatedMovies(): Call<UpcomingMovies> {
         return api.getTopRatedMovies()
+    }
+
+    fun getQueryInfo(query : String) : Call<SearchItemsFeed>{
+        return api.getQueryInfo(query)
     }
 }
