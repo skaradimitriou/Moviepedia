@@ -108,21 +108,21 @@ object ApiClient {
         })
     }
 
-    fun getResultsForThisGenre(genreId: Int) {
-        url = "$BASE_URL/discover/movie?$API_KEY&with_genres=$genreId"
-        request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val genres = GsonBuilder().create().fromJson(body, GenreMoviesFeed::class.java)
-                movies.postValue(genres.results)
-            }
-        })
-    }
+//    fun getResultsForThisGenre(genreId: Int) {
+//        url = "$BASE_URL/discover/movie?$API_KEY&with_genres=$genreId"
+//        request = Request.Builder().url(url).build()
+//        client.newCall(request).enqueue(object : okhttp3.Callback {
+//            override fun onFailure(call: Call, e: IOException) {
+//                Log.d("Call Failed", call.toString())
+//            }
+//
+//            override fun onResponse(call: Call, response: okhttp3.Response) {
+//                val body = response.body?.string()
+//                val genres = GsonBuilder().create().fromJson(body, GenreMoviesFeed::class.java)
+//                movies.postValue(genres.results)
+//            }
+//        })
+//    }
 
 //    fun getQueryInfo(query: Query) {
 //        url = "$BASE_URL/search/multi?$API_KEY&query=${query.queryName}"

@@ -7,6 +7,7 @@ import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFe
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Path
 
 object RetrofitApiClient {
 
@@ -58,5 +59,9 @@ object RetrofitApiClient {
 
     fun getTvGenres(): Call<MovieGenresFeed> {
         return api.getTvGenres()
+    }
+
+    fun getResultsForThisGenre(query: Int): Call<UpcomingMovies> {
+        return api.getResultsForThisGenre(query)
     }
 }
