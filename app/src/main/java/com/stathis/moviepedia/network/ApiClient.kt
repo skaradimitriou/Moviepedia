@@ -11,13 +11,10 @@ import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
-import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
-import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import java.io.IOException
 
 object ApiClient {

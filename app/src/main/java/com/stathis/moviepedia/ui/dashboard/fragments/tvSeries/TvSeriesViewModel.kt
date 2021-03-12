@@ -79,22 +79,22 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
             upcomingAdapter.notifyDataSetChanged()
         })
 
-        airingToday.observe(owner, Observer<MutableList<TvSeries>> { t ->
+        airingToday.observe(owner, Observer { t ->
             trendingAdapter.submitList(t as List<Any>?)
             trendingAdapter.notifyDataSetChanged()
         })
 
-        topRated.observe(owner, Observer<MutableList<TvSeries>> { t ->
+        topRated.observe(owner, Observer { t ->
             topRatedAdapter.submitList(t as List<Any>?)
             topRatedAdapter.notifyDataSetChanged()
         })
 
-        popularTvSeries.observe(owner, Observer<MutableList<TvSeries>> { t ->
+        popularTvSeries.observe(owner, Observer { t ->
             airingAdapter.submitList(t as List<Any>?)
             airingAdapter.notifyDataSetChanged()
         })
 
-        tvSeriesGenres.observe(owner, Observer<MutableList<MovieGenres>> { t ->
+        tvSeriesGenres.observe(owner, Observer { t ->
             genresAdapter.submitList(t as List<Any>?)
             genresAdapter.notifyDataSetChanged()
         })

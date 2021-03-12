@@ -1,6 +1,7 @@
 package com.stathis.moviepedia.network
 
 import com.stathis.moviepedia.models.MovieGenresFeed
+import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.models.UpcomingMovies
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
@@ -35,7 +36,27 @@ object RetrofitApiClient {
         return api.getTopRatedMovies()
     }
 
-    fun getQueryInfo(query : String) : Call<SearchItemsFeed>{
+    fun getQueryInfo(query: String): Call<SearchItemsFeed> {
         return api.getQueryInfo(query)
+    }
+
+    fun getFeaturedTvSeries(): Call<TvSeriesFeed> {
+        return api.getFeaturedTvSeries()
+    }
+
+    fun getAiringTodayTvSeries(): Call<TvSeriesFeed> {
+        return api.getAiringTodayTvSeries()
+    }
+
+    fun getTopRatedTvSeries(): Call<TvSeriesFeed> {
+        return api.getTopRatedTvSeries()
+    }
+
+    fun getPopularTvSeries(): Call<TvSeriesFeed> {
+        return api.getPopularTvSeries()
+    }
+
+    fun getTvGenres(): Call<MovieGenresFeed> {
+        return api.getTvGenres()
     }
 }
