@@ -6,7 +6,7 @@ import com.stathis.moviepedia.models.MovieGenres
 import com.stathis.moviepedia.models.MovieGenresFeed
 import com.stathis.moviepedia.models.TvSeries
 import com.stathis.moviepedia.models.TvSeriesFeed
-import com.stathis.moviepedia.network.RetrofitApiClient
+import com.stathis.moviepedia.network.ApiClient
 import retrofit2.Callback
 
 class TvSeriesRepository {
@@ -18,7 +18,7 @@ class TvSeriesRepository {
     val tvSeriesGenres = MutableLiveData<List<MovieGenres>>()
 
     fun getFeaturedTvSeries() {
-        RetrofitApiClient.getFeaturedTvSeries().enqueue(object : Callback<TvSeriesFeed> {
+        ApiClient.getFeaturedTvSeries().enqueue(object : Callback<TvSeriesFeed> {
             override fun onResponse(
                 call: retrofit2.Call<TvSeriesFeed>,
                 response: retrofit2.Response<TvSeriesFeed>
@@ -34,7 +34,7 @@ class TvSeriesRepository {
     }
 
     fun getAiringTodayTvSeries() {
-        RetrofitApiClient.getAiringTodayTvSeries().enqueue(object : Callback<TvSeriesFeed> {
+        ApiClient.getAiringTodayTvSeries().enqueue(object : Callback<TvSeriesFeed> {
             override fun onResponse(
                 call: retrofit2.Call<TvSeriesFeed>,
                 response: retrofit2.Response<TvSeriesFeed>
@@ -50,7 +50,7 @@ class TvSeriesRepository {
     }
 
     fun getTopRatedTvSeries() {
-        RetrofitApiClient.getTopRatedTvSeries().enqueue(object : Callback<TvSeriesFeed> {
+        ApiClient.getTopRatedTvSeries().enqueue(object : Callback<TvSeriesFeed> {
             override fun onResponse(
                 call: retrofit2.Call<TvSeriesFeed>,
                 response: retrofit2.Response<TvSeriesFeed>
@@ -66,7 +66,7 @@ class TvSeriesRepository {
     }
 
     fun getPopularTvSeries() {
-        RetrofitApiClient.getPopularTvSeries().enqueue(object : Callback<TvSeriesFeed> {
+        ApiClient.getPopularTvSeries().enqueue(object : Callback<TvSeriesFeed> {
             override fun onResponse(
                 call: retrofit2.Call<TvSeriesFeed>,
                 response: retrofit2.Response<TvSeriesFeed>
@@ -82,7 +82,7 @@ class TvSeriesRepository {
     }
 
     fun getTvGenres() {
-        RetrofitApiClient.getTvGenres().enqueue(object : Callback<MovieGenresFeed> {
+        ApiClient.getTvGenres().enqueue(object : Callback<MovieGenresFeed> {
             override fun onResponse(
                 call: retrofit2.Call<MovieGenresFeed>,
                 response: retrofit2.Response<MovieGenresFeed>

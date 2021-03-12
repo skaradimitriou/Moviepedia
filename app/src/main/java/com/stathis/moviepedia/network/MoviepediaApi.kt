@@ -48,8 +48,14 @@ interface MoviepediaApi {
     fun getResultsForThisGenre(@Query("queryId") queryId: Int): Call<UpcomingMovies>
 
     @GET("movie/{movieId}/credits?$API_KEY")
-    fun getMovieCastInfo(@Path("movieId") movieId: Int) : Call<MovieCastFeed>
+    fun getMovieCastInfo(@Path("movieId") movieId: Int): Call<MovieCastFeed>
 
     @GET("movie/{movieId}/reviews?$API_KEY")
-    fun getMovieReviews(@Path("movieId") movieId: Int) : Call<ReviewsFeed>
+    fun getMovieReviews(@Path("movieId") movieId: Int): Call<ReviewsFeed>
+
+    @GET("tv/{tvSeriesId}/credits?$API_KEY")
+    fun getTvCastInfo(@Path("tvSeriesId") tvSeriesId: Int): Call<MovieCastFeed>
+
+    @GET("tv/{tvSeriesId}/reviews?$API_KEY")
+    fun getTvReviews(@Path("tvSeriesId") tvSeriesId: Int): Call<ReviewsFeed>
 }

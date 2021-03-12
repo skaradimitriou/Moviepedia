@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.network.RetrofitApiClient
+import com.stathis.moviepedia.network.ApiClient
 import retrofit2.Callback
 
 class MovAndTvRepository {
@@ -22,7 +22,7 @@ class MovAndTvRepository {
     private var userFavMovies: MutableList<FavoriteMovies> = mutableListOf()
 
     fun getUpcomingMovies() {
-        RetrofitApiClient.getCountries().enqueue(object : Callback<UpcomingMovies> {
+        ApiClient.getCountries().enqueue(object : Callback<UpcomingMovies> {
             override fun onResponse(
                 call: retrofit2.Call<UpcomingMovies>,
                 response: retrofit2.Response<UpcomingMovies>
@@ -38,7 +38,7 @@ class MovAndTvRepository {
     }
 
     fun getTrendingMovies() {
-        RetrofitApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
+        ApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
             override fun onResponse(
                 call: retrofit2.Call<UpcomingMovies>,
                 response: retrofit2.Response<UpcomingMovies>
@@ -54,7 +54,7 @@ class MovAndTvRepository {
     }
 
     fun getMovieGenres() {
-        RetrofitApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
+        ApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
             override fun onResponse(
                 call: retrofit2.Call<MovieGenresFeed>,
                 response: retrofit2.Response<MovieGenresFeed>
@@ -70,7 +70,7 @@ class MovAndTvRepository {
     }
 
     fun getTopRatedMovies() {
-        RetrofitApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
+        ApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
             override fun onResponse(
                 call: retrofit2.Call<UpcomingMovies>,
                 response: retrofit2.Response<UpcomingMovies>

@@ -2,10 +2,13 @@ package com.stathis.moviepedia.ui.dashboard.fragments.search
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.stathis.moviepedia.network.ApiClient
-import com.stathis.moviepedia.network.RetrofitApiClient
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
+import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,11 +18,11 @@ class SearchRepository {
 
     private var userQueries: MutableList<Query> = mutableListOf()
     private val databaseReference = FirebaseDatabase.getInstance().reference
-    val recentSearches = ApiClient.recentSearches
+    val recentSearches = MutableLiveData<MutableList<SearchItem>>()
     val queries = MutableLiveData<MutableList<Query>>()
 
     fun getQueryInfo(query: Query) {
-        RetrofitApiClient.getQueryInfo(query.queryName).enqueue(object : Callback<SearchItemsFeed>{
+        ApiClient.getQueryInfo(query.queryName).enqueue(object : Callback<SearchItemsFeed>{
             override fun onResponse(
                 call: Call<SearchItemsFeed>,
                 response: Response<SearchItemsFeed>

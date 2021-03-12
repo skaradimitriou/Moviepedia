@@ -1,142 +1,84 @@
 package com.stathis.moviepedia.network
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.API_KEY
-import com.stathis.moviepedia.BASE_URL
-import com.stathis.moviepedia.models.GenreMoviesFeed
-import com.stathis.moviepedia.models.Movies
-import com.stathis.moviepedia.models.Reviews
+import com.stathis.moviepedia.models.MovieGenresFeed
 import com.stathis.moviepedia.models.ReviewsFeed
-import com.stathis.moviepedia.models.cast.Cast
+import com.stathis.moviepedia.models.TvSeriesFeed
+import com.stathis.moviepedia.models.UpcomingMovies
 import com.stathis.moviepedia.models.cast.MovieCastFeed
-import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.io.IOException
+import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
 
-    private lateinit var url: String
-    private lateinit var request: Request
-    private var client: OkHttpClient = OkHttpClient()
-    val cast = MutableLiveData<MutableList<Cast>>()
-    val reviews = MutableLiveData<MutableList<Reviews>>()
-    val movies = MutableLiveData<List<Movies>>()
-    val recentSearches = MutableLiveData<MutableList<SearchItem>>()
+    private val BASE_URL = "https://api.themoviedb.org/3/"
+    private val api: MoviepediaApi
 
-    fun getMovieCastInfo(movieId: Int) {
-        url = "$BASE_URL/movie/$movieId/credits?$API_KEY"
-        request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val castFeed = GsonBuilder().create().fromJson(body, MovieCastFeed::class.java)
-                Log.d("Response", castFeed.toString())
-
-                if (castFeed?.cast != null) {
-                    cast.postValue(ArrayList(castFeed.cast))
-                }
-            }
-        })
+    init {
+        api = Retrofit.Builder().baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(MoviepediaApi::class.java)
     }
 
-    fun getMovieReviews(movieId: Int) {
-        url = "$BASE_URL/movie/$movieId/reviews?$API_KEY"
-        request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val review = GsonBuilder().create().fromJson(body, ReviewsFeed::class.java)
-                Log.d("Response", review.toString())
-
-                if (review.results != null) {
-                    reviews.postValue(ArrayList(review.results))
-                }
-            }
-        })
+    fun getCountries(): Call<UpcomingMovies> {
+        return api.getUpcomindMovies()
     }
 
-    fun getCastInfo(tvSeriesId: Int) {
-        url = "$BASE_URL/tv/$tvSeriesId/credits?$API_KEY"
-        request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val castFeed = GsonBuilder().create().fromJson(body, MovieCastFeed::class.java)
-                Log.d("Response", castFeed.toString())
-
-                if (castFeed.cast != null) {
-                    cast.postValue(ArrayList(castFeed.cast))
-                }
-            }
-        })
+    fun getTrendingMovies(): Call<UpcomingMovies> {
+        return api.getTrendingMovies()
     }
 
-    fun getTvSeriesReviews(tvSeriesId: Int) {
-        url = "$BASE_URL/tv/$tvSeriesId/reviews?$API_KEY"
-        request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("Call Failed", call.toString())
-            }
-
-            override fun onResponse(call: Call, response: okhttp3.Response) {
-                val body = response.body?.string()
-                val review = GsonBuilder().create().fromJson(body, ReviewsFeed::class.java)
-
-                if (review.results != null) {
-                    reviews.postValue(ArrayList(review.results))
-                }
-            }
-        })
+    fun getMovieGenres(): Call<MovieGenresFeed> {
+        return api.getMovieGenres()
     }
 
-//    fun getResultsForThisGenre(genreId: Int) {
-//        url = "$BASE_URL/discover/movie?$API_KEY&with_genres=$genreId"
-//        request = Request.Builder().url(url).build()
-//        client.newCall(request).enqueue(object : okhttp3.Callback {
-//            override fun onFailure(call: Call, e: IOException) {
-//                Log.d("Call Failed", call.toString())
-//            }
-//
-//            override fun onResponse(call: Call, response: okhttp3.Response) {
-//                val body = response.body?.string()
-//                val genres = GsonBuilder().create().fromJson(body, GenreMoviesFeed::class.java)
-//                movies.postValue(genres.results)
-//            }
-//        })
-//    }
+    fun getTopRatedMovies(): Call<UpcomingMovies> {
+        return api.getTopRatedMovies()
+    }
 
-//    fun getQueryInfo(query: Query) {
-//        url = "$BASE_URL/search/multi?$API_KEY&query=${query.queryName}"
-//        request = Request.Builder().url(url).build()
-//        client.newCall(request).enqueue(object : okhttp3.Callback {
-//            override fun onFailure(call: Call, e: IOException) {
-//                //
-//            }
-//
-//            override fun onResponse(call: Call, response: Response) {
-//                val body = response.body?.string()
-//                val searchItem = GsonBuilder().create().fromJson(body, SearchItemsFeed::class.java)
-//                recentSearches.postValue(ArrayList(searchItem.results))
-//            }
-//        })
-//    }
+    fun getQueryInfo(query: String): Call<SearchItemsFeed> {
+        return api.getQueryInfo(query)
+    }
+
+    fun getFeaturedTvSeries(): Call<TvSeriesFeed> {
+        return api.getFeaturedTvSeries()
+    }
+
+    fun getAiringTodayTvSeries(): Call<TvSeriesFeed> {
+        return api.getAiringTodayTvSeries()
+    }
+
+    fun getTopRatedTvSeries(): Call<TvSeriesFeed> {
+        return api.getTopRatedTvSeries()
+    }
+
+    fun getPopularTvSeries(): Call<TvSeriesFeed> {
+        return api.getPopularTvSeries()
+    }
+
+    fun getTvGenres(): Call<MovieGenresFeed> {
+        return api.getTvGenres()
+    }
+
+    fun getResultsForThisGenre(query: Int): Call<UpcomingMovies> {
+        return api.getResultsForThisGenre(query)
+    }
+
+    fun getMovieCastInfo(movieId: Int): Call<MovieCastFeed> {
+        return api.getMovieCastInfo(movieId)
+    }
+
+    fun getMovieReviews(movieId: Int): Call<ReviewsFeed> {
+        return api.getMovieReviews(movieId)
+    }
+
+    fun getTvCastInfo(tvSeriesId: Int): Call<MovieCastFeed> {
+        return api.getTvCastInfo(tvSeriesId)
+    }
+
+    fun getTvReviews(tvSeriesId: Int): Call<ReviewsFeed> {
+        return api.getTvReviews(tvSeriesId)
+    }
 }

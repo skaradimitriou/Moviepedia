@@ -4,20 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.Reviews
 import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.network.ApiClient
-import com.stathis.moviepedia.network.RetrofitApiClient
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class MoviesInfoRepository {
 
@@ -27,7 +21,7 @@ class MoviesInfoRepository {
     private lateinit var databaseReference: DatabaseReference
 
     fun getMovieCastInfo(movieId: Int) {
-        RetrofitApiClient.getMovieCastInfo(movieId).enqueue(object : Callback<MovieCastFeed>{
+        ApiClient.getMovieCastInfo(movieId).enqueue(object : Callback<MovieCastFeed>{
             override fun onResponse(
                 call: retrofit2.Call<MovieCastFeed>,
                 response: Response<MovieCastFeed>
@@ -42,7 +36,7 @@ class MoviesInfoRepository {
     }
 
     fun getMovieReviews(movieId: Int) {
-        RetrofitApiClient.getMovieReviews(movieId).enqueue(object : Callback<ReviewsFeed>{
+        ApiClient.getMovieReviews(movieId).enqueue(object : Callback<ReviewsFeed>{
             override fun onResponse(
                 call: retrofit2.Call<ReviewsFeed>,
                 response: Response<ReviewsFeed>

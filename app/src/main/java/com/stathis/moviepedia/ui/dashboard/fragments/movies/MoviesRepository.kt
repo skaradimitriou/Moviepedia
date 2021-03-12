@@ -2,17 +2,11 @@ package com.stathis.moviepedia.ui.dashboard.fragments.movies
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.API_KEY
-import com.stathis.moviepedia.BASE_URL
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.network.RetrofitApiClient
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import com.stathis.moviepedia.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class MoviesRepository {
 
@@ -22,7 +16,7 @@ class MoviesRepository {
     val topRatedMovies = MutableLiveData<List<Movies>>()
 
     fun getUpcomingMovies() {
-        RetrofitApiClient.getCountries().enqueue(object : Callback<UpcomingMovies> {
+        ApiClient.getCountries().enqueue(object : Callback<UpcomingMovies> {
             override fun onResponse(
                 call: Call<UpcomingMovies>,
                 response: Response<UpcomingMovies>
@@ -38,7 +32,7 @@ class MoviesRepository {
     }
 
     fun getTrendingMovies() {
-        RetrofitApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
+        ApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
             override fun onResponse(
                 call: Call<UpcomingMovies>,
                 response: Response<UpcomingMovies>
@@ -54,7 +48,7 @@ class MoviesRepository {
     }
 
     fun getMovieGenres() {
-        RetrofitApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
+        ApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
             override fun onResponse(
                 call: Call<MovieGenresFeed>,
                 response: Response<MovieGenresFeed>
@@ -70,7 +64,7 @@ class MoviesRepository {
     }
 
     fun getTopRatedMovies() {
-        RetrofitApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
+        ApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
             override fun onResponse(
                 call: Call<UpcomingMovies>,
                 response: Response<UpcomingMovies>
