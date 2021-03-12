@@ -1,8 +1,10 @@
 package com.stathis.moviepedia.network
 
 import com.stathis.moviepedia.models.MovieGenresFeed
+import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.models.UpcomingMovies
+import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -63,5 +65,13 @@ object RetrofitApiClient {
 
     fun getResultsForThisGenre(query: Int): Call<UpcomingMovies> {
         return api.getResultsForThisGenre(query)
+    }
+
+    fun getMovieCastInfo(movieId: Int): Call<MovieCastFeed> {
+        return api.getMovieCastInfo(movieId)
+    }
+
+    fun getMovieReviews(movieId: Int): Call<ReviewsFeed> {
+        return api.getMovieReviews(movieId)
     }
 }

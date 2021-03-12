@@ -11,24 +11,49 @@ import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.network.ApiClient
+import com.stathis.moviepedia.network.RetrofitApiClient
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 
 class MoviesInfoRepository {
 
-    val castInfo = ApiClient.cast
-    val reviews = ApiClient.reviews
+    val castInfo = MutableLiveData<List<Cast>>()
+    val reviews = MutableLiveData<List<Reviews>>()
     val isFavorite = MutableLiveData<Boolean>()
     private lateinit var databaseReference: DatabaseReference
 
     fun getMovieCastInfo(movieId: Int) {
-        ApiClient.getMovieCastInfo(movieId)
+        RetrofitApiClient.getMovieCastInfo(movieId).enqueue(object : Callback<MovieCastFeed>{
+            override fun onResponse(
+                call: retrofit2.Call<MovieCastFeed>,
+                response: Response<MovieCastFeed>
+            ) {
+                castInfo.value = response.body()?.cast
+            }
+
+            override fun onFailure(call: retrofit2.Call<MovieCastFeed>, t: Throwable) {
+                castInfo.value = null
+            }
+        })
     }
 
     fun getMovieReviews(movieId: Int) {
-        ApiClient.getMovieReviews(movieId)
+        RetrofitApiClient.getMovieReviews(movieId).enqueue(object : Callback<ReviewsFeed>{
+            override fun onResponse(
+                call: retrofit2.Call<ReviewsFeed>,
+                response: Response<ReviewsFeed>
+            ) {
+                reviews.value = response.body()?.results
+            }
+
+            override fun onFailure(call: retrofit2.Call<ReviewsFeed>, t: Throwable) {
+                reviews.value = null
+            }
+        })
     }
 
     fun getFavoritesFromDb(movieTitle: String) {

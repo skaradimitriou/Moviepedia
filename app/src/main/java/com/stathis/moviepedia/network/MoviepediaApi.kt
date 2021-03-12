@@ -2,8 +2,10 @@ package com.stathis.moviepedia.network
 
 import com.stathis.moviepedia.API_KEY
 import com.stathis.moviepedia.models.MovieGenresFeed
+import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.models.UpcomingMovies
+import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
 import retrofit2.http.GET
@@ -44,4 +46,10 @@ interface MoviepediaApi {
 
     @GET("discover/movie?$API_KEY&with_genres=")
     fun getResultsForThisGenre(@Query("queryId") queryId: Int): Call<UpcomingMovies>
+
+    @GET("movie/{movieId}/credits?$API_KEY")
+    fun getMovieCastInfo(@Path("movieId") movieId: Int) : Call<MovieCastFeed>
+
+    @GET("movie/{movieId}/reviews?$API_KEY")
+    fun getMovieReviews(@Path("movieId") movieId: Int) : Call<ReviewsFeed>
 }
