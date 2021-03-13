@@ -69,7 +69,7 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
     fun observeData(owner: LifecycleOwner) {
         featuredTvSeries.observe(owner, Observer { t ->
             Log.d("Featured TvSeries", t.toString())
-            upcomingAdapter.submitList(t as List<Any>?)
+            upcomingAdapter.submitList(t)
             upcomingAdapter.notifyDataSetChanged()
         })
 

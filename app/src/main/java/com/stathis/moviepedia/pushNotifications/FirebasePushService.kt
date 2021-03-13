@@ -15,5 +15,4 @@ class FirebasePushService : FirebaseMessagingService() {
         super.onMessageReceived(p0)
         Log.d("","")
     }
-
 }

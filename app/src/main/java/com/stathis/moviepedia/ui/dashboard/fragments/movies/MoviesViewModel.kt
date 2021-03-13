@@ -47,7 +47,7 @@ class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
 
     fun observeData(owner: LifecycleOwner) {
         upcomingMovies.observe(owner, Observer { t ->
-            upcomingAdapter.submitList(t as List<Any>?)
+            upcomingAdapter.submitList(t)
             upcomingAdapter.notifyDataSetChanged()
         })
 

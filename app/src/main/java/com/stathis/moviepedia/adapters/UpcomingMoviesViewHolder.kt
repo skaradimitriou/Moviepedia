@@ -8,23 +8,42 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.ItemClickListener
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.TvSeries
 import kotlinx.android.synthetic.main.upcoming_movies_item_row.view.*
 
 class UpcomingMoviesViewHolder(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
-    
-    fun bind(movies: Movies,listener: ItemClickListener) {
-        Glide.with(itemView.context)
-            .load("https://image.tmdb.org/t/p/w500" + movies.poster_path)
-            .into(itemView.upcom_movieImg)
 
-        //applying rating to the ratingBar
-        itemView.ratingStars.rating = movies.vote_average.toFloat() / 2
+    fun bind(localModel: LocalModel,listener: ItemClickListener) {
+        when(localModel){
+            is Movies -> {
+                Glide.with(itemView.context)
+                    .load("https://image.tmdb.org/t/p/w500" + localModel.poster_path)
+                    .placeholder(R.drawable.default_img)
+                    .into(itemView.upcom_movieImg)
 
-        itemView.upcom_movie_title.text = movies.title
-        itemView.setOnClickListener {
-            listener.onItemClick(movies)
+                itemView.ratingStars.rating = localModel.vote_average.toFloat() / 2
+
+                itemView.upcom_movie_title.text = localModel.title
+                itemView.setOnClickListener {
+                    listener.onItemClick(localModel)
+                }
+            }
+
+            is TvSeries -> {
+                Glide.with(itemView.context)
+                    .load("https://image.tmdb.org/t/p/w500" + localModel.poster_path)
+                    .placeholder(R.drawable.default_img)
+                    .into(itemView.upcom_movieImg)
+
+                itemView.upcom_movie_title.text = localModel.name
+
+                itemView.setOnClickListener{
+                    listener.onTvSeriesClick(localModel)
+                }
+            }
         }
     }
 }
