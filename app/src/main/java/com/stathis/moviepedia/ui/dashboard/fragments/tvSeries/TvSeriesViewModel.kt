@@ -74,12 +74,12 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
         })
 
         airingToday.observe(owner, Observer { t ->
-            trendingAdapter.submitList(t as List<Any>?)
+            trendingAdapter.submitList(t)
             trendingAdapter.notifyDataSetChanged()
         })
 
-        topRated.observe(owner, Observer { t ->
-            topRatedAdapter.submitList(t as List<Any>?)
+        topRated.observe(owner, Observer {
+            topRatedAdapter.submitList(it)
             topRatedAdapter.notifyDataSetChanged()
         })
 

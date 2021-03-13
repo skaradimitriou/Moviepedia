@@ -15,15 +15,18 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(localModel: LocalModel, listener: SearchItemClickListener) {
         when (localModel) {
             is SearchItem -> {
+
                 if (localModel.backdrop_path.isNullOrEmpty() && localModel.poster_path.isNullOrEmpty()) {
                     itemView.searchImg.setImageResource(R.drawable.default_img)
                 } else if (localModel.poster_path.isNullOrEmpty()) {
                     Glide.with(itemView.context)
                         .load("https://image.tmdb.org/t/p/w500" + localModel.backdrop_path)
+                        .placeholder(R.drawable.default_img)
                         .into(itemView.searchImg)
                 } else {
                     Glide.with(itemView.context)
                         .load("https://image.tmdb.org/t/p/w500" + localModel.poster_path)
+                        .placeholder(R.drawable.default_img)
                         .into(itemView.searchImg)
                 }
 

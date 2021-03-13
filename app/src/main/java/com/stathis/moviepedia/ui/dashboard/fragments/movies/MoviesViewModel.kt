@@ -52,7 +52,7 @@ class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
         })
 
         trendingMovies.observe(owner, Observer { t ->
-            trendingAdapter.submitList(t as List<Any>?)
+            trendingAdapter.submitList(t)
             trendingAdapter.notifyDataSetChanged()
         })
 

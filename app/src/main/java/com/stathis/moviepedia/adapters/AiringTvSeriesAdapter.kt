@@ -8,15 +8,15 @@ import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.models.TvSeries
 
 class AiringTvSeriesAdapter(private val listener: ItemClickListener) :
-    ListAdapter<Any, AiringTvSeriesViewHolder>(DiffUtilClass<Any>()) {
+    ListAdapter<Any, PopularMoviesViewHolder>(DiffUtilClass<Any>()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AiringTvSeriesViewHolder {
-        val view =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMoviesViewHolder {
+        return PopularMoviesViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.popular_item_row, parent, false)
-        return AiringTvSeriesViewHolder(view)
+        )
     }
 
-    override fun onBindViewHolder(holder: AiringTvSeriesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PopularMoviesViewHolder, position: Int) {
         holder.bind(getItem(position) as TvSeries, listener)
     }
 }

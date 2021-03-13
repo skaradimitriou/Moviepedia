@@ -2,6 +2,7 @@ package com.stathis.moviepedia.adapters
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.PopularItemRowBinding
 import com.stathis.moviepedia.listeners.FavoriteClickListener
 import com.stathis.moviepedia.models.FavoriteMovies
@@ -12,6 +13,7 @@ class FavoriteMoviesViewHolder(var binding:PopularItemRowBinding) : RecyclerView
     fun bind(favoriteMovies: FavoriteMovies,listener: FavoriteClickListener) {
         Glide.with(itemView.context)
             .load("https://image.tmdb.org/t/p/w500" + favoriteMovies.photo)
+            .placeholder(R.drawable.default_img)
             .into(binding.movieImg)
 
         binding.testProgressbar.progress = (favoriteMovies.movie_rating*10).roundToInt()

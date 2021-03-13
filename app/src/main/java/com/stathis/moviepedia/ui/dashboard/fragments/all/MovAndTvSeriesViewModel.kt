@@ -58,7 +58,7 @@ class MovAndTvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListe
         })
 
         popularMovies.observe(owner, Observer {
-            trendingAdapter.submitList(it as List<Any>?)
+            trendingAdapter.submitList(it)
             trendingAdapter.notifyDataSetChanged()
         })
 

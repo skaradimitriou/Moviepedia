@@ -56,8 +56,8 @@ class TvSeriesFragment : AbstractFragment(), ItemClickListener, GenresClickListe
 
     private fun setShimmer() {
         viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<Any>?)
-        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
+        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
         viewModel.genresAdapter.submitList(viewModel.setShimmer() as List<Any>?)
     }
 

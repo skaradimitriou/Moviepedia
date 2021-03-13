@@ -7,73 +7,58 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
 
 class TopRatedAdapter(val listener: ItemClickListener) :
-    ListAdapter<Any, RecyclerView.ViewHolder>(DiffUtilClass<Any>()) {
-
-    val MOVIES = 1
-    val TVSERIES = 2
-    val EMPTY_MODEL = 3
+    ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when {
-            viewType == MOVIES -> {
+        return when (viewType) {
+            R.layout.top_rated_item_row -> {
                 TopRatedViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.top_rated_item_row, parent, false)
+                        .inflate(viewType, parent, false)
                 )
             }
-            viewType == TVSERIES -> {
-                AiringTvSeriesViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.popular_item_row, parent, false))
-            }
 
-            viewType == EMPTY_MODEL -> {
+            R.layout.popular_item_row -> {
+                PopularMoviesViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(viewType, parent, false)
+                )
+            }
+            
+            R.layout.holder_shimmer_top_rated -> {
                 ShimmerViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.holder_shimmer_top_rated, parent, false))
+                    LayoutInflater.from(parent.context)
+                        .inflate(viewType, parent, false)
+                )
             }
             else -> AiringTvSeriesViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.popular_item_row, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(viewType, parent, false)
             )
         }
 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        when (currentItem) {
-            is Movies -> {
-                (holder as TopRatedViewHolder).bind(currentItem, listener)
-            }
-            is TvSeries -> {
-                (holder as AiringTvSeriesViewHolder).bind(currentItem, listener)
-            }
-            is EmptyModel -> {
-                (holder as ShimmerViewHolder).present(currentItem)
-            }
-            else -> {
-                (holder as AiringTvSeriesViewHolder).bind(currentItem as TvSeries, listener)
-            }
+        when (holder) {
+            is TopRatedViewHolder -> holder.bind(getItem(position), listener)
+            is PopularMoviesViewHolder -> holder.bind(getItem(position), listener)
+            is ShimmerViewHolder -> holder.present(getItem(position))
+            else -> Unit
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        val currentItem = getItem(position)
-        return when {
-            currentItem is Movies -> {
-                MOVIES
-            }
-            currentItem is TvSeries -> {
-                TVSERIES
-            }
-            currentItem is EmptyModel -> {
-                EMPTY_MODEL
-            }
-            else -> {
-                4
-            }
+        return when (getItem(position)) {
+            is Movies -> R.layout.top_rated_item_row
+            is TvSeries -> R.layout.popular_item_row
+            is EmptyModel -> R.layout.holder_shimmer_top_rated
+            else -> R.layout.popular_item_row
         }
     }
 }

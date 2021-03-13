@@ -1,45 +1,45 @@
 package com.stathis.moviepedia.adapters
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.ItemClickListener
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.TvSeries
+import kotlinx.android.synthetic.main.top_rated_item_row.view.*
 import kotlin.math.roundToInt
 
 class AiringTvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val movieName: TextView = itemView.findViewById(R.id.movie_title)
-    val test_progressbar: ProgressBar = itemView.findViewById(R.id.test_progressbar)
-    val movieImg: ImageView = itemView.findViewById(R.id.movie_img)
-    val ratingTxt: TextView = itemView.findViewById(R.id.ratingTxt)
+    fun bind(localModel: LocalModel, listener: ItemClickListener) {
+        when(localModel){
+            is TvSeries -> {
+                if (localModel.backdrop_path.isNullOrBlank()) {
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500" + localModel.poster_path)
+                        .placeholder(R.drawable.default_img)
+                        .into(itemView.movie_img)
+                } else {
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500" + localModel.backdrop_path)
+                        .placeholder(R.drawable.default_img)
+                        .into(itemView.movie_img)
+                }
 
-    fun bind(tvSeriesFeed: TvSeries, listener: ItemClickListener) {
-        if (tvSeriesFeed.backdrop_path.isNullOrBlank()) {
-            Glide.with(itemView.context)
-                .load("https://image.tmdb.org/t/p/w500" + tvSeriesFeed.poster_path)
-                .into(movieImg)
-        } else {
-            Glide.with(itemView.context)
-                .load("https://image.tmdb.org/t/p/w500" + tvSeriesFeed.backdrop_path)
-                .into(movieImg)
-        }
+                if (localModel.name.isNullOrBlank()) {
+                    itemView.movie_title.text = localModel.original_name
+                } else {
+                    itemView.movie_title.text = localModel.name
+                }
 
-        if (tvSeriesFeed.name.isNullOrBlank()) {
-            movieName.text = tvSeriesFeed.original_name
-        } else {
-            movieName.text = tvSeriesFeed.name
-        }
+                itemView.test_progressbar.progress = (localModel.vote_average * 10).roundToInt()
+                itemView.ratingTxt.text = localModel.vote_average.toString()
 
-        test_progressbar.progress = (tvSeriesFeed.vote_average * 10).roundToInt()
-        ratingTxt.text = tvSeriesFeed.vote_average.toString()
-
-        itemView.setOnClickListener {
-            listener.onTvSeriesClick(tvSeriesFeed)
+                itemView.setOnClickListener {
+                    listener.onTvSeriesClick(localModel)
+                }
+            }
         }
     }
 }

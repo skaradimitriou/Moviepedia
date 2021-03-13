@@ -8,35 +8,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
 
 class TrendingAdapter(val listener: ItemClickListener) :
-    ListAdapter<Any, RecyclerView.ViewHolder>(DiffUtilClass<Any>()) {
-
-    val MOVIES = 1
-    val TVSERIES = 2
-    val EMPTY_MODEL = 3
+    ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when {
-            viewType == MOVIES -> {
+        return when(viewType) {
+            R.layout.popular_item_row -> {
                 PopularMoviesViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.popular_item_row, parent, false)
-                )
-            }
-            viewType == TVSERIES -> {
-                AiringTvSeriesViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.popular_item_row, parent, false)
+                        .inflate(viewType, parent, false)
                 )
             }
 
-            viewType == EMPTY_MODEL -> {
+            R.layout.holder_shimmer_popular -> {
                 ShimmerViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.holder_shimmer_popular, parent, false)
+                        .inflate(viewType, parent, false)
                 )
             }
 
@@ -48,37 +39,19 @@ class TrendingAdapter(val listener: ItemClickListener) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        when (getItem(position)) {
-            is Movies -> {
-                (holder as PopularMoviesViewHolder).bind(currentItem as Movies, listener)
-            }
-            is TvSeries -> {
-                (holder as AiringTvSeriesViewHolder).bind(currentItem as TvSeries, listener)
-            }
-            is EmptyModel -> {
-                (holder as ShimmerViewHolder).present(currentItem as EmptyModel)
-            }
-            else -> {
-                (holder as AiringTvSeriesViewHolder).bind(currentItem as TvSeries, listener)
-            }
+        when(holder){
+            is PopularMoviesViewHolder -> holder.bind(getItem(position),listener)
+            is ShimmerViewHolder -> holder.present(getItem(position))
+            else -> Unit
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is Movies -> {
-                MOVIES
-            }
-            is TvSeries -> {
-                TVSERIES
-            }
-            is EmptyModel -> {
-                EMPTY_MODEL
-            }
-            else -> {
-                4
-            }
+            is Movies -> R.layout.popular_item_row
+            is TvSeries -> R.layout.popular_item_row
+            is EmptyModel -> R.layout.holder_shimmer_popular
+            else -> R.layout.popular_item_row
         }
     }
 }
