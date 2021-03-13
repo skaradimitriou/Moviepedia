@@ -5,25 +5,27 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.cast.Cast
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.cast_item_row.view.*
 
 class CastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val castImg: CircleImageView = itemView.findViewById(R.id.castImg)
-    val castName: TextView = itemView.findViewById(R.id.castName)
+    fun present(localModel: LocalModel) {
+        when(localModel){
+            is Cast -> {
+                if(localModel.profile_path.isNullOrBlank()){
+                    itemView.castImg.setImageResource(R.drawable.profile_img_placeholder)
+                } else {
+                    Glide.with(itemView.context)
+                        .load("https://image.tmdb.org/t/p/w500" + localModel.profile_path)
+                        .placeholder(R.drawable.default_img)
+                        .into(itemView.castImg)
+                }
 
-    fun present(cast: Cast) {
-
-        if(cast.profile_path.isNullOrBlank()){
-            castImg.setImageResource(R.drawable.profile_img_placeholder)
-        } else {
-            Glide.with(itemView.context)
-                .load("https://image.tmdb.org/t/p/w500" + cast.profile_path)
-                .into(castImg)
+                itemView.castName.text = localModel.name
+            }
         }
-
-        castName.text = cast.name
     }
-
 }

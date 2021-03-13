@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.listeners.GenresClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.MovieGenres
 
@@ -31,14 +32,16 @@ class GenresAdapter(val listener: GenresClickListener) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(getItem(position)){
-            is MovieGenres -> {
-                (holder as GenresViewHolder).bind(getItem(position) as MovieGenres, listener)
+        when(holder){
+            is GenresViewHolder -> {
+                holder.present(getItem(position) as MovieGenres, listener)
             }
-            is EmptyModel -> {
-                (holder as ShimmerViewHolder).present(getItem(position) as EmptyModel)
+
+            is ShimmerViewHolder -> {
+                holder.present(getItem(position) as EmptyModel)
             }
-            else -> {}
+
+            else -> Unit
         }
     }
 

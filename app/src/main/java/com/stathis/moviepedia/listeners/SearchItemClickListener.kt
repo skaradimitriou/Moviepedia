@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.listeners
 
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem

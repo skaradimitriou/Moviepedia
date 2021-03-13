@@ -1,5 +1,7 @@
 package com.stathis.moviepedia.ui.dashboard.fragments.search.models
 
+import com.stathis.moviepedia.models.LocalModel
+
 class SearchItem (
     val id:Int,
     val video:Boolean,
@@ -20,4 +22,4 @@ class SearchItem (
     val original_name:String,
     val origin_country:List<String>,
     val first_air_date:String
-)
+) : LocalModel

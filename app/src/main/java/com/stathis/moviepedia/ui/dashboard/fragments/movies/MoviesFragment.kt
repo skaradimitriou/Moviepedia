@@ -1,19 +1,16 @@
 package com.stathis.moviepedia.ui.dashboard.fragments.movies
 
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.databinding.FragmentMoviesBinding
 import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.adapters.*
+import com.stathis.moviepedia.listeners.GenresClickListener
+import com.stathis.moviepedia.listeners.ItemClickListener
 
 
 class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListener {

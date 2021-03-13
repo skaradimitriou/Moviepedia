@@ -8,6 +8,7 @@ import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteTvSeries
+import com.stathis.moviepedia.models.LocalModel
 
 class TvSeriesInfoScreenViewModel : ViewModel() {
 
@@ -28,20 +29,20 @@ class TvSeriesInfoScreenViewModel : ViewModel() {
                 EmptyModel(""),
                 EmptyModel(""),
                 EmptyModel("")
-            ) as List<Any>?
+            ) as List<LocalModel>?
         )
     }
 
     fun observeDataFromApi(owner: LifecycleOwner) {
         cast.observe(owner, Observer { cast ->
             Log.d("cast is:", cast.toString())
-            castAdapter.submitList(cast as List<Any>?)
+            castAdapter.submitList(cast)
             castAdapter.notifyDataSetChanged()
         })
 
         reviews.observe(owner, Observer { reviews ->
             Log.d("reviews:", reviews.toString())
-            reviewsAdapter.submitList(reviews as List<Any>?)
+            reviewsAdapter.submitList(reviews)
         })
     }
 
@@ -58,7 +59,7 @@ class TvSeriesInfoScreenViewModel : ViewModel() {
         repo.getTvSeriesReviews(tvSeriesId)
     }
 
-    fun addToFavorites(favorite : FavoriteTvSeries) {
+    fun addToFavorites(favorite: FavoriteTvSeries) {
         repo.addToFavorites(favorite)
     }
 

@@ -3,7 +3,6 @@ package com.stathis.moviepedia.ui.dashboard.fragments.search
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
@@ -12,8 +11,7 @@ import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentSearchBinding
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
-import com.stathis.moviepedia.adapters.SearchAdapter
-import com.stathis.moviepedia.adapters.SearchItemClickListener
+import com.stathis.moviepedia.listeners.SearchItemClickListener
 
 
 class SearchFragment : AbstractFragment(), SearchItemClickListener {

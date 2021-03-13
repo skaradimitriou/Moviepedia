@@ -35,4 +35,8 @@ object ColorHelper {
             }
         }
     }
+
+    fun getAllColors(): List<ColorModel> {
+        return colorRepo
+    }
 }

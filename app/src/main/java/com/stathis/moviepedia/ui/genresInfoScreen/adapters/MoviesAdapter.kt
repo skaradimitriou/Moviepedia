@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.adapters.DiffUtilClass
-import com.stathis.moviepedia.adapters.ItemClickListener
+import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.adapters.ShimmerViewHolder
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.Movies

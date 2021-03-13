@@ -6,8 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.adapters.ItemClickListener
-import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.models.TvSeries
 
 class TvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

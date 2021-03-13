@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.listeners
 
 import com.stathis.moviepedia.models.MovieGenres
 

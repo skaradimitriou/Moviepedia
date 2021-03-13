@@ -1,19 +1,13 @@
 package com.stathis.moviepedia.ui.dashboard.fragments.tvSeries
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.adapters.*
+import com.stathis.moviepedia.listeners.GenresClickListener
+import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.models.*
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
 
 class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
 
@@ -38,7 +32,7 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
         setShimmer()
     }
 
-    fun initListener(callback : ItemClickListener,listener : GenresClickListener) {
+    fun initListener(callback : ItemClickListener, listener : GenresClickListener) {
         this.callback = callback
         this.listener = listener
     }

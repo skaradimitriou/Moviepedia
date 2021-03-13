@@ -9,7 +9,9 @@ import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.adapters.*
+import com.stathis.moviepedia.listeners.FavoriteClickListener
+import com.stathis.moviepedia.listeners.GenresClickListener
+import com.stathis.moviepedia.listeners.ItemClickListener
 
 
 class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickListener,

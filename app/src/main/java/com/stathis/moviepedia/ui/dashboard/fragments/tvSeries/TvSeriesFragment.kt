@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
-import com.stathis.moviepedia.adapters.GenresClickListener
-import com.stathis.moviepedia.adapters.ItemClickListener
+import com.stathis.moviepedia.listeners.GenresClickListener
+import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
 
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen

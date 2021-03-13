@@ -2,12 +2,11 @@ package com.stathis.moviepedia.ui.genresInfoScreen
 
 import android.app.Application
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.stathis.moviepedia.adapters.ItemClickListener
+import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries

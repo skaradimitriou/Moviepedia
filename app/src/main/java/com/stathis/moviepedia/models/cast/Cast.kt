@@ -1,5 +1,7 @@
 package com.stathis.moviepedia.models.cast
 
+import com.stathis.moviepedia.models.LocalModel
+
 class Cast (
     val cast_id:Int,
     val character :String,
@@ -8,4 +10,4 @@ class Cast (
     val name :String,
     val order:Int,
     val profile_path:String
-)
+) : LocalModel

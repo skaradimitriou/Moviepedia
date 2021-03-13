@@ -2,23 +2,14 @@ package com.stathis.moviepedia.ui.dashboard.fragments.search
 
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.adapters.SearchAdapter
-import com.stathis.moviepedia.adapters.SearchItemClickListener
+import com.stathis.moviepedia.listeners.SearchItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
-import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import java.io.IOException
 
 class SearchScreenViewModel : ViewModel(), SearchItemClickListener {
 
@@ -38,7 +29,7 @@ class SearchScreenViewModel : ViewModel(), SearchItemClickListener {
                 EmptyModel(""),
                 EmptyModel(""),
                 EmptyModel("")
-            ) as List<Any>?
+            ) as List<LocalModel>?
         )
     }
 
@@ -67,13 +58,13 @@ class SearchScreenViewModel : ViewModel(), SearchItemClickListener {
     fun observeData(owner: LifecycleOwner) {
         queries.observe(owner, Observer { queries ->
             Log.d("Queries", queries.toString())
-            searchAdapter.submitList(queries as List<Any>?)
+            searchAdapter.submitList(queries as List<LocalModel>?)
             searchAdapter.notifyDataSetChanged()
         })
 
         recentSearches.observe(owner, Observer { searchItem ->
             Log.d("Search Item", searchItem.toString())
-            searchAdapter.submitList(searchItem as List<Any>?)
+            searchAdapter.submitList(searchItem as List<LocalModel>?)
             searchAdapter.notifyDataSetChanged()
         })
     }

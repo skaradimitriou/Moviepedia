@@ -38,7 +38,7 @@ class MovieInfoScreenViewModel : ViewModel() {
                 EmptyModel(""),
                 EmptyModel(""),
                 EmptyModel("")
-            ) as List<Any>?
+            ) as List<LocalModel>?
         )
     }
 
@@ -53,12 +53,12 @@ class MovieInfoScreenViewModel : ViewModel() {
     fun observeData(owner: LifecycleOwner) {
         castInfo.observe(owner, Observer { cast ->
             Log.d("CAST", cast.toString())
-            adapter.submitList(cast as List<Any>?)
+            adapter.submitList(cast)
             adapter.notifyDataSetChanged()
         })
 
         reviews.observe(owner, Observer {
-            reviewsAdapter.submitList(it as List<Any>?)
+            reviewsAdapter.submitList(it)
         })
     }
 

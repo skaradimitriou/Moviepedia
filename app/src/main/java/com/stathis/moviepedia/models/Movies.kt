@@ -1,7 +1,5 @@
 package com.stathis.moviepedia.models
 
-import androidx.room.Entity
-
 class Movies (
     val id:Int,
     val video:Boolean,
@@ -19,7 +17,7 @@ class Movies (
     val poster_path:String,
     val popularity:Double,
     val media_type: String
-){
+) : LocalModel {
     constructor() : this(0,false,0,"",0.0,""
         ,"","","", emptyList(),"",false
         ,"","",0.0,"")

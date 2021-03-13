@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.Shimmer
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.models.EmptyModel
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.cast.Cast
 
-class CastAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffUtilClass<Any>()) {
+class CastAdapter : ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
@@ -35,16 +36,15 @@ class CastAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DiffUtilClass<Any>
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (getItem(position)) {
-            is Cast -> {
-                (holder as CastViewHolder).present(getItem(position) as Cast)
+        when (holder) {
+            is CastViewHolder -> {
+                holder.present(getItem(position))
             }
-            is EmptyModel -> {
-                (holder as ShimmerViewHolder).present(getItem(position) as EmptyModel)
-            }
-            else -> {
 
+            is ShimmerViewHolder -> {
+                holder.present(getItem(position))
             }
+            else -> Unit
         }
     }
 

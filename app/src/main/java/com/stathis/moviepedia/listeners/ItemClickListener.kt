@@ -1,6 +1,5 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.listeners
 
-import android.view.View
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
 

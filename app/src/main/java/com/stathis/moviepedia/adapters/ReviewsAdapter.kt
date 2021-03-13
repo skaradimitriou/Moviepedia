@@ -4,18 +4,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.stathis.moviepedia.databinding.ReviewsItemRowBinding
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.Reviews
 
-class ReviewsAdapter : ListAdapter<Any, ReviewsViewHolder>(DiffUtilClass<Any>()) {
+class ReviewsAdapter : ListAdapter<LocalModel, ReviewsViewHolder>(DiffUtilClass<LocalModel>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewsViewHolder {
-        val view = ReviewsItemRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return ReviewsViewHolder(view)
+        return ReviewsViewHolder(
+            ReviewsItemRowBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ReviewsViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        holder.bind(currentItem as Reviews)
+        holder.present(getItem(position))
     }
-
 }

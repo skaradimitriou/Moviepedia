@@ -4,17 +4,22 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.listeners.SearchItemClickListener
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
+import kotlinx.android.synthetic.main.query_item_row.view.*
 
 class QueryViewHolder(itemView:View) : RecyclerView.ViewHolder(itemView) {
 
-    val name: TextView = itemView.findViewById(R.id.queryName)
+    fun present(localModel: LocalModel, listener: SearchItemClickListener){
+        when(localModel){
+            is Query -> {
+                itemView.queryName.text = localModel.queryName
 
-    fun bind(query: Query, listener: SearchItemClickListener){
-        name.text = query.queryName
-
-        itemView.setOnClickListener{
-            listener.onQueryClick(query)
+                itemView.setOnClickListener{
+                    listener.onQueryClick(localModel)
+                }
+            }
         }
     }
 }
