@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.Shimmer
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.listeners.LocalClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.cast.Cast
 
-class CastAdapter : ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {
+class CastAdapter(val callback: LocalClickListener) :
+    ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
@@ -38,7 +40,7 @@ class CastAdapter : ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilCla
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CastViewHolder -> {
-                holder.present(getItem(position))
+                holder.present(getItem(position), callback)
             }
 
             is ShimmerViewHolder -> {

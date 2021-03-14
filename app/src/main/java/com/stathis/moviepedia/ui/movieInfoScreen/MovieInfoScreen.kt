@@ -9,9 +9,12 @@ import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractActivity
 import com.stathis.moviepedia.databinding.ActivityMovieInfoScreenBinding
+import com.stathis.moviepedia.listeners.LocalClickListener
 import com.stathis.moviepedia.models.FavoriteMovies
+import com.stathis.moviepedia.models.cast.Cast
+import com.stathis.moviepedia.ui.castDetails.CastDetailsActivity
 
-class MovieInfoScreen : AbstractActivity() {
+class MovieInfoScreen : AbstractActivity(), LocalClickListener {
 
     private var movieId: Int = 0
     private lateinit var moviePhoto: String
@@ -35,6 +38,8 @@ class MovieInfoScreen : AbstractActivity() {
 
     override fun running() {
         getIntentInfo()
+
+        viewModel.initListener(this)
         viewModel.getFavoritesFromDb(movieTitle)
 
         viewModel.getMovieCastInfo(movieId)
@@ -121,5 +126,9 @@ class MovieInfoScreen : AbstractActivity() {
             type = "text/plain"
             putExtra(Intent.EXTRA_TEXT, movieTitle)
         })
+    }
+
+    override fun onCastClick(cast: Cast) {
+        startActivity(Intent(this, CastDetailsActivity::class.java).putExtra("ACTOR_ID", cast.id))
     }
 }

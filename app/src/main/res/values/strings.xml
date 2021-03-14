@@ -17,7 +17,7 @@
     <string name="login_dialog_login_btn">Login</string>
 
     <!-- Register -->
-    <string name="register_dialog_header"/>
+    <string name="register_dialog_header" />
     <string name="register_dialog_register_header">Register for a new account</string>
     <string name="register_dialog_email_hint">E-mail</string>
     <string name="register_dialog_pass_hint">Password</string>

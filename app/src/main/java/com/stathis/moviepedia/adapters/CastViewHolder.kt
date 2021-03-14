@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.listeners.LocalClickListener
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.cast.Cast
 import de.hdodenhof.circleimageview.CircleImageView
@@ -12,10 +13,10 @@ import kotlinx.android.synthetic.main.cast_item_row.view.*
 
 class CastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun present(localModel: LocalModel) {
-        when(localModel){
+    fun present(localModel: LocalModel, callback: LocalClickListener) {
+        when (localModel) {
             is Cast -> {
-                if(localModel.profile_path.isNullOrBlank()){
+                if (localModel.profile_path.isNullOrBlank()) {
                     itemView.castImg.setImageResource(R.drawable.profile_img_placeholder)
                 } else {
                     Glide.with(itemView.context)
@@ -25,6 +26,8 @@ class CastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
 
                 itemView.castName.text = localModel.name
+
+                itemView.setOnClickListener { callback.onCastClick(localModel) }
             }
         }
     }

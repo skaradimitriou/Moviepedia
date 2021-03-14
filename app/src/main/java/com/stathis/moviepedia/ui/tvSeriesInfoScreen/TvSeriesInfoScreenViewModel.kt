@@ -6,14 +6,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
+import com.stathis.moviepedia.listeners.LocalClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.models.LocalModel
+import com.stathis.moviepedia.models.cast.Cast
 
-class TvSeriesInfoScreenViewModel : ViewModel() {
+class TvSeriesInfoScreenViewModel : ViewModel(),LocalClickListener {
 
     private val repo by lazy { TvSeriesInfoRepository() }
-    val castAdapter by lazy { CastAdapter() }
+    val castAdapter by lazy { CastAdapter(this) }
     val reviewsAdapter by lazy { ReviewsAdapter() }
     private var cast = repo.cast
     private var reviews = repo.reviews
@@ -69,5 +71,9 @@ class TvSeriesInfoScreenViewModel : ViewModel() {
 
     fun getUserFavorites(tvSeriesId: Int) {
         repo.getUserFavorites(tvSeriesId)
+    }
+
+    override fun onCastClick(cast: Cast) {
+        //
     }
 }

@@ -155,7 +155,6 @@ class UserProfile : AbstractActivity() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             val imgBitmap = data?.extras?.get("data") as Bitmap
             viewModel.saveCameraPhotoToDb(imgBitmap)
-//            viewModel.retrieveUserImg()
 
         } else if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             // I have to save the url to the db

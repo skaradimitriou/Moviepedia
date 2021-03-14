@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
+import com.stathis.moviepedia.listeners.LocalClickListener
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
@@ -19,14 +20,15 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.IOException
 
-class MovieInfoScreenViewModel : ViewModel() {
+class MovieInfoScreenViewModel : ViewModel(),LocalClickListener {
 
     private val repo = MoviesInfoRepository()
     private val castInfo = repo.castInfo
     private val reviews = repo.reviews
     val isFavorite = repo.isFavorite
-    val adapter = CastAdapter()
+    val adapter = CastAdapter(this)
     val reviewsAdapter = ReviewsAdapter()
+    private lateinit var callback : LocalClickListener
 
     init {
         adapter.submitList(
@@ -48,6 +50,10 @@ class MovieInfoScreenViewModel : ViewModel() {
 
     fun getMovieReviews(movieId: Int) {
         repo.getMovieReviews(movieId)
+    }
+
+    fun initListener(callback : LocalClickListener){
+        this.callback = callback
     }
 
     fun observeData(owner: LifecycleOwner) {
@@ -77,5 +83,9 @@ class MovieInfoScreenViewModel : ViewModel() {
 
     fun removeFromFavorites(movieTitle: String) {
         repo.removeFromFavorites(movieTitle)
+    }
+
+    override fun onCastClick(cast: Cast) {
+        callback.onCastClick(cast)
     }
 }
