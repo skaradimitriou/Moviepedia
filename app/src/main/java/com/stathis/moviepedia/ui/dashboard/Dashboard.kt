@@ -37,6 +37,8 @@ class Dashboard : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
+        viewModel.getUserPhoto()
+
         binding.userProfileImg.setOnClickListener {
             startActivity(Intent(this, UserProfile::class.java))
         }
@@ -71,7 +73,7 @@ class Dashboard : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.getUserPhoto().observe(this, Observer<String> { img ->
+        viewModel.imageDownloadLink.observe(this, Observer<String> { img ->
             Log.d("profile image path", img.toString())
             Glide.with(this).load(img).into(binding.userProfileImg)
         })

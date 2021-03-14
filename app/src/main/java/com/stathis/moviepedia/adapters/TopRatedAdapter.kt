@@ -29,7 +29,7 @@ class TopRatedAdapter(val listener: ItemClickListener) :
                         .inflate(viewType, parent, false)
                 )
             }
-            
+
             R.layout.holder_shimmer_top_rated -> {
                 ShimmerViewHolder(
                     LayoutInflater.from(parent.context)

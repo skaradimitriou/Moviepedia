@@ -1,10 +1,12 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.ui.userProfile.holder
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.adapters.DiffUtilClass
+import com.stathis.moviepedia.adapters.ShimmerViewHolder
 import com.stathis.moviepedia.databinding.PopularItemRowBinding
 import com.stathis.moviepedia.listeners.FavoriteClickListener
 import com.stathis.moviepedia.models.EmptyModel

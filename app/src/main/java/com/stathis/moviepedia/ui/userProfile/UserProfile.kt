@@ -20,49 +20,81 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.adapters.FavoriteAdapter
-import com.stathis.moviepedia.listeners.FavoriteClickListener
+import com.stathis.moviepedia.abstraction.AbstractActivity
 import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
-import com.stathis.moviepedia.models.FavoriteMovies
-import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import kotlinx.android.synthetic.main.bottom_sheet_choose_option.view.*
 
-class UserProfile : AppCompatActivity(), FavoriteClickListener {
+class UserProfile : AbstractActivity() {
 
     private val REQUEST_IMAGE_CAPTURE = 100
     private val IMAGE_PICK_CODE = 200
     private val PERMISSION_CODE = 201
     private lateinit var auth: FirebaseAuth
-    private var userViewModel: UserViewModel =
-        UserViewModel()
-    private lateinit var favoriteAdapter: FavoriteAdapter
+    private lateinit var viewModel: UserViewModel
     private lateinit var binding: ActivityUserProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // User ViewModel
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
+    override fun initLayout() {
+        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+    }
+
+    override fun running() {
+        binding.favGridRecView.adapter = viewModel.adapter
+
+        startShimmer()
+
+        viewModel.getUserFavoriteMovies()
+        viewModel.retrieveUsername()
+        viewModel.getUserPhoto()
 
         binding.backButton.setOnClickListener { onBackPressed() }
 
-        favoriteAdapter = FavoriteAdapter(this@UserProfile)
-
-        //handling onClickListener for included layout
         binding.logout.apply {
             binding.logout.logoutIcon.setOnClickListener { askForLogout() }
             binding.logout.logoutText.setOnClickListener { askForLogout() }
         }
 
-        userViewModel.retrieveUsername().observe(this, Observer<String> { username ->
+        binding.favMov.setOnClickListener {
+            binding.favMov.alpha = 1F
+            binding.favTv.alpha = 0.5F
+
+            viewModel.getUserFavoriteMovies()
+            startShimmer()
+        }
+
+        binding.favTv.setOnClickListener {
+            binding.favTv.alpha = 1F
+            binding.favMov.alpha = 0.5F
+
+            viewModel.getUserFavoriteTvSeries()
+            startShimmer()
+        }
+
+        binding.profileImg.setOnClickListener {
+            showUploadPhotoOptions()
+        }
+
+        observeViewModel()
+    }
+
+    override fun stopped() {
+        viewModel.removeObservers(this)
+    }
+
+    private fun startShimmer() {
+        viewModel.adapter.submitList(viewModel.startShimmer() as List<Any>?)
+    }
+
+    private fun observeViewModel() {
+        viewModel.observeData(this)
+
+        viewModel.username.observe(this, Observer { username ->
             Log.d("username", username.toString())
             if (username.toString().isNullOrEmpty()) {
                 binding.profileName.text = "User"
@@ -71,50 +103,13 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
             }
         })
 
-        userViewModel.getUserPhoto().observe(this, Observer<String> { img ->
+        viewModel.imageDownloadLink.observe(this, Observer<String> { img ->
             Log.d("profile image path", img.toString())
-            if(img !=null){
+            if (img != null) {
                 Glide.with(this).load(img).into(binding.profileImg)
             }
         })
-
-        userViewModel.retrieveUserImg().observe(this, Observer<Bitmap> { img ->
-            Log.d("profile image path", img.toString())
-            if (img != null) {
-                binding.profileImg.setImageBitmap(img)
-            }
-        })
-
-        startShimmer()
-        observerUserFavMovies()
-
-        binding.favMov.setOnClickListener {
-            binding.favMov.alpha = 1F
-            binding.favTv.alpha = 0.5F
-
-            startShimmer()
-            observerUserFavMovies()
-        }
-
-        binding.favTv.setOnClickListener {
-            binding.favTv.alpha = 1F
-            binding.favMov.alpha = 0.5F
-
-            startShimmer()
-            observeUserFavoriteTvSeries()
-        }
-
-        binding.profileImg.setOnClickListener {
-            // show Bottom Sheet Fragment
-            showUploadPhotoOptions()
-        }
-
     }
-
-    private fun startShimmer() {
-        favoriteAdapter.submitList(userViewModel.startShimmer() as List<Any>?)
-    }
-
 
     private fun showUploadPhotoOptions() {
         val view = layoutInflater.inflate(R.layout.bottom_sheet_choose_option, null)
@@ -140,29 +135,6 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }
     }
 
-    private fun observerUserFavMovies() {
-        userViewModel.getUserFavoriteMovies()
-            .observe(this, Observer<MutableList<FavoriteMovies>> { t ->
-                Log.d("User Fav Movies", t.toString())
-                if (t.size > 0) {
-                    favoriteAdapter.submitList(t as List<Any>?)
-                    favoriteAdapter.notifyDataSetChanged()
-                    binding.favGridRecView.adapter = favoriteAdapter
-                }
-            })
-    }
-
-    private fun observeUserFavoriteTvSeries() {
-        userViewModel.getUserFavoriteTvSeries()
-            .observe(this, Observer<MutableList<FavoriteTvSeries>> { c ->
-                Log.d("User Fav Tv Series", c.toString())
-                if (c.size > 0) {
-                    favoriteAdapter.submitList(c as List<Any>?)
-                    binding.favGridRecView.adapter = favoriteAdapter
-                }
-            })
-    }
-
     private fun takePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { pictureIntent ->
             pictureIntent.resolveActivity(this.packageManager!!)?.also {
@@ -182,15 +154,15 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             val imgBitmap = data?.extras?.get("data") as Bitmap
-            userViewModel.uploadAndSaveBitmapUri(imgBitmap)
-            userViewModel.retrieveUserImg()
+            viewModel.saveCameraPhotoToDb(imgBitmap)
+//            viewModel.retrieveUserImg()
 
         } else if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             // I have to save the url to the db
             val imageUri = data?.data
             if (imageUri != null) {
-                userViewModel.uploadAndSavePhoto(imageUri)
-                userViewModel.getUserPhoto()
+                viewModel.saveGalleryPhotoToDb(imageUri)
+                viewModel.getUserPhoto()
             }
         }
     }
@@ -246,25 +218,25 @@ class UserProfile : AppCompatActivity(), FavoriteClickListener {
         }, 3000)
     }
 
-    override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
-        startActivity(Intent(this, MovieInfoScreen::class.java).apply {
-            putExtra("MOVIE_ID", favoriteMovies.id)
-            putExtra("MOVIE_NAME", favoriteMovies.title)
-            putExtra("MOVIE_PHOTO", favoriteMovies.photo)
-            putExtra("RELEASE_DATE", favoriteMovies.releaseDate)
-            putExtra("DESCRIPTION", favoriteMovies.description)
-            putExtra("RATING", favoriteMovies.movie_rating.toString())
-        })
-    }
-
-    override fun onFavoriteTvSeriesClick(favoriteTvSeries: FavoriteTvSeries) {
-        startActivity(Intent(this, TvSeriesInfoScreen::class.java).apply {
-            putExtra("TV_SERIES_NAME", favoriteTvSeries.title)
-            putExtra("TV_SERIES_PHOTO", favoriteTvSeries.photo)
-            putExtra("TV_SERIES_ID", favoriteTvSeries.id)
-            putExtra("TV_SERIES_RELEASE_DATE", favoriteTvSeries.releaseDate)
-            putExtra("TV_SERIES_DESCRIPTION", favoriteTvSeries.description)
-            putExtra("TV_SERIES_RATING", favoriteTvSeries.movie_rating.toString())
-        })
-    }
+//    override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
+//        startActivity(Intent(this, MovieInfoScreen::class.java).apply {
+//            putExtra("MOVIE_ID", favoriteMovies.id)
+//            putExtra("MOVIE_NAME", favoriteMovies.title)
+//            putExtra("MOVIE_PHOTO", favoriteMovies.photo)
+//            putExtra("RELEASE_DATE", favoriteMovies.releaseDate)
+//            putExtra("DESCRIPTION", favoriteMovies.description)
+//            putExtra("RATING", favoriteMovies.movie_rating.toString())
+//        })
+//    }
+//
+//    override fun onFavoriteTvSeriesClick(favoriteTvSeries: FavoriteTvSeries) {
+//        startActivity(Intent(this, TvSeriesInfoScreen::class.java).apply {
+//            putExtra("TV_SERIES_NAME", favoriteTvSeries.title)
+//            putExtra("TV_SERIES_PHOTO", favoriteTvSeries.photo)
+//            putExtra("TV_SERIES_ID", favoriteTvSeries.id)
+//            putExtra("TV_SERIES_RELEASE_DATE", favoriteTvSeries.releaseDate)
+//            putExtra("TV_SERIES_DESCRIPTION", favoriteTvSeries.description)
+//            putExtra("TV_SERIES_RATING", favoriteTvSeries.movie_rating.toString())
+//        })
+//    }
 }

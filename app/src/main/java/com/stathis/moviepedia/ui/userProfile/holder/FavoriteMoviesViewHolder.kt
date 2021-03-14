@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.ui.userProfile.holder
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
