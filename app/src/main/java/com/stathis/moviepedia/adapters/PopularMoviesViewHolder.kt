@@ -11,6 +11,7 @@ import com.stathis.moviepedia.listeners.ItemClickListener
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.actor.KnownMovies
 import kotlinx.android.synthetic.main.popular_item_row.view.*
 import kotlin.math.roundToInt
 

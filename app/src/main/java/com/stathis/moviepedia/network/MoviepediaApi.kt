@@ -1,11 +1,13 @@
 package com.stathis.moviepedia.network
 
 import com.stathis.moviepedia.API_KEY
+import com.stathis.moviepedia.BASE_URL
 import com.stathis.moviepedia.models.MovieGenresFeed
 import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.models.UpcomingMovies
 import com.stathis.moviepedia.models.actor.Actor
+import com.stathis.moviepedia.models.actor.KnownMoviesFeed
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
@@ -60,6 +62,9 @@ interface MoviepediaApi {
     @GET("tv/{tvSeriesId}/reviews?$API_KEY")
     fun getTvReviews(@Path("tvSeriesId") tvSeriesId: Int): Call<ReviewsFeed>
 
-    @GET("person/{actorId}")
+    @GET("person/{actorId}?$API_KEY")
     fun getActorInfo(@Path("actorId") actorId : Int) : Call<Actor>
+
+    @GET("$BASE_URL/person/{actorId}/movie_credits?$API_KEY")
+    fun getActorsKnownMovies(@Path("actorId") actorId : Int) : Call<KnownMoviesFeed>
 }

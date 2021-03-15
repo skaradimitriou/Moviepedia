@@ -11,6 +11,7 @@ import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.actor.KnownMovies
 
 class TrendingAdapter(val listener: ItemClickListener) :
     ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {

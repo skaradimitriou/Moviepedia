@@ -5,6 +5,7 @@ import com.stathis.moviepedia.models.ReviewsFeed
 import com.stathis.moviepedia.models.TvSeriesFeed
 import com.stathis.moviepedia.models.UpcomingMovies
 import com.stathis.moviepedia.models.actor.Actor
+import com.stathis.moviepedia.models.actor.KnownMoviesFeed
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
@@ -86,5 +87,9 @@ object ApiClient {
 
     fun getActorInfo(actorId: Int): Call<Actor> {
         return api.getActorInfo(actorId)
+    }
+
+    fun getActorsKnownMovies(actorId: Int): Call<KnownMoviesFeed> {
+        return api.getActorsKnownMovies(actorId)
     }
 }
