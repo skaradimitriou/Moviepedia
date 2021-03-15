@@ -20,6 +20,7 @@ class TvSeriesInfoScreenViewModel : ViewModel(),LocalClickListener {
     private var cast = repo.cast
     private var reviews = repo.reviews
     val isFavorite = repo.isFavorite
+    private lateinit var callback: LocalClickListener
 
     init {
         castAdapter.submitList(
@@ -35,7 +36,8 @@ class TvSeriesInfoScreenViewModel : ViewModel(),LocalClickListener {
         )
     }
 
-    fun observeDataFromApi(owner: LifecycleOwner) {
+    fun observeDataFromApi(owner: LifecycleOwner,callback: LocalClickListener) {
+        this.callback = callback
         cast.observe(owner, Observer { cast ->
             Log.d("cast is:", cast.toString())
             castAdapter.submitList(cast)
@@ -74,6 +76,6 @@ class TvSeriesInfoScreenViewModel : ViewModel(),LocalClickListener {
     }
 
     override fun onCastClick(cast: Cast) {
-        //
+        callback.onCastClick(cast)
     }
 }

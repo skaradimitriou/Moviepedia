@@ -10,6 +10,8 @@ import com.stathis.moviepedia.ORIGINAL_PHOTO_URL
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractActivity
 import kotlinx.android.synthetic.main.activity_cast_details.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CastDetailsActivity : AbstractActivity() {
 
@@ -39,8 +41,10 @@ class CastDetailsActivity : AbstractActivity() {
                 .placeholder(R.drawable.default_img).into(main_actor_img)
             actor_description.text = it.biography
             actor_industry.text = it.known_for_department
-            actor_birth.text = it.birthday
             actor_description.text = it.place_of_birth
+
+            val date = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(it.birthday)
+            actor_birth.text = SimpleDateFormat("dd.MM.yyyy", Locale.US).format(date!!)
         })
 
         viewModel.observeData(this)

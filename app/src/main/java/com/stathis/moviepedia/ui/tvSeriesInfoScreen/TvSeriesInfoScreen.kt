@@ -8,7 +8,10 @@ import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractActivity
 import com.stathis.moviepedia.databinding.ActivityTvSeriesInfoScreenBinding
+import com.stathis.moviepedia.listeners.LocalClickListener
 import com.stathis.moviepedia.models.FavoriteTvSeries
+import com.stathis.moviepedia.models.cast.Cast
+import com.stathis.moviepedia.ui.castDetails.CastDetailsActivity
 
 class TvSeriesInfoScreen : AbstractActivity() {
 
@@ -33,6 +36,7 @@ class TvSeriesInfoScreen : AbstractActivity() {
 
     override fun running() {
         getIntentInfo()
+
         viewModel.getUserFavorites(tvSeriesId)
 
         binding.castRecView.adapter = viewModel.castAdapter
@@ -69,7 +73,11 @@ class TvSeriesInfoScreen : AbstractActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.observeDataFromApi(this)
+        viewModel.observeDataFromApi(this, object : LocalClickListener {
+            override fun onCastClick(cast: Cast) {
+                startActivity(Intent(applicationContext, CastDetailsActivity::class.java).putExtra("ACTOR_ID", cast.id))
+            }
+        })
 
         viewModel.isFavorite.observe(this, Observer {
             when (it) {
