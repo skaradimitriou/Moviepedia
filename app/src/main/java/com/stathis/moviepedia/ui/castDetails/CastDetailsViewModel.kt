@@ -4,12 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.stathis.moviepedia.listeners.ItemClickListener
-import com.stathis.moviepedia.models.Movies
-import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.ui.castDetails.adapter.KnownMoviesAdapter
 
-class CastDetailsViewModel : ViewModel(), ItemClickListener {
+class CastDetailsViewModel : ViewModel() {
 
     private val repo = CastDetailsRepository()
     val actorData = repo.actorData
@@ -28,18 +26,11 @@ class CastDetailsViewModel : ViewModel(), ItemClickListener {
         knownMovies.observe(owner, Observer {
             Log.d("", it.toString())
             adapter.submitList(it.knownMovies)
+            adapter.notifyDataSetChanged()
         })
     }
 
     fun removeObservers(owner: LifecycleOwner) {
         knownMovies.removeObservers(owner)
-    }
-
-    override fun onItemClick(movies: Movies) {
-        //
-    }
-
-    override fun onTvSeriesClick(tvSeries: TvSeries) {
-       //
     }
 }

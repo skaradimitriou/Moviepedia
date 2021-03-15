@@ -94,5 +94,8 @@
     <string name="usernane">Usernane</string>
     <string name="get_started">Get started</string>
     <string name="how_shall_we_call_you">How shall we call you?</string>
+    <string name="known_for">Known For</string>
+    <string name="actor_name">Actor Name</string>
+    <string name="actor_description">Actor desc</string>
 
 </resources>

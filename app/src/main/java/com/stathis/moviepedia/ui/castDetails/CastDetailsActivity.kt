@@ -34,10 +34,13 @@ class CastDetailsActivity : AbstractActivity() {
         known_movies_recycler.adapter = viewModel.adapter
 
         viewModel.actorData.observe(this, Observer {
-            Log.d("", it.toString())
             actor_name.text = it.name
-            Glide.with(this).load("$ORIGINAL_PHOTO_URL${it.profile_path}").into(main_actor_img)
+            Glide.with(this).load("$ORIGINAL_PHOTO_URL${it.profile_path}")
+                .placeholder(R.drawable.default_img).into(main_actor_img)
             actor_description.text = it.biography
+            actor_industry.text = it.known_for_department
+            actor_birth.text = it.birthday
+            actor_description.text = it.place_of_birth
         })
 
         viewModel.observeData(this)
