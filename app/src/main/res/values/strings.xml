@@ -97,5 +97,9 @@
     <string name="known_for">Known For</string>
     <string name="actor_name">Actor Name</string>
     <string name="actor_description">Actor desc</string>
+    <string name="loading_txt">Loading...</string>
+    <string name="movie_type_genre">Action</string>
+    <string name="logout_text">Logout</string>
+    <string name="dummy_rating">9.1</string>
 
 </resources>

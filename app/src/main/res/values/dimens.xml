@@ -19,4 +19,9 @@
     <dimen name="margin_50">50dp</dimen>
     <dimen name="image_280">280dp</dimen>
     <dimen name="padding_16">16dp</dimen>
+    <dimen name="margin_7">7dp</dimen>
+    <dimen name="radius_3">3dp</dimen>
+    <dimen name="image_130">130dp</dimen>
+    <dimen name="image_110">110dp</dimen>
+    <dimen name="image_40">40dp</dimen>
 </resources>
