@@ -16,14 +16,10 @@ import retrofit2.http.Path
 object ApiClient {
 
     private val BASE_URL = "https://api.themoviedb.org/3/"
-    private val api: MoviepediaApi
-
-    init {
-        api = Retrofit.Builder().baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(MoviepediaApi::class.java)
-    }
+    private val api = Retrofit.Builder().baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(MoviepediaApi::class.java)
 
     fun getCountries(): Call<UpcomingMovies> {
         return api.getUpcomindMovies()

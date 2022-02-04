@@ -14,8 +14,7 @@ import com.stathis.moviepedia.listeners.GenresClickListener
 import com.stathis.moviepedia.listeners.ItemClickListener
 
 
-class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickListener,
-    FavoriteClickListener {
+class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickListener, FavoriteClickListener {
 
     private lateinit var viewModel: MovAndTvSeriesViewModel
     private lateinit var binding: FragmentDashboardBinding

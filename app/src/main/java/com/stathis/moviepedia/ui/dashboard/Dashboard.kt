@@ -37,7 +37,7 @@ class Dashboard : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        viewModel.getUserPhoto()
+        //viewModel.getUserPhoto()
 
         binding.userProfileImg.setOnClickListener {
             startActivity(Intent(this, UserProfile::class.java))
@@ -73,10 +73,10 @@ class Dashboard : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.imageDownloadLink.observe(this, Observer<String> { img ->
-            Log.d("profile image path", img.toString())
-            Glide.with(this).load(img).into(binding.userProfileImg)
-        })
+//        viewModel.imageDownloadLink.observe(this, Observer<String> { img ->
+//            Log.d("profile image path", img.toString())
+//            Glide.with(this).load(img).into(binding.userProfileImg)
+//        })
     }
 
     override fun onBackPressed() {

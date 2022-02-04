@@ -30,6 +30,9 @@ class ForgotPassword : AbstractActivity() {
     }
 
     override fun initLayout() {
+        //FIXME: Delete Screen. It is not moved to intro package with all the login/register flow
+
+
         viewModel = ViewModelProvider(this).get(ForgotPasswordViewModel::class.java)
     }
 

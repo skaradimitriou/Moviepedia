@@ -40,6 +40,10 @@ android {
     viewBinding {
         enabled true
     }
+
+    dataBinding{
+        enabled true
+    }
 }
 
 dependencies {
@@ -88,9 +92,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-process:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    def navVersion = '2.1.0-alpha05'
+    def navVersion = '2.4.0'
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navVersion"
+    androidTestImplementation "androidx.navigation:navigation-testing:$navVersion"
 
     //Room Local Database
     def room_version = "2.2.5"

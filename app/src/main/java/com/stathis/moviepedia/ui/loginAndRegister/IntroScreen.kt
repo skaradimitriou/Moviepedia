@@ -33,6 +33,8 @@ class IntroScreen : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        //FIXME: Delete Screen. It is not moved to intro package with all the login/register flow
+
         binding.forgotLoginCredentials.setOnClickListener {
             startActivity(Intent(this, ForgotPassword::class.java))
         }
