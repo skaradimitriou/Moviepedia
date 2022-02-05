@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Moviepedia</string>
 
+    <!--- Refactor -->
+    <string name="genres_screen_movie_title">%s Movies</string>
+    <string name="genres_screen_tv_title">%s TV Series</string>
+
+
+
     <!-- Intro Screen -->
     <string name="intro_screen_app_name">Moviepedia</string>
     <string name="intro_screen_sub_text">Search movies &amp; TV Series.</string>

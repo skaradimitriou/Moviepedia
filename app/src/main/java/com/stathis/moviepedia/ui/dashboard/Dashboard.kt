@@ -37,6 +37,8 @@ class Dashboard : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
+        supportActionBar?.hide()
+
         //viewModel.getUserPhoto()
 
         binding.userProfileImg.setOnClickListener {

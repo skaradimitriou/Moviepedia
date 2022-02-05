@@ -7,4 +7,6 @@ class KnownMoviesFeed(
 
     @SerializedName("cast")
     val knownMovies: List<KnownMovies>
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

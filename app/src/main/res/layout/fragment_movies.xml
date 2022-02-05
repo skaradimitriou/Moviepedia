@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#1d1d1d"
-    tools:context=".ui.dashboard.fragments.all.DashboardFragment">
+    tools:context=".ui.dashboard.fragments.home.DashboardFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/upcomingMoviesRecView"

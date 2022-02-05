@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.stathis.moviepedia.ui.userProfile.holder.FavoriteAdapter
-import com.stathis.moviepedia.listeners.FavoriteClickListener
+import com.stathis.moviepedia.listeners.old.FavoriteClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries

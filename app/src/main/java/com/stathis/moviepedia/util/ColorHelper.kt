@@ -1,5 +1,6 @@
 package com.stathis.moviepedia.util
 
+import android.graphics.Color
 import androidx.lifecycle.MutableLiveData
 import com.stathis.moviepedia.models.ColorModel
 
@@ -34,6 +35,11 @@ object ColorHelper {
                 color.value = it.color
             }
         }
+    }
+
+    fun getBgColor(genreName: String): String {
+        val found = colorRepo.indexOf(ColorModel(genreName,""))
+        return colorRepo.get(found).color
     }
 
     fun getAllColors(): List<ColorModel> {

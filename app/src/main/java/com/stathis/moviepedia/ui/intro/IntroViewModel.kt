@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class IntroViewModel : ViewModel() {
 
-    private val auth = FirebaseAuth.getInstance()
+    val auth = FirebaseAuth.getInstance()
 
     val registerSuccess = MutableLiveData<Pair<Boolean, String>>()
     val loginSuccess = MutableLiveData<Pair<Boolean, String>>()

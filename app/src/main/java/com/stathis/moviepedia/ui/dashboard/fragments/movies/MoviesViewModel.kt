@@ -5,8 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.stathis.moviepedia.adapters.*
-import com.stathis.moviepedia.listeners.GenresClickListener
-import com.stathis.moviepedia.listeners.ItemClickListener
+import com.stathis.moviepedia.listeners.old.GenresClickListener
+import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.*
 
 class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {

@@ -22,4 +22,6 @@ class SearchItem (
     val original_name:String,
     val origin_country:List<String>,
     val first_air_date:String
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

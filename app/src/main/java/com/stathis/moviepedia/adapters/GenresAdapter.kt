@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.GenresClickListener
+import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.MovieGenres
 

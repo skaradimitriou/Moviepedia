@@ -2,4 +2,6 @@ package com.stathis.moviepedia.models
 
 data class MovieGenresFeed (
     val genres:List<MovieGenres>
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

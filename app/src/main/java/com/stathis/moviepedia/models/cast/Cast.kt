@@ -10,4 +10,6 @@ class Cast (
     val name :String,
     val order:Int,
     val profile_path:String
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

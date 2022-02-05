@@ -10,4 +10,6 @@ class Crew (
     val job:String,
     val name:String,
     val profile_path:String
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

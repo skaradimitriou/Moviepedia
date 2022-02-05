@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.ui.dashboard.fragments.all
+package com.stathis.moviepedia.ui.dashboard.fragments.home
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

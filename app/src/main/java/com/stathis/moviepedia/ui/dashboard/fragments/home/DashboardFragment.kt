@@ -1,20 +1,21 @@
-package com.stathis.moviepedia.ui.dashboard.fragments.all
+package com.stathis.moviepedia.ui.dashboard.fragments.home
 
 import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
-import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
+import com.stathis.moviepedia.ui.genres.GenresActivity
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.listeners.FavoriteClickListener
-import com.stathis.moviepedia.listeners.GenresClickListener
-import com.stathis.moviepedia.listeners.ItemClickListener
+import com.stathis.moviepedia.listeners.old.FavoriteClickListener
+import com.stathis.moviepedia.listeners.old.GenresClickListener
+import com.stathis.moviepedia.listeners.old.ItemClickListener
 
 
-class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickListener, FavoriteClickListener {
+class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickListener,
+    FavoriteClickListener {
 
     private lateinit var viewModel: MovAndTvSeriesViewModel
     private lateinit var binding: FragmentDashboardBinding
@@ -83,7 +84,7 @@ class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickList
     }
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        startActivity(Intent(activity, GenresInfoScreen::class.java).apply {
+        startActivity(Intent(activity, GenresActivity::class.java).apply {
             putExtra("GENRE_ID", movieGenres.id)
             putExtra("GENRE_NAME", movieGenres.name)
         })

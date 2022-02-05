@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
-import com.stathis.moviepedia.listeners.GenresClickListener
-import com.stathis.moviepedia.listeners.ItemClickListener
-import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
+import com.stathis.moviepedia.listeners.old.GenresClickListener
+import com.stathis.moviepedia.listeners.old.ItemClickListener
+import com.stathis.moviepedia.ui.genres.GenresActivity
 
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentTvSeriesBinding
@@ -86,7 +86,7 @@ class TvSeriesFragment : AbstractFragment(), ItemClickListener, GenresClickListe
     }
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        startActivity(Intent(activity, GenresInfoScreen::class.java).apply {
+        startActivity(Intent(activity, GenresActivity::class.java).apply {
             putExtra("GENRE_ID", movieGenres.id)
             putExtra("GENRE_NAME", movieGenres.name)
         })

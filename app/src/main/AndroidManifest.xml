@@ -26,7 +26,7 @@
         <activity android:name=".ui.tvSeriesInfoScreen.TvSeriesInfoScreen" />
         <activity android:name=".ui.movieInfoScreen.MovieInfoScreen" />
         <activity android:name=".ui.dashboard.Dashboard" />
-        <activity android:name=".ui.genresInfoScreen.GenresInfoScreen" />
+        <activity android:name=".ui.genres.GenresActivity" />
         <activity android:name=".ui.loginAndRegister.IntroScreen" />
         <activity android:name=".ui.splash.SplashActivity" >
             <intent-filter>

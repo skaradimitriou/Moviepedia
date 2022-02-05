@@ -1,3 +1,5 @@
 package com.stathis.moviepedia.models
 
-interface LocalModel {}
+interface LocalModel {
+    fun equals(model : LocalModel) : Boolean
+}

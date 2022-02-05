@@ -6,4 +6,6 @@ class ReviewsFeed(
     val results: List<Reviews>,
     val total_pages: Int,
     val total_results: Int
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

@@ -11,7 +11,7 @@ import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentSearchBinding
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
-import com.stathis.moviepedia.listeners.SearchItemClickListener
+import com.stathis.moviepedia.listeners.old.SearchItemClickListener
 
 
 class SearchFragment : AbstractFragment(), SearchItemClickListener {

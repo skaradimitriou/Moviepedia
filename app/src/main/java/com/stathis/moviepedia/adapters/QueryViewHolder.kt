@@ -1,10 +1,9 @@
 package com.stathis.moviepedia.adapters
 
 import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.SearchItemClickListener
+import com.stathis.moviepedia.listeners.old.SearchItemClickListener
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query
 import kotlinx.android.synthetic.main.query_item_row.view.*

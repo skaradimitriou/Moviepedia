@@ -6,4 +6,6 @@ class MovieCastFeed (
     val id:Int,
     val cast:List<Cast>,
     val crew:List<Crew>
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

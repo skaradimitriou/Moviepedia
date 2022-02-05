@@ -2,25 +2,15 @@ package com.stathis.moviepedia.ui.movieInfoScreen
 
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import com.google.gson.GsonBuilder
-import com.stathis.moviepedia.R
 import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
-import com.stathis.moviepedia.listeners.LocalClickListener
+import com.stathis.moviepedia.listeners.old.LocalClickListener
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.models.cast.Cast
-import com.stathis.moviepedia.models.cast.MovieCastFeed
-import okhttp3.Call
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.io.IOException
 
-class MovieInfoScreenViewModel : ViewModel(),LocalClickListener {
+class MovieInfoScreenViewModel : ViewModel(), LocalClickListener {
 
     private val repo = MoviesInfoRepository()
     private val castInfo = repo.castInfo

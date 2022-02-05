@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.SearchItemClickListener
+import com.stathis.moviepedia.listeners.old.SearchItemClickListener
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItem
 import kotlinx.android.synthetic.main.search_item_row.view.*

@@ -5,4 +5,5 @@ class MovieGenres(
     val name: String
 ) : LocalModel {
     constructor(): this(0,"")
+    override fun equals(model: LocalModel): Boolean = false
 }

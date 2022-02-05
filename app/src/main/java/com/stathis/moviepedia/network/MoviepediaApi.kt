@@ -48,7 +48,7 @@ interface MoviepediaApi {
     fun getQueryInfo(@Query("query") query: String): Call<SearchItemsFeed>
 
     @GET("discover/movie?$API_KEY&with_genres=")
-    fun getResultsForThisGenre(@Query("queryId") queryId: Int): Call<UpcomingMovies>
+    fun getResultsForThisGenre(@Query("genreId") genreId: Int): Call<UpcomingMovies>
 
     @GET("movie/{movieId}/credits?$API_KEY")
     fun getMovieCastInfo(@Path("movieId") movieId: Int): Call<MovieCastFeed>

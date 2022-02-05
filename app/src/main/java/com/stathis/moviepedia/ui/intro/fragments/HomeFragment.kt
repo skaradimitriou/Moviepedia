@@ -6,6 +6,7 @@ import androidx.navigation.Navigation
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractBindingFragment
 import com.stathis.moviepedia.databinding.FragmentHomeBinding
+import com.stathis.moviepedia.ui.dashboard.Dashboard
 import com.stathis.moviepedia.ui.forgotPassword.forgotPass.ForgotPassword
 import com.stathis.moviepedia.ui.intro.IntroViewModel
 
@@ -16,6 +17,10 @@ class HomeFragment : AbstractBindingFragment<FragmentHomeBinding>(R.layout.fragm
 
     override fun init() {
         viewModel = ViewModelProvider(requireActivity()).get(IntroViewModel::class.java)
+
+        when(viewModel.auth.currentUser != null){
+            true -> startActivity(Intent(requireContext(), Dashboard::class.java))
+        }
     }
 
     override fun startOps() {

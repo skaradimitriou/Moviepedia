@@ -5,4 +5,6 @@ data class Reviews(
     val author:String,
     val content:String,
     val url:String
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

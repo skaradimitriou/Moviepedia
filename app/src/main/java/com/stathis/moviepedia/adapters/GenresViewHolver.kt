@@ -3,10 +3,8 @@ package com.stathis.moviepedia.adapters
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.GenresClickListener
+import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.MovieGenres
 import com.stathis.moviepedia.util.ColorHelper

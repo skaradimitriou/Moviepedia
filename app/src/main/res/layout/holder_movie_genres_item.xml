@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.stathis.moviepedia.models.Movies" />
+
+        <variable
+            name="callback"
+            type="com.stathis.moviepedia.listeners.GenericCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:layout_marginTop="@dimen/dimen_10"
+        android:layout_marginEnd="@dimen/dimen_10"
+        android:onClick="@{(view) -> callback.onItemTap(view)}"
+        android:tag="@{model}">
+
+        <ImageView
+            android:id="@+id/movie_img"
+            image="@{model.poster_path}"
+            placeholder="@{@drawable/moviepedia_logo}"
+            android:contentDescription="@{model.title}"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/image_200"
+            android:layout_marginTop="@dimen/padding_15"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="@id/rating_bar_center_point"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/default_img" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            style="@style/paragraph_14_white_bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10"
+            android:text="@{model.title}"
+            app:layout_constraintEnd_toEndOf="@+id/movie_img"
+            app:layout_constraintStart_toStartOf="@+id/movie_img"
+            app:layout_constraintTop_toBottomOf="@+id/movie_img"
+            tools:text="@string/movie_title" />
+
+        <ProgressBar
+            android:id="@+id/rating_progressbar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            setMovieRating="@{model.vote_average}"
+            android:layout_width="@dimen/image_40"
+            android:layout_height="@dimen/image_40"
+            android:indeterminate="false"
+            android:max="100"
+            android:progressDrawable="@drawable/custom_progress_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:progress="70" />
+
+        <View
+            android:id="@+id/rating_bar_center_point"
+            android:layout_width="@dimen/dimen_1"
+            android:layout_height="@dimen/dimen_1"
+            app:layout_constraintBottom_toBottomOf="@id/rating_progressbar"
+            app:layout_constraintEnd_toEndOf="@id/rating_progressbar"
+            app:layout_constraintStart_toStartOf="@id/rating_progressbar"
+            app:layout_constraintTop_toTopOf="@id/rating_progressbar" />
+
+        <TextView
+            android:id="@+id/rating_movie_txt"
+            style="@style/paragraph_14_white_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(model.vote_average)}"
+            app:layout_constraintBottom_toBottomOf="@id/rating_progressbar"
+            app:layout_constraintEnd_toEndOf="@+id/rating_progressbar"
+            app:layout_constraintStart_toStartOf="@id/rating_progressbar"
+            app:layout_constraintTop_toTopOf="@+id/rating_progressbar"
+            tools:text="@string/dummy_rating" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

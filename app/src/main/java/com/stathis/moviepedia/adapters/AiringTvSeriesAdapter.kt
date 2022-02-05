@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.ItemClickListener
+import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.TvSeries
 
 class AiringTvSeriesAdapter(private val listener: ItemClickListener) :

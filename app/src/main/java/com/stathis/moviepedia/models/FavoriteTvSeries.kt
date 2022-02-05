@@ -8,5 +8,6 @@ class FavoriteTvSeries(
     val description: String,
     val releaseDate: String
 ) : LocalModel {
+    override fun equals(model: LocalModel): Boolean = false
     constructor() : this(0, "", "", 0.0, "", "")
 }

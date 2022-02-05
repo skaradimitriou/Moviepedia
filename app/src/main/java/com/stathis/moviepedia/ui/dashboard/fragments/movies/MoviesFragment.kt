@@ -6,11 +6,11 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.databinding.FragmentMoviesBinding
-import com.stathis.moviepedia.ui.genresInfoScreen.GenresInfoScreen
+import com.stathis.moviepedia.ui.genres.GenresActivity
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
-import com.stathis.moviepedia.listeners.GenresClickListener
-import com.stathis.moviepedia.listeners.ItemClickListener
+import com.stathis.moviepedia.listeners.old.GenresClickListener
+import com.stathis.moviepedia.listeners.old.ItemClickListener
 
 
 class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListener {
@@ -82,7 +82,7 @@ class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListene
     }
 
     override fun onGenreClick(movieGenres: MovieGenres) {
-        startActivity(Intent(activity, GenresInfoScreen::class.java).apply {
+        startActivity(Intent(activity, GenresActivity::class.java).apply {
             putExtra("GENRE_ID", movieGenres.id)
             putExtra("GENRE_NAME", movieGenres.name)
         })

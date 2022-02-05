@@ -9,7 +9,9 @@ import com.stathis.moviepedia.ui.intro.IntroActivity
 
 class SplashActivity : AbstractBindingActivity<ActivityMainBinding>(R.layout.activity_main) {
 
-    override fun init() {}
+    override fun init() {
+        supportActionBar?.hide()
+    }
 
     override fun startOps() {
         Handler().postDelayed({

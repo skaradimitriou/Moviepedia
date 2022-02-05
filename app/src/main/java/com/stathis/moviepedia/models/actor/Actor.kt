@@ -15,4 +15,6 @@ class Actor(
     val place_of_birth: String,
     val profile_path: String
 
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

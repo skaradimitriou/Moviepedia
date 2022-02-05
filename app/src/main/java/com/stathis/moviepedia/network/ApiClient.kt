@@ -1,21 +1,21 @@
 package com.stathis.moviepedia.network
 
-import com.stathis.moviepedia.models.MovieGenresFeed
-import com.stathis.moviepedia.models.ReviewsFeed
-import com.stathis.moviepedia.models.TvSeriesFeed
-import com.stathis.moviepedia.models.UpcomingMovies
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.stathis.moviepedia.BASE_URL
+import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.models.actor.Actor
 import com.stathis.moviepedia.models.actor.KnownMoviesFeed
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Path
 
 object ApiClient {
 
-    private val BASE_URL = "https://api.themoviedb.org/3/"
     private val api = Retrofit.Builder().baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -61,8 +61,18 @@ object ApiClient {
         return api.getTvGenres()
     }
 
-    fun getResultsForThisGenre(query: Int): Call<UpcomingMovies> {
-        return api.getResultsForThisGenre(query)
+    fun getResultsForThisGenre(genreId: Int, data : MutableLiveData<List<Movies>>, error : MutableLiveData<Boolean>) {
+        api.getResultsForThisGenre(genreId).enqueue(object : Callback<UpcomingMovies> {
+            override fun onResponse(call: Call<UpcomingMovies>, response: retrofit2.Response<UpcomingMovies>) {
+                Log.d("", response.body().toString())
+                data.postValue(response.body()?.results)
+                error.postValue(false)
+            }
+
+            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
+                error.postValue(true)
+            }
+        })
     }
 
     fun getMovieCastInfo(movieId: Int): Call<MovieCastFeed> {

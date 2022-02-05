@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.stathis.moviepedia.adapters.SearchAdapter
-import com.stathis.moviepedia.listeners.SearchItemClickListener
+import com.stathis.moviepedia.listeners.old.SearchItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.Query

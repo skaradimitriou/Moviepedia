@@ -8,7 +8,7 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.adapters.DiffUtilClass
 import com.stathis.moviepedia.adapters.ShimmerViewHolder
 import com.stathis.moviepedia.databinding.PopularItemRowBinding
-import com.stathis.moviepedia.listeners.FavoriteClickListener
+import com.stathis.moviepedia.listeners.old.FavoriteClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.FavoriteTvSeries

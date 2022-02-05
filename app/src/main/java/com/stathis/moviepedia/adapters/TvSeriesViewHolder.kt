@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.ui.genresInfoScreen.adapters
+package com.stathis.moviepedia.adapters
 
 import android.view.View
 import android.widget.ImageView
@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.ItemClickListener
+import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.TvSeries
 
 class TvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

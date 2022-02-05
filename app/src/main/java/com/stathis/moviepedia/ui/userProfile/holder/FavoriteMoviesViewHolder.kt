@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.PopularItemRowBinding
-import com.stathis.moviepedia.listeners.FavoriteClickListener
+import com.stathis.moviepedia.listeners.old.FavoriteClickListener
 import com.stathis.moviepedia.models.FavoriteMovies
 import kotlin.math.roundToInt
 

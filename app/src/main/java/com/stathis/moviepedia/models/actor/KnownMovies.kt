@@ -15,4 +15,6 @@ class KnownMovies(
 
     val backdrop_path: String,
     val vote_average: Double
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

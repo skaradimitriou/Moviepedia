@@ -6,4 +6,6 @@ class Query(
     var queryName: String
 ) : LocalModel {
     constructor() : this("")
+
+    override fun equals(model: LocalModel): Boolean = false
 }

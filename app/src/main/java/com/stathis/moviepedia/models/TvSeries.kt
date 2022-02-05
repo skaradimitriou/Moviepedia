@@ -15,4 +15,6 @@ data class TvSeries (
     val vote_average:Double,
     val overview:String,
     val poster_path:String
-) : LocalModel
+) : LocalModel{
+    override fun equals(model: LocalModel): Boolean = false
+}

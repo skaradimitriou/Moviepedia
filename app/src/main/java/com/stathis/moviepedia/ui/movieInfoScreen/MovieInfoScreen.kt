@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractActivity
 import com.stathis.moviepedia.databinding.ActivityMovieInfoScreenBinding
-import com.stathis.moviepedia.listeners.LocalClickListener
+import com.stathis.moviepedia.listeners.old.LocalClickListener
 import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.ui.castDetails.CastDetailsActivity

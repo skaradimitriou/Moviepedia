@@ -21,6 +21,7 @@ class IntroActivity : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
+        supportActionBar?.hide()
         viewModel = ViewModelProvider(this).get(IntroViewModel::class.java)
     }
 }

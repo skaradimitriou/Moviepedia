@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.shimmer.Shimmer
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.LocalClickListener
+import com.stathis.moviepedia.listeners.old.LocalClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.cast.Cast
