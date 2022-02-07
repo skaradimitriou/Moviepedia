@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.stathis.moviepedia.models.cast.Cast" />
+
+        <variable
+            name="callback"
+            type="com.stathis.moviepedia.listeners.GenericCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@{(view) -> callback.onItemTap(view)}"
+        android:padding="@dimen/dimen_10"
+        android:tag="@{model}">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/castImg"
+            image="@{model.profile_path}"
+            placeholder="@{@drawable/moviepedia_logo}"
+            android:layout_width="@dimen/image_55"
+            android:layout_height="@dimen/image_55"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/default_img" />
+
+        <TextView
+            android:id="@+id/castName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:text="@{model.name}"
+            style="@style/paragraph_12_white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/castImg"
+            tools:text="@string/app_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

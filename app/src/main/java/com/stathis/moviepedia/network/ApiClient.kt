@@ -6,10 +6,12 @@ import com.stathis.moviepedia.BASE_URL
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.models.actor.Actor
 import com.stathis.moviepedia.models.actor.KnownMoviesFeed
+import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Path
@@ -75,12 +77,30 @@ object ApiClient {
         })
     }
 
-    fun getMovieCastInfo(movieId: Int): Call<MovieCastFeed> {
-        return api.getMovieCastInfo(movieId)
+    fun getMovieCastInfo(movieId: Int, data : MutableLiveData<List<Cast>>, error : MutableLiveData<Boolean>) {
+        api.getMovieCastInfo(movieId).enqueue(object : Callback<MovieCastFeed> {
+            override fun onResponse(call: Call<MovieCastFeed>,response: Response<MovieCastFeed>) {
+                data.postValue(response.body()?.cast)
+                error.postValue(false)
+            }
+
+            override fun onFailure(call: Call<MovieCastFeed>, t: Throwable) {
+                error.postValue(true)
+            }
+        })
     }
 
-    fun getMovieReviews(movieId: Int): Call<ReviewsFeed> {
-        return api.getMovieReviews(movieId)
+    fun getMovieReviews(movieId: Int,data : MutableLiveData<List<Reviews>>, error : MutableLiveData<Boolean>) {
+        api.getMovieReviews(movieId).enqueue(object : Callback<ReviewsFeed> {
+            override fun onResponse(call: Call<ReviewsFeed>, response: Response<ReviewsFeed>) {
+                data.postValue(response.body()?.results)
+                error.postValue(false)
+            }
+
+            override fun onFailure(call: Call<ReviewsFeed>, t: Throwable) {
+                error.postValue(true)
+            }
+        })
     }
 
     fun getTvCastInfo(tvSeriesId: Int): Call<MovieCastFeed> {

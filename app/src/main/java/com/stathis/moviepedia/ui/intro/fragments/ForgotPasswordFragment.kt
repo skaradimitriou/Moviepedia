@@ -11,9 +11,8 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractBindingFragment
 import com.stathis.moviepedia.databinding.FragmentForgotPasswordBinding
 import com.stathis.moviepedia.ui.intro.IntroViewModel
-import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
 import kotlinx.android.synthetic.main.account_success_view.view.*
-import kotlinx.android.synthetic.main.activity_forgot_password.*
+import kotlinx.android.synthetic.main.fragment_forgot_password.*
 
 class ForgotPasswordFragment : AbstractBindingFragment<FragmentForgotPasswordBinding>(R.layout.fragment_forgot_password) {
 
@@ -47,7 +46,7 @@ class ForgotPasswordFragment : AbstractBindingFragment<FragmentForgotPasswordBin
         successDialog.redirect_txt.text = "Follow the steps in your e-mail to reset your password"
         Handler().postDelayed({
             successBuilder.dismiss()
-            startActivity(Intent(requireContext(), IntroScreen::class.java))
+            //startActivity(Intent(requireContext(), IntroScreen::class.java))
         }, 4000)
     }
 }

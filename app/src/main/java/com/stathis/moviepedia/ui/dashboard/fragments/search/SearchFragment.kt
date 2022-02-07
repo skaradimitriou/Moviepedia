@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
+import com.stathis.moviepedia.ui.movieInfoScreen.MovieDetailsActivity
 
 import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
 import com.stathis.moviepedia.databinding.FragmentSearchBinding
@@ -60,7 +60,7 @@ class SearchFragment : AbstractFragment(), SearchItemClickListener {
     override fun onSearchItemClick(searchItem: SearchItem) {
         when (searchItem.media_type) {
             "movie" -> {
-                startActivity(Intent(activity, MovieInfoScreen::class.java).apply {
+                startActivity(Intent(activity, MovieDetailsActivity::class.java).apply {
                     if (searchItem.name.isNullOrBlank()) {
                         putExtra("MOVIE_NAME", searchItem.title)
                         Log.d("Movie Name Clicked", searchItem.title)

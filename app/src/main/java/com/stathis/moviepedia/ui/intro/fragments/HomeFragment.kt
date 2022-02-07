@@ -7,7 +7,6 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractBindingFragment
 import com.stathis.moviepedia.databinding.FragmentHomeBinding
 import com.stathis.moviepedia.ui.dashboard.Dashboard
-import com.stathis.moviepedia.ui.forgotPassword.forgotPass.ForgotPassword
 import com.stathis.moviepedia.ui.intro.IntroViewModel
 
 
@@ -33,7 +32,7 @@ class HomeFragment : AbstractBindingFragment<FragmentHomeBinding>(R.layout.fragm
         }
 
         binding.forgotPassBtn.setOnClickListener {
-            startActivity(Intent(requireContext(),ForgotPassword::class.java))
+            Navigation.findNavController(requireView()).navigate(R.id.forgotPasswordFragment)
         }
     }
 

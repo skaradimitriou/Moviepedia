@@ -14,6 +14,11 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
+    <style name="MovieBanner" parent="Theme.AppCompat">
+        <item name="android:tint">#60000000</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
     <style name="heading_bold_24" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">24sp</item>
@@ -28,6 +33,12 @@
 
     <style name="heading_bold" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="heading_20_white" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -64,6 +75,11 @@
     <style name="paragraph_14_white" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="paragraph_12_white" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <!-- Buttons -->

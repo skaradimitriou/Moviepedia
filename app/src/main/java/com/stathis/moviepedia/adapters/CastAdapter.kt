@@ -5,62 +5,38 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
-import com.stathis.moviepedia.listeners.old.LocalClickListener
+import com.stathis.moviepedia.abstraction.DiffUtilClassV2
+import com.stathis.moviepedia.databinding.HolderCastItemRowBinding
+import com.stathis.moviepedia.databinding.HolderShimmerCastItemBinding
+import com.stathis.moviepedia.listeners.GenericCallback
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.cast.Cast
 
-class CastAdapter(val callback: LocalClickListener) :
-    ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {
+class CastAdapter(val callback: GenericCallback) : ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClassV2<LocalModel>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
-            R.layout.cast_item_row -> {
-                return CastViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(viewType, parent, false)
-                )
-            }
-            R.layout.holder_shimmer_cast_item -> {
-                return ShimmerViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(viewType, parent, false)
-                )
+        return when (viewType) {
+            R.layout.holder_cast_item_row -> {
+                val view = HolderCastItemRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+                CastViewHolder(view,callback)
             }
             else -> {
-                return ShimmerViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(viewType, parent, false)
-                )
+                val view = HolderShimmerCastItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                NewShimmerViewHolder(view)
             }
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is CastViewHolder -> {
-                holder.present(getItem(position), callback)
-            }
-
-            is ShimmerViewHolder -> {
-                holder.present(getItem(position))
-            }
-            else -> Unit
-        }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
+        is CastViewHolder -> holder.present(getItem(position))
+        is NewShimmerViewHolder -> holder.present(getItem(position))
+        else -> Unit
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is Cast -> {
-                R.layout.cast_item_row
-            }
-            is EmptyModel -> {
-                R.layout.holder_shimmer_cast_item
-            }
-            else -> {
-                R.layout.cast_item_row
-            }
-        }
+    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
+        is Cast -> R.layout.holder_cast_item_row
+        is EmptyModel -> R.layout.holder_shimmer_cast_item
+        else -> R.layout.holder_empty_layout
     }
-
 }

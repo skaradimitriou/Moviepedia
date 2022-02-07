@@ -1,6 +1,5 @@
 package com.stathis.moviepedia.abstraction
 
-import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.stathis.moviepedia.models.LocalModel
 

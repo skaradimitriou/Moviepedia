@@ -10,7 +10,7 @@ import com.stathis.moviepedia.abstraction.AbstractBindingActivity
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.listeners.MovieTypeCallback
 import com.stathis.moviepedia.models.Movies
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
+import com.stathis.moviepedia.ui.movieInfoScreen.MovieDetailsActivity
 
 class GenresActivity : AbstractBindingActivity<ActivityGenresInfoScreenBinding>(R.layout.activity_genres_info_screen) {
 
@@ -61,7 +61,7 @@ class GenresActivity : AbstractBindingActivity<ActivityGenresInfoScreenBinding>(
     }
 
     private fun openMovie(movie : Movies) {
-            startActivity(Intent(this, MovieInfoScreen::class.java).also {
+            startActivity(Intent(this, MovieDetailsActivity::class.java).also {
                 when(movie.name.isNullOrBlank()){
                     true -> it.putExtra("MOVIE_NAME", movie.title)
                     false -> it.putExtra("MOVIE_NAME", movie.name)

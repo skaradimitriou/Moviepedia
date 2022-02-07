@@ -1,8 +1,7 @@
-package com.stathis.moviepedia.listeners.old
+package com.stathis.moviepedia.listeners
 
 import com.stathis.moviepedia.models.cast.Cast
 
-interface LocalClickListener {
-
+interface CastCallback {
     fun onCastClick(cast: Cast)
 }

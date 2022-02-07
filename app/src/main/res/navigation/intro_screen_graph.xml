@@ -44,7 +44,7 @@
         android:label="RegisterSuccessFragment" />
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.stathis.moviepedia.ForgotPasswordFragment"
+        android:name="com.stathis.moviepedia.ui.intro.fragments.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" />
 

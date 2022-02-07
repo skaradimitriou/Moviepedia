@@ -8,7 +8,7 @@ import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.databinding.FragmentMoviesBinding
 import com.stathis.moviepedia.ui.genres.GenresActivity
 import com.stathis.moviepedia.models.*
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
+import com.stathis.moviepedia.ui.movieInfoScreen.MovieDetailsActivity
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 
@@ -60,7 +60,7 @@ class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListene
     }
 
     override fun onItemClick(movies: Movies) {
-        startActivity(Intent(activity, MovieInfoScreen::class.java).apply {
+        startActivity(Intent(activity, MovieDetailsActivity::class.java).apply {
             if (movies.name.isNullOrBlank()) {
                 putExtra("MOVIE_NAME", movies.title)
                 Log.d("Movie Name Clicked", movies.title)

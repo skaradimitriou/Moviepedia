@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.stathis.moviepedia.models.Reviews" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_light"
+        android:padding="@dimen/dimen_8">
+
+        <TextView
+            android:id="@+id/author"
+            style="@style/paragraph_16_red"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10"
+            android:text="@{model.author}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/review_author_name" />
+
+        <TextView
+            android:id="@+id/searchType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_2"
+            android:text="@{model.content}"
+            android:textColor="@color/white"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@id/author"
+            app:layout_constraintTop_toBottomOf="@id/author"
+            tools:text="@string/review_desc_dummy_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,26 +1,32 @@
 package com.stathis.moviepedia.ui.tvSeriesInfoScreen
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.stathis.moviepedia.adapters.CastAdapter
 import com.stathis.moviepedia.adapters.ReviewsAdapter
-import com.stathis.moviepedia.listeners.old.LocalClickListener
+import com.stathis.moviepedia.listeners.CastCallback
+import com.stathis.moviepedia.listeners.GenericCallback
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteTvSeries
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.cast.Cast
 
-class TvSeriesInfoScreenViewModel : ViewModel(), LocalClickListener {
+class TvSeriesInfoScreenViewModel : ViewModel(), CastCallback {
 
     private val repo by lazy { TvSeriesInfoRepository() }
-    val castAdapter by lazy { CastAdapter(this) }
+    val castAdapter by lazy { CastAdapter(object : GenericCallback{
+        override fun onItemTap(view: View) {
+            //FIXME: Remove this when you refactor this screen
+        }
+    }) }
     val reviewsAdapter by lazy { ReviewsAdapter() }
     private var cast = repo.cast
     private var reviews = repo.reviews
     val isFavorite = repo.isFavorite
-    private lateinit var callback: LocalClickListener
+    private lateinit var callback: CastCallback
 
     init {
         castAdapter.submitList(
@@ -36,7 +42,7 @@ class TvSeriesInfoScreenViewModel : ViewModel(), LocalClickListener {
         )
     }
 
-    fun observeDataFromApi(owner: LifecycleOwner,callback: LocalClickListener) {
+    fun observeDataFromApi(owner: LifecycleOwner,callback: CastCallback) {
         this.callback = callback
         cast.observe(owner, Observer { cast ->
             Log.d("cast is:", cast.toString())

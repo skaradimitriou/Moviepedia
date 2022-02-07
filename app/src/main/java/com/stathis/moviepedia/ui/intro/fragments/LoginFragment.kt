@@ -4,11 +4,11 @@ package com.stathis.moviepedia.ui.intro.fragments
 import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractBindingFragment
 import com.stathis.moviepedia.databinding.FragmentLoginBinding
 import com.stathis.moviepedia.ui.dashboard.Dashboard
-import com.stathis.moviepedia.ui.forgotPassword.forgotPass.ForgotPassword
 import com.stathis.moviepedia.ui.intro.IntroViewModel
 
 
@@ -29,7 +29,7 @@ class LoginFragment : AbstractBindingFragment<FragmentLoginBinding>(R.layout.fra
         }
 
         binding.forgotLogin.setOnClickListener {
-            startActivity(Intent(requireContext(),ForgotPassword::class.java))
+            Navigation.findNavController(requireView()).navigate(R.id.forgotPasswordFragment)
         }
 
         viewModel.loginSuccess.observe(viewLifecycleOwner, Observer {

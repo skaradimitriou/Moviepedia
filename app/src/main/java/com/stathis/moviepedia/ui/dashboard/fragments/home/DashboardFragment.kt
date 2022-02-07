@@ -1,12 +1,11 @@
 package com.stathis.moviepedia.ui.dashboard.fragments.home
 
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.ui.genres.GenresActivity
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieInfoScreen
+import com.stathis.moviepedia.ui.movieInfoScreen.MovieDetailsActivity
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.listeners.old.FavoriteClickListener
@@ -62,20 +61,22 @@ class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickList
     }
 
     override fun onItemClick(movies: Movies) {
-        startActivity(Intent(activity, MovieInfoScreen::class.java).apply {
-            if (movies.name.isNullOrBlank()) {
-                putExtra("MOVIE_NAME", movies.title)
-                Log.d("Movie Name Clicked", movies.title)
-            } else {
-                putExtra("MOVIE_NAME", movies.name)
-                Log.d("Movie Name Clicked", movies.name)
-            }
-            putExtra("MOVIE_ID", movies.id)
-            putExtra("MOVIE_PHOTO", movies.backdrop_path)
-            putExtra("MOVIE_PHOTO", movies.poster_path)
-            putExtra("RELEASE_DATE", movies.release_date)
-            putExtra("DESCRIPTION", movies.overview)
-            putExtra("RATING", movies.vote_average.toString())
+        startActivity(Intent(activity, MovieDetailsActivity::class.java).also {
+            it.putExtra("MOVIE",movies)
+
+//            if (movies.name.isNullOrBlank()) {
+//                putExtra("MOVIE_NAME", movies.title)
+//                Log.d("Movie Name Clicked", movies.title)
+//            } else {
+//                putExtra("MOVIE_NAME", movies.name)
+//                Log.d("Movie Name Clicked", movies.name)
+//            }
+//            putExtra("MOVIE_ID", movies.id)
+//            putExtra("MOVIE_PHOTO", movies.backdrop_path)
+//            putExtra("MOVIE_PHOTO", movies.poster_path)
+//            putExtra("RELEASE_DATE", movies.release_date)
+//            putExtra("DESCRIPTION", movies.overview)
+//            putExtra("RATING", movies.vote_average.toString())
         })
     }
 
@@ -91,7 +92,7 @@ class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickList
     }
 
     override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
-        startActivity(Intent(activity, MovieInfoScreen::class.java).apply {
+        startActivity(Intent(activity, MovieDetailsActivity::class.java).apply {
             putExtra("MOVIE_ID", favoriteMovies.id)
             putExtra("MOVIE_NAME", favoriteMovies.title)
             putExtra("MOVIE_PHOTO", favoriteMovies.photo)

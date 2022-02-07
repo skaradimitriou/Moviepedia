@@ -1,18 +1,16 @@
 package com.stathis.moviepedia.adapters
 
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.stathis.moviepedia.databinding.ReviewsItemRowBinding
+import com.stathis.moviepedia.BR
 import com.stathis.moviepedia.models.LocalModel
 import com.stathis.moviepedia.models.Reviews
 
-class ReviewsViewHolder(var binding: ReviewsItemRowBinding) : RecyclerView.ViewHolder(binding.root) {
+class ReviewsViewHolder(var binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun present(localModel : LocalModel){
-        when(localModel){
-            is Reviews -> {
-                binding.author.text = localModel.author
-                binding.searchType.text = localModel.content
-            }
+    fun present(data : LocalModel){
+        when(data){
+            is Reviews -> binding.setVariable(BR.model,data)
         }
     }
 }

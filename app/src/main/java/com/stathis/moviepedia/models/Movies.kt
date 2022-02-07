@@ -1,5 +1,9 @@
 package com.stathis.moviepedia.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class Movies (
     val id:Int,
     val video:Boolean,
@@ -17,7 +21,7 @@ class Movies (
     val poster_path:String,
     val popularity:Double,
     val media_type: String
-) : LocalModel {
+) : Parcelable,LocalModel {
     constructor() : this(0,false,0,"",0.0,""
         ,"","","", emptyList(),"",false
         ,"","",0.0,"")

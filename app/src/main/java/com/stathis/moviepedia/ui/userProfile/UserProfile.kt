@@ -22,7 +22,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractActivity
 import com.stathis.moviepedia.databinding.ActivityUserProfileBinding
-import com.stathis.moviepedia.ui.loginAndRegister.IntroScreen
 import kotlinx.android.synthetic.main.bottom_sheet_choose_option.view.*
 
 class UserProfile : AbstractActivity() {
@@ -211,7 +210,7 @@ class UserProfile : AbstractActivity() {
         Handler().postDelayed({
             auth = FirebaseAuth.getInstance()
             auth.signOut()
-            startActivity(Intent(this, IntroScreen::class.java))
+            //startActivity(Intent(this, IntroScreen::class.java))
             overridePendingTransition(0, 0)
             finish()
         }, 3000)
