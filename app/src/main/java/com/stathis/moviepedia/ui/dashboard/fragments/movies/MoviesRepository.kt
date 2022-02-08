@@ -2,7 +2,10 @@ package com.stathis.moviepedia.ui.dashboard.fragments.movies
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.stathis.moviepedia.models.*
+import com.stathis.moviepedia.models.genres.MovieGenres
+import com.stathis.moviepedia.models.genres.MovieGenresFeed
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.movies.UpcomingMovies
 import com.stathis.moviepedia.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback

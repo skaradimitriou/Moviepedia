@@ -11,6 +11,8 @@ import com.stathis.moviepedia.listeners.CastCallback
 import com.stathis.moviepedia.listeners.GenericCallback
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.models.cast.Cast
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.reviews.Reviews
 import com.stathis.moviepedia.network.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

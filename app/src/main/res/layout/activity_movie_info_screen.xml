@@ -11,7 +11,7 @@
 
         <variable
             name="model"
-            type="com.stathis.moviepedia.models.Movies" />
+            type="com.stathis.moviepedia.models.movies.Movies" />
     </data>
 
     <ScrollView

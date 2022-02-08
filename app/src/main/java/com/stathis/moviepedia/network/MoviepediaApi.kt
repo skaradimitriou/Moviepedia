@@ -2,10 +2,10 @@ package com.stathis.moviepedia.network
 
 import com.stathis.moviepedia.API_KEY
 import com.stathis.moviepedia.BASE_URL
-import com.stathis.moviepedia.models.MovieGenresFeed
-import com.stathis.moviepedia.models.ReviewsFeed
-import com.stathis.moviepedia.models.TvSeriesFeed
-import com.stathis.moviepedia.models.UpcomingMovies
+import com.stathis.moviepedia.models.genres.MovieGenresFeed
+import com.stathis.moviepedia.models.reviews.ReviewsFeed
+import com.stathis.moviepedia.models.series.TvSeriesFeed
+import com.stathis.moviepedia.models.movies.UpcomingMovies
 import com.stathis.moviepedia.models.actor.Actor
 import com.stathis.moviepedia.models.actor.KnownMoviesFeed
 import com.stathis.moviepedia.models.cast.MovieCastFeed

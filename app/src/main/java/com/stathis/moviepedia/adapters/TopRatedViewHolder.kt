@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.LocalModel
-import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.movies.Movies
 import kotlinx.android.synthetic.main.top_rated_item_row.view.*
 import kotlin.math.roundToInt
 

@@ -1,6 +1,6 @@
 package com.stathis.moviepedia.listeners.old
 
-import com.stathis.moviepedia.models.MovieGenres
+import com.stathis.moviepedia.models.genres.MovieGenres
 
 interface GenresClickListener {
 

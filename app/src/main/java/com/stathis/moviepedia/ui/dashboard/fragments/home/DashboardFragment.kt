@@ -11,6 +11,9 @@ import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.listeners.old.FavoriteClickListener
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
+import com.stathis.moviepedia.models.genres.MovieGenres
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.series.TvSeries
 
 
 class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickListener,
@@ -63,20 +66,6 @@ class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickList
     override fun onItemClick(movies: Movies) {
         startActivity(Intent(activity, MovieDetailsActivity::class.java).also {
             it.putExtra("MOVIE",movies)
-
-//            if (movies.name.isNullOrBlank()) {
-//                putExtra("MOVIE_NAME", movies.title)
-//                Log.d("Movie Name Clicked", movies.title)
-//            } else {
-//                putExtra("MOVIE_NAME", movies.name)
-//                Log.d("Movie Name Clicked", movies.name)
-//            }
-//            putExtra("MOVIE_ID", movies.id)
-//            putExtra("MOVIE_PHOTO", movies.backdrop_path)
-//            putExtra("MOVIE_PHOTO", movies.poster_path)
-//            putExtra("RELEASE_DATE", movies.release_date)
-//            putExtra("DESCRIPTION", movies.overview)
-//            putExtra("RATING", movies.vote_average.toString())
         })
     }
 

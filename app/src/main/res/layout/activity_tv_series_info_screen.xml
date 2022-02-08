@@ -10,7 +10,7 @@
 
         <variable
             name="model"
-            type="com.stathis.moviepedia.models.TvSeries" />
+            type="com.stathis.moviepedia.models.series.TvSeries" />
     </data>
 
     <ScrollView

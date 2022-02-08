@@ -8,6 +8,7 @@
     <color name="red">#d90c0c</color>
     <color name="dark">#1d1d1d</color>
     <color name="darker">#0A0A0A</color>
+    <color name="darker_50_opacity">#950A0A0A</color>
     <color name="white">#ffffff</color>
     <color name="black">#000</color>
 

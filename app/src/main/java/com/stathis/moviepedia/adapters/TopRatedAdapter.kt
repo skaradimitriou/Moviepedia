@@ -8,8 +8,8 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel
-import com.stathis.moviepedia.models.Movies
-import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.series.TvSeries
 
 class TopRatedAdapter(val listener: ItemClickListener) :
     ListAdapter<LocalModel, RecyclerView.ViewHolder>(DiffUtilClass<LocalModel>()) {

@@ -3,31 +3,40 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/drawable/rating_round_bg.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/drawable/round_button.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/account_success_view.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_cast_details.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_dashboard.xml" value="0.21944444444444444" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_forgot_password.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_genres_info_screen.xml" value="0.259375" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_intro.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_intro_screen.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_movie_info_screen.xml" value="0.264" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_personalize_account.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_tv_series_info_screen.xml" value="0.259375" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/activity_user_profile.xml" value="0.259375" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/cast_item_row.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/fragment_blank.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/fragment_forgot_password.xml" value="0.176" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/fragment_login.xml" value="0.2" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/fragment_profile.xml" value="0.259375" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/fragment_register.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/fragment_register_success.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/genres_item_row.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_cast_item_row.xml" value="0.259375" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_empty_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_movie_genres_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_movie_item_big.xml" value="0.259375" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_popular_item.xml" value="0.4" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_review_item_row.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_shimmer_cast_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/holder_tv_series_item_big.xml" value="0.259375" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/login_view.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/movie_item_row.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/popular_item_row.xml" value="0.259375" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/register_view.xml" value="0.21944444444444444" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/reviews_item_row.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ekaradimitriou/StudioProjects/Moviepedia/app/src/main/res/layout/upcoming_movies_item_row.xml" value="0.25416666666666665" />
@@ -41,5 +50,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.259375" />
+      </ProjectState>
+    </option>
   </component>
 </project>

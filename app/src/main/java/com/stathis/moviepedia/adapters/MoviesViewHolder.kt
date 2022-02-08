@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.old.ItemClickListener
-import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.movies.Movies
 import kotlin.math.roundToInt
 
 class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

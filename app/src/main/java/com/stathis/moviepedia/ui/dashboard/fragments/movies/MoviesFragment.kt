@@ -11,6 +11,9 @@ import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.ui.movieDetails.MovieDetailsActivity
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
+import com.stathis.moviepedia.models.genres.MovieGenres
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.series.TvSeries
 
 
 class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListener {

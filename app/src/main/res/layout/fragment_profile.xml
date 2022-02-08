@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.stathis.moviepedia.ui.dashboard.fragments.profile.ProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/profile_screen_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark"
+        app:layoutDescription="@xml/fragment_profile_xml_profile_screen_parent_scene"
+        tools:context=".ui.dashboard.fragments.profile.ProfileFragment">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/profile_user_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_10"
+            android:layout_marginEnd="@dimen/dimen_10"
+            android:backgroundTint="@color/dark_light"
+            app:cardCornerRadius="@dimen/dimen_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_user_img"
+                    android:layout_width="@dimen/image_100"
+                    android:layout_height="@dimen/image_100"
+                    android:layout_marginTop="@dimen/padding_16"
+                    android:src="@drawable/default_img"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/profile_user_name"
+                    style="@style/paragraph_16_white_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_16"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_user_img"
+                    tools:text="@string/app_name" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/user_fav_movies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10"
+            android:backgroundTint="@color/red"
+            android:text="@string/my_favorite_movies"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/user_fav_tvSeries"
+            app:layout_constraintStart_toStartOf="@id/profile_user_card"
+            app:layout_constraintTop_toBottomOf="@id/profile_user_card" />
+
+        <Button
+            android:id="@+id/user_fav_tvSeries"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10"
+            android:backgroundTint="@color/red"
+            android:text="@string/my_favorite_tv_series"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/profile_user_card"
+            app:layout_constraintStart_toEndOf="@id/user_fav_movies"
+            app:layout_constraintTop_toBottomOf="@id/profile_user_card" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profile_user_favorites"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adapter="@{viewModel.adapter}"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/profile_user_card"
+            app:layout_constraintStart_toStartOf="@id/profile_user_card"
+            app:layout_constraintTop_toBottomOf="@+id/user_fav_movies"
+            app:spanCount="2" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

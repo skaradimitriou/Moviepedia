@@ -7,33 +7,6 @@
     android:background="#1d1d1d"
     tools:context=".ui.dashboard.Dashboard">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="75dp"
-        android:background="@drawable/round_button"
-        android:backgroundTint="@color/white"
-        android:focusable="true"
-        app:defaultQueryHint="@string/app_name"
-        app:layout_constraintCircleRadius="15dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="@string/dashboard_query_hint"
-        app:searchIcon="@drawable/ic_search_red_24dp" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/userProfileImg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginRight="15dp"
-        android:src="@drawable/default_img"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchView"
-        app:layout_constraintBottom_toBottomOf="@+id/searchView"/>
-
     <fragment
         android:id="@+id/fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -41,9 +14,9 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         app:defaultNavHost="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/app_nav" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

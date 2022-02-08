@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.stathis.moviepedia.models.series.TvSeries" />
+
+        <variable
+            name="callback"
+            type="com.stathis.moviepedia.listeners.GenericCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10"
+        android:onClick="@{(view) -> callback.onItemTap(view)}"
+        android:tag="@{model}">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/movie_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/dimen_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/movie_img"
+                    image="@{model.poster_path}"
+                    placeholder="@{@drawable/moviepedia_logo}"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_180"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/bg_movie_img" />
+
+                <TextView
+                    android:id="@+id/ratingTxt"
+                    style="@style/paragraph_14_white_bold"
+                    setMovieStarRating="@{model.vote_average}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rating_round_bg"
+                    android:backgroundTint="@color/dark_light"
+                    android:padding="@dimen/dimen_5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/movie_img"
+                    tools:text="@string/rating_star" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/movie_title"
+            style="@style/paragraph_14_white_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/dimen_5"
+            android:text="@{model.name}"
+            app:layout_constraintLeft_toLeftOf="@+id/movie_card"
+            app:layout_constraintRight_toRightOf="@+id/movie_card"
+            app:layout_constraintTop_toBottomOf="@+id/movie_card"
+            tools:text="@string/app_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

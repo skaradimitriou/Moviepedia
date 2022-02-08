@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.old.ItemClickListener
-import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.series.TvSeries
 
 class AiringTvSeriesAdapter(private val listener: ItemClickListener) :
     ListAdapter<Any, PopularMoviesViewHolder>(DiffUtilClass<Any>()) {

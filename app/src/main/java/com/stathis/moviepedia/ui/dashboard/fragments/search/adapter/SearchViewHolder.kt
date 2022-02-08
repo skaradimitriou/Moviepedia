@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.ui.dashboard.fragments.search.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

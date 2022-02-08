@@ -3,11 +3,14 @@ package com.stathis.moviepedia.network
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.stathis.moviepedia.BASE_URL
-import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.models.actor.Actor
 import com.stathis.moviepedia.models.actor.KnownMoviesFeed
-import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.models.cast.MovieCastFeed
+import com.stathis.moviepedia.models.genres.MovieGenresFeed
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.movies.UpcomingMovies
+import com.stathis.moviepedia.models.reviews.ReviewsFeed
+import com.stathis.moviepedia.models.series.TvSeriesFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import okhttp3.OkHttpClient
 import retrofit2.*

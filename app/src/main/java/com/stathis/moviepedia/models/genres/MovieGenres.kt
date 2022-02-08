@@ -1,4 +1,6 @@
-package com.stathis.moviepedia.models
+package com.stathis.moviepedia.models.genres
+
+import com.stathis.moviepedia.models.LocalModel
 
 class MovieGenres(
     val id: Int,

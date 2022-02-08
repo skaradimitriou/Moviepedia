@@ -9,7 +9,7 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractBindingActivity
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.listeners.MovieTypeCallback
-import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.movies.Movies
 import com.stathis.moviepedia.ui.movieDetails.MovieDetailsActivity
 
 class GenresActivity : AbstractBindingActivity<ActivityGenresInfoScreenBinding>(R.layout.activity_genres_info_screen) {
@@ -61,18 +61,8 @@ class GenresActivity : AbstractBindingActivity<ActivityGenresInfoScreenBinding>(
     }
 
     private fun openMovie(movie : Movies) {
-            startActivity(Intent(this, MovieDetailsActivity::class.java).also {
-                when(movie.name.isNullOrBlank()){
-                    true -> it.putExtra("MOVIE_NAME", movie.title)
-                    false -> it.putExtra("MOVIE_NAME", movie.name)
-                }
-
-                it.putExtra("MOVIE_ID", movie.id)
-                it.putExtra("MOVIE_PHOTO", movie.backdrop_path)
-                it.putExtra("MOVIE_PHOTO", movie.poster_path)
-                it.putExtra("RELEASE_DATE", movie.release_date)
-                it.putExtra("DESCRIPTION", movie.overview)
-                it.putExtra("RATING", movie.vote_average.toString())
-            })
+        startActivity(Intent(this, MovieDetailsActivity::class.java).also {
+            it.putExtra("MOVIE",movie)
+        })
     }
 }

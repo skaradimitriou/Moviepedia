@@ -8,6 +8,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.stathis.moviepedia.models.*
+import com.stathis.moviepedia.models.genres.MovieGenres
+import com.stathis.moviepedia.models.genres.MovieGenresFeed
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.movies.UpcomingMovies
 import com.stathis.moviepedia.network.ApiClient
 import retrofit2.Callback
 

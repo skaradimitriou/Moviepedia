@@ -1,10 +1,13 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.ui.dashboard.fragments.search.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.adapters.DiffUtilClass
+import com.stathis.moviepedia.adapters.QueryViewHolder
+import com.stathis.moviepedia.adapters.ShimmerViewHolder
 import com.stathis.moviepedia.listeners.old.SearchItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel

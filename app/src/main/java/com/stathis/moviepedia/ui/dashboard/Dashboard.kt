@@ -42,35 +42,35 @@ class Dashboard : AppCompatActivity() {
 
         //viewModel.getUserPhoto()
 
-        binding.userProfileImg.setOnClickListener {
-            startActivity(Intent(this, UserProfile::class.java))
-        }
-
-        binding.searchView.setOnClickListener {
-            binding.searchView.isIconified = false
-        }
-
-        binding.searchView.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                binding.searchView.clearFocus()
-                binding.searchView.setQuery("", false)
-                Log.d("HELLO", query)
-                val bundle = bundleOf("QUERY" to query)
-                searchFragment =
-                    SearchFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.fragment, searchFragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit()
-                searchFragment.arguments = bundle
-                Log.d("BUNDLE", bundle.toString())
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
+//        binding.userProfileImg.setOnClickListener {
+//            startActivity(Intent(this, UserProfile::class.java))
+//        }
+//
+//        binding.searchView.setOnClickListener {
+//            binding.searchView.isIconified = false
+//        }
+//
+//        binding.searchView.setOnQueryTextListener(object :
+//            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                binding.searchView.clearFocus()
+//                binding.searchView.setQuery("", false)
+//                Log.d("HELLO", query)
+//                val bundle = bundleOf("QUERY" to query)
+//                searchFragment =
+//                    SearchFragment()
+//                supportFragmentManager.beginTransaction().replace(R.id.fragment, searchFragment)
+//                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                    .commit()
+//                searchFragment.arguments = bundle
+//                Log.d("BUNDLE", bundle.toString())
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                return false
+//            }
+//        })
 
         observeViewModel()
     }

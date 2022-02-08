@@ -29,4 +29,8 @@
         android:name="com.stathis.moviepedia.ui.dashboard.fragments.tvSeries.TvSeriesFragment"
         android:label="fragment_tv_series"
         tools:layout="@layout/fragment_tv_series" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.stathis.moviepedia.ui.dashboard.fragments.profile.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

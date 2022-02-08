@@ -4,8 +4,7 @@ import android.view.View
 import androidx.lifecycle.*
 import com.stathis.moviepedia.listeners.GenericCallback
 import com.stathis.moviepedia.listeners.MovieTypeCallback
-import com.stathis.moviepedia.models.EmptyModel
-import com.stathis.moviepedia.models.Movies
+import com.stathis.moviepedia.models.movies.Movies
 import com.stathis.moviepedia.network.ApiClient
 import com.stathis.moviepedia.ui.genres.adapter.MovieTypeAdapter
 import kotlinx.coroutines.Dispatchers

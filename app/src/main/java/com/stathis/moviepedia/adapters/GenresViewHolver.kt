@@ -6,7 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.models.LocalModel
-import com.stathis.moviepedia.models.MovieGenres
+import com.stathis.moviepedia.models.genres.MovieGenres
 import com.stathis.moviepedia.util.ColorHelper
 import kotlinx.android.synthetic.main.genres_item_row.view.*
 

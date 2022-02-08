@@ -113,5 +113,13 @@
     <string name="share">Share</string>
     <string name="review_author_name">author name</string>
     <string name="review_desc_dummy_text">This is my cool text it is really cool</string>
+    <string name="my_favorite_tv_series">My Favorite Tv Series</string>
+    <string name="my_favorite_movies">My Favorite Movies</string>
+    <string name="rating_star">⭐ 9.1</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_tvSeries">TV Series</string>
+    <string name="nav_movies">Movies</string>
+    <string name="nav_profile">Profile</string>
 
 </resources>

@@ -14,8 +14,8 @@ import com.stathis.moviepedia.listeners.CastCallback
 import com.stathis.moviepedia.listeners.GenericCallback
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.FavoriteTvSeries
-import com.stathis.moviepedia.models.Reviews
-import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.reviews.Reviews
+import com.stathis.moviepedia.models.series.TvSeries
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.network.ApiClient
 import kotlinx.coroutines.Dispatchers

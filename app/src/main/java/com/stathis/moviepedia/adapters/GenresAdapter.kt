@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.models.EmptyModel
-import com.stathis.moviepedia.models.MovieGenres
+import com.stathis.moviepedia.models.genres.MovieGenres
 
 class GenresAdapter(val listener: GenresClickListener) :
     androidx.recyclerview.widget.ListAdapter<Any, RecyclerView.ViewHolder>(DiffUtilClass<Any>()) {

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.listeners.old.ItemClickListener
-import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.series.TvSeries
 
 class TvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -16,7 +16,7 @@ class TvSeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val movieRating: TextView = itemView.findViewById(R.id.ratingTxt)
     val movieGenre: TextView = itemView.findViewById(R.id.movie_genre)
 
-    fun bind(tvSeries:TvSeries, listener: ItemClickListener) {
+    fun bind(tvSeries: TvSeries, listener: ItemClickListener) {
 
         if(tvSeries.poster_path.isNullOrEmpty()){
                 Glide.with(itemView.context)

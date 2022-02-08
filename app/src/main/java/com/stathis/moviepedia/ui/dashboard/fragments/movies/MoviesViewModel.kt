@@ -8,6 +8,9 @@ import com.stathis.moviepedia.adapters.*
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.*
+import com.stathis.moviepedia.models.genres.MovieGenres
+import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.series.TvSeries
 
 class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
 

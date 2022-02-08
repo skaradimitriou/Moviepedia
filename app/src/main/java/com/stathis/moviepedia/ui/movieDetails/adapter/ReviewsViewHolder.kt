@@ -4,7 +4,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.BR
 import com.stathis.moviepedia.models.LocalModel
-import com.stathis.moviepedia.models.Reviews
+import com.stathis.moviepedia.models.reviews.Reviews
 
 class ReviewsViewHolder(var binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 

@@ -11,7 +11,7 @@ import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractBindingActivity
 import com.stathis.moviepedia.databinding.ActivityTvSeriesInfoScreenBinding
 import com.stathis.moviepedia.listeners.CastCallback
-import com.stathis.moviepedia.models.TvSeries
+import com.stathis.moviepedia.models.series.TvSeries
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.ui.castDetails.CastDetailsActivity
 
