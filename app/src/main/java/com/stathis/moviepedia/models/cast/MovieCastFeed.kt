@@ -8,4 +8,5 @@ class MovieCastFeed (
     val crew:List<Crew>
 ) : LocalModel{
     override fun equals(model: LocalModel): Boolean = false
+    constructor() : this(0, emptyList(), emptyList())
 }

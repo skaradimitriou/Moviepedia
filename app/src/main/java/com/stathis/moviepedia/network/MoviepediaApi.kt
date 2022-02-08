@@ -11,6 +11,7 @@ import com.stathis.moviepedia.models.actor.KnownMoviesFeed
 import com.stathis.moviepedia.models.cast.MovieCastFeed
 import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -51,20 +52,20 @@ interface MoviepediaApi {
     fun getResultsForThisGenre(@Query("genreId") genreId: Int): Call<UpcomingMovies>
 
     @GET("movie/{movieId}/credits?$API_KEY")
-    fun getMovieCastInfo(@Path("movieId") movieId: Int): Call<MovieCastFeed>
+    suspend fun getMovieCastInfo(@Path("movieId") movieId: Int): Response<MovieCastFeed>
 
     @GET("movie/{movieId}/reviews?$API_KEY")
-    fun getMovieReviews(@Path("movieId") movieId: Int): Call<ReviewsFeed>
+    suspend fun getMovieReviews(@Path("movieId") movieId: Int): Response<ReviewsFeed>
 
     @GET("tv/{tvSeriesId}/credits?$API_KEY")
-    fun getTvCastInfo(@Path("tvSeriesId") tvSeriesId: Int): Call<MovieCastFeed>
+    suspend fun getTvCastInfo(@Path("tvSeriesId") tvSeriesId: Int): Response<MovieCastFeed>
 
     @GET("tv/{tvSeriesId}/reviews?$API_KEY")
-    fun getTvReviews(@Path("tvSeriesId") tvSeriesId: Int): Call<ReviewsFeed>
+    suspend fun getTvReviews(@Path("tvSeriesId") tvSeriesId: Int): Response<ReviewsFeed>
 
     @GET("person/{actorId}?$API_KEY")
-    fun getActorInfo(@Path("actorId") actorId : Int) : Call<Actor>
+    fun getActorInfo(@Path("actorId") actorId: Int): Call<Actor>
 
     @GET("$BASE_URL/person/{actorId}/movie_credits?$API_KEY")
-    fun getActorsKnownMovies(@Path("actorId") actorId : Int) : Call<KnownMoviesFeed>
+    fun getActorsKnownMovies(@Path("actorId") actorId: Int): Call<KnownMoviesFeed>
 }

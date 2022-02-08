@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.stathis.moviepedia.ui.movieInfoScreen.MovieDetailsViewModel" />
+            type="com.stathis.moviepedia.ui.movieDetails.MovieDetailsViewModel" />
 
         <variable
             name="model"
@@ -18,11 +18,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/dark"
-        tools:context=".ui.movieInfoScreen.MovieDetailsActivity">
+        tools:context=".ui.movieDetails.MovieDetailsActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/movie_details_parent"
             android:background="@color/dark">
 
             <ImageView

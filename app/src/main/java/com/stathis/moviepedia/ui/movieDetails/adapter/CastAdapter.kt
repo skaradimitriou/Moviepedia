@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.ui.movieDetails.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.DiffUtilClassV2
+import com.stathis.moviepedia.adapters.NewShimmerViewHolder
 import com.stathis.moviepedia.databinding.HolderCastItemRowBinding
 import com.stathis.moviepedia.databinding.HolderShimmerCastItemBinding
 import com.stathis.moviepedia.listeners.GenericCallback

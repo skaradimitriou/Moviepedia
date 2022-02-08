@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.ui.movieInfoScreen
+package com.stathis.moviepedia.ui.movieDetails
 
 import android.content.Intent
 import android.view.Menu
@@ -6,11 +6,11 @@ import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.abstraction.AbstractBindingActivity
 import com.stathis.moviepedia.databinding.ActivityMovieInfoScreenBinding
 import com.stathis.moviepedia.listeners.CastCallback
-import com.stathis.moviepedia.models.FavoriteMovies
 import com.stathis.moviepedia.models.Movies
 import com.stathis.moviepedia.models.cast.Cast
 import com.stathis.moviepedia.ui.castDetails.CastDetailsActivity
@@ -27,7 +27,7 @@ class MovieDetailsActivity : AbstractBindingActivity<ActivityMovieInfoScreenBind
     }
 
     override fun startOps() {
-        val data = intent.getParcelableExtra<Movies>("MOVIE")
+        val data = intent.getParcelableExtra<Movies>("MOVIE") ?: null
         data?.let { movie = it }
 
         supportActionBar?.title = movie.title
@@ -37,7 +37,7 @@ class MovieDetailsActivity : AbstractBindingActivity<ActivityMovieInfoScreenBind
 
         viewModel.getAdditionalDetails(movie.id, movie.title)
 
-        viewModel.observeData(this, object : CastCallback {
+        viewModel.observe(this, object : CastCallback {
             override fun onCastClick(cast: Cast) {
                 startActivity(Intent(this@MovieDetailsActivity, CastDetailsActivity::class.java).apply {
                     putExtra("ACTOR_ID",cast.id)
@@ -55,6 +55,20 @@ class MovieDetailsActivity : AbstractBindingActivity<ActivityMovieInfoScreenBind
         viewModel.reviews.observe(this, Observer {
             when(it.isEmpty()){
                 true -> binding.reviewsHeader.visibility = View.GONE
+                false -> Unit
+            }
+        })
+
+        viewModel.reviewsError.observe(this, Observer {
+            when(it){
+               true -> Snackbar.make(binding.movieDetailsParent,resources.getString(R.string.network_error),Snackbar.LENGTH_LONG).show()
+                false -> Unit
+            }
+        })
+
+        viewModel.castDataError.observe(this, Observer {
+            when(it){
+                true -> Snackbar.make(binding.movieDetailsParent,resources.getString(R.string.network_error),Snackbar.LENGTH_LONG).show()
                 false -> Unit
             }
         })
@@ -85,17 +99,7 @@ class MovieDetailsActivity : AbstractBindingActivity<ActivityMovieInfoScreenBind
             val whiteFabBtn = resources.getDrawable(R.drawable.ic_star_outline, this.theme).constantState
 
             when(favBtn.icon.constantState == whiteFabBtn){
-                true -> {
-                    val fav = FavoriteMovies(
-                        movie.id,
-                        movie.backdrop_path,
-                        movie.title,
-                        movie.vote_average,
-                        movie.overview,
-                        movie.release_date
-                    )
-                    viewModel.addToFavorites(fav)
-                }
+                true -> viewModel.addToFavorites(movie)
                 false -> viewModel.removeFromFavorites(movie.title)
             }
             true

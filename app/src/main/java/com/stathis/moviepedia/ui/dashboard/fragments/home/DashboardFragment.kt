@@ -5,7 +5,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.ui.genres.GenresActivity
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieDetailsActivity
+import com.stathis.moviepedia.ui.movieDetails.MovieDetailsActivity
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.listeners.old.FavoriteClickListener

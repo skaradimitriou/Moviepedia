@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.ui.movieDetails.adapter
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

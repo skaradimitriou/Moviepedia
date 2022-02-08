@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityDashboardBinding
 import com.stathis.moviepedia.ui.dashboard.fragments.search.SearchFragment

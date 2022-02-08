@@ -10,7 +10,7 @@ import com.stathis.moviepedia.abstraction.AbstractBindingActivity
 import com.stathis.moviepedia.databinding.ActivityGenresInfoScreenBinding
 import com.stathis.moviepedia.listeners.MovieTypeCallback
 import com.stathis.moviepedia.models.Movies
-import com.stathis.moviepedia.ui.movieInfoScreen.MovieDetailsActivity
+import com.stathis.moviepedia.ui.movieDetails.MovieDetailsActivity
 
 class GenresActivity : AbstractBindingActivity<ActivityGenresInfoScreenBinding>(R.layout.activity_genres_info_screen) {
 

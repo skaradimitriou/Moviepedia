@@ -22,8 +22,8 @@
         <activity android:name=".ui.castDetails.CastDetailsActivity" />
         <activity android:name=".ui.personalizeAccount.PersonalizeAccount" />
         <activity android:name=".ui.userProfile.UserProfile" />
-        <activity android:name=".ui.tvSeriesInfoScreen.TvSeriesInfoScreen" />
-        <activity android:name=".ui.movieInfoScreen.MovieDetailsActivity" />
+        <activity android:name=".ui.tvSeriesDetails.TvSeriesDetailsActivity" />
+        <activity android:name=".ui.movieDetails.MovieDetailsActivity" />
         <activity android:name=".ui.dashboard.Dashboard" />
         <activity android:name=".ui.genres.GenresActivity" />
         <activity android:name=".ui.splash.SplashActivity" >

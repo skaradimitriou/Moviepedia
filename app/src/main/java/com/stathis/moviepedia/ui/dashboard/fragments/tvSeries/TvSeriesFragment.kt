@@ -1,7 +1,6 @@
 package com.stathis.moviepedia.ui.dashboard.fragments.tvSeries
 
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.stathis.moviepedia.abstraction.AbstractFragment
@@ -9,7 +8,7 @@ import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.ui.genres.GenresActivity
 
-import com.stathis.moviepedia.ui.tvSeriesInfoScreen.TvSeriesInfoScreen
+import com.stathis.moviepedia.ui.tvSeriesDetails.TvSeriesDetailsActivity
 import com.stathis.moviepedia.databinding.FragmentTvSeriesBinding
 import com.stathis.moviepedia.models.*
 
@@ -64,24 +63,26 @@ class TvSeriesFragment : AbstractFragment(), ItemClickListener, GenresClickListe
     override fun onItemClick(movies: Movies) {}
 
     override fun onTvSeriesClick(tvSeries: TvSeries) {
-        startActivity(Intent(activity, TvSeriesInfoScreen::class.java).apply {
-            if (tvSeries.name.isNullOrBlank()) {
-                putExtra("TV_SERIES_NAME", tvSeries.original_name)
-                Log.d("Movie Name Clicked", tvSeries.original_name)
-            } else {
-                putExtra("TV_SERIES_NAME", tvSeries.name)
-                Log.d("Movie Name Clicked", tvSeries.name)
-            }
+        startActivity(Intent(activity, TvSeriesDetailsActivity::class.java).apply {
+            putExtra("TV_SERIES",tvSeries)
 
-            if (tvSeries.poster_path.isNullOrBlank()) {
-                putExtra("TV_SERIES_PHOTO", tvSeries.backdrop_path)
-            } else {
-                putExtra("TV_SERIES_PHOTO", tvSeries.poster_path)
-            }
-            putExtra("TV_SERIES_ID", tvSeries.id)
-            putExtra("TV_SERIES_RELEASE_DATE", tvSeries.first_air_date)
-            putExtra("TV_SERIES_DESCRIPTION", tvSeries.overview)
-            putExtra("TV_SERIES_RATING", tvSeries.vote_average.toString())
+//            if (tvSeries.name.isNullOrBlank()) {
+//                putExtra("TV_SERIES_NAME", tvSeries.original_name)
+//                Log.d("Movie Name Clicked", tvSeries.original_name)
+//            } else {
+//                putExtra("TV_SERIES_NAME", tvSeries.name)
+//                Log.d("Movie Name Clicked", tvSeries.name)
+//            }
+//
+//            if (tvSeries.poster_path.isNullOrBlank()) {
+//                putExtra("TV_SERIES_PHOTO", tvSeries.backdrop_path)
+//            } else {
+//                putExtra("TV_SERIES_PHOTO", tvSeries.poster_path)
+//            }
+//            putExtra("TV_SERIES_ID", tvSeries.id)
+//            putExtra("TV_SERIES_RELEASE_DATE", tvSeries.first_air_date)
+//            putExtra("TV_SERIES_DESCRIPTION", tvSeries.overview)
+//            putExtra("TV_SERIES_RATING", tvSeries.vote_average.toString())
         })
     }
 
