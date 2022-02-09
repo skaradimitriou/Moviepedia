@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#1d1d1d"
-    tools:context=".ui.dashboard.home.DashboardFragment">
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.stathis.moviepedia.ui.dashboard.home.MovAndTvSeriesViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dark"
+        tools:context=".ui.dashboard.home.DashboardFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -15,7 +23,8 @@
                 android:id="@+id/upcomingMoviesRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/padding_16"
+                android:adapter="@{viewModel.upcomingAdapter}"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -25,13 +34,9 @@
                 android:id="@+id/popular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="sans-serif"
+                android:padding="@dimen/padding_16"
                 android:text="@string/all_popular_header"
-                android:textColor="#ffffff"
-                android:textSize="14sp"
-                android:textStyle="normal"
+                style="@style/paragraph_16_white_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/upcomingMoviesRecView" />
 
@@ -39,7 +44,7 @@
                 android:id="@+id/popularRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:adapter="@{viewModel.trendingAdapter}"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -49,13 +54,9 @@
                 android:id="@+id/genres"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="sans-serif"
+                android:padding="@dimen/padding_16"
                 android:text="@string/all_genres_header"
-                android:textColor="#ffffff"
-                android:textSize="14sp"
-                android:textStyle="normal"
+                style="@style/paragraph_16_white_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/popularRecView" />
 
@@ -63,7 +64,7 @@
                 android:id="@+id/genresRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:adapter="@{viewModel.genresAdapter}"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -73,13 +74,9 @@
                 android:id="@+id/topRated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="sans-serif"
+                android:padding="@dimen/padding_16"
                 android:text="@string/all_toprated_header"
-                android:textColor="#ffffff"
-                android:textSize="14sp"
-                android:textStyle="normal"
+                style="@style/paragraph_16_white_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/genresRecView" />
 
@@ -87,37 +84,12 @@
                 android:id="@+id/topRatedRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:orientation="horizontal"
+                android:adapter="@{viewModel.topRatedAdapter}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topRated" />
 
-            <TextView
-                android:id="@+id/userFav"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/all_favorite_header"
-                android:textColor="#ffffff"
-                android:textSize="14sp"
-                android:textStyle="normal"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/topRatedRecView" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/favoriteMoviesRV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:paddingBottom="52dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/userFav" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+    </ScrollView>
+</layout>

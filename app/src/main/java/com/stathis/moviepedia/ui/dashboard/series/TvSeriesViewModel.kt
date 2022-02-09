@@ -5,6 +5,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.stathis.moviepedia.adapters.*
+import com.stathis.moviepedia.adapters.airing.AiringTvSeriesAdapter
+import com.stathis.moviepedia.adapters.genres.GenresAdapter
+import com.stathis.moviepedia.adapters.topRated.TopRatedAdapter
+import com.stathis.moviepedia.adapters.upcoming.UpcomingAdapter
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.*
@@ -21,7 +25,7 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
     val upcomingAdapter by lazy { UpcomingAdapter(this) }
     val trendingAdapter by lazy { TrendingAdapter(this) }
     val topRatedAdapter by lazy { TopRatedAdapter(this) }
-    val genresAdapter by lazy { GenresAdapter(this) }
+    //val genresAdapter by lazy { GenresAdapter(this) }
     val airingAdapter by lazy { AiringTvSeriesAdapter(this) }
 
     val featuredTvSeries = repo.featuredTvSeries
@@ -32,7 +36,7 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
     val emptyModelList: MutableList<EmptyModel> = mutableListOf()
 
     init {
-        setShimmer()
+        //setShimmer()
     }
 
     fun initListener(callback : ItemClickListener, listener : GenresClickListener) {
@@ -92,8 +96,8 @@ class TvSeriesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
         })
 
         tvSeriesGenres.observe(owner, Observer { t ->
-            genresAdapter.submitList(t as List<Any>?)
-            genresAdapter.notifyDataSetChanged()
+            //genresAdapter.submitList(t as List<Any>?)
+            //genresAdapter.notifyDataSetChanged()
         })
     }
 

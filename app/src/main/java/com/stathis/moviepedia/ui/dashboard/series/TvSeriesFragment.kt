@@ -32,13 +32,13 @@ class TvSeriesFragment : AbstractFragment(), ItemClickListener, GenresClickListe
     }
 
     override fun running() {
-        binding.upcomingTvSeriesRecView.adapter = viewModel.upcomingAdapter
-        binding.onTheAirRecView.adapter = viewModel.trendingAdapter
-        binding.genresTvRecView.adapter = viewModel.genresAdapter
-        binding.topRatedTvRecView.adapter = viewModel.topRatedAdapter
-        binding.popularTvRecView.adapter = viewModel.airingAdapter
+//        binding.upcomingTvSeriesRecView.adapter = viewModel.upcomingAdapter
+//        binding.onTheAirRecView.adapter = viewModel.trendingAdapter
+//        //binding.genresTvRecView.adapter = viewModel.genresAdapter
+//        binding.topRatedTvRecView.adapter = viewModel.topRatedAdapter
+//        binding.popularTvRecView.adapter = viewModel.airingAdapter
 
-        setShimmer()
+        //setShimmer()
 
         callApiForResults()
         viewModel.observeData(this)
@@ -57,10 +57,10 @@ class TvSeriesFragment : AbstractFragment(), ItemClickListener, GenresClickListe
     }
 
     private fun setShimmer() {
-        viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.genresAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+//        viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
+//        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
+//        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
+//        viewModel.genresAdapter.submitList(viewModel.setShimmer())
     }
 
     override fun onItemClick(movies: Movies) {}

@@ -5,6 +5,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.stathis.moviepedia.adapters.*
+import com.stathis.moviepedia.adapters.genres.GenresAdapter
+import com.stathis.moviepedia.adapters.topRated.TopRatedAdapter
+import com.stathis.moviepedia.adapters.upcoming.UpcomingAdapter
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.*
@@ -27,21 +30,21 @@ class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
     val upcomingAdapter = UpcomingAdapter(this)
     val trendingAdapter = TrendingAdapter(this)
     val topRatedAdapter = TopRatedAdapter(this)
-    val genresAdapter = GenresAdapter(this)
+    //val genresAdapter = GenresAdapter(this)
 
     init {
-        setShimmer()
+        //setShimmer()
     }
 
-    fun setShimmer(): MutableList<EmptyModel> {
-        emptyModelList = mutableListOf(
-            EmptyModel(""),
-            EmptyModel(""),
-            EmptyModel(""),
-            EmptyModel("")
-        )
-        return emptyModelList
-    }
+//    fun setShimmer(): List<EmptyModel> {
+//        emptyModelList = listOf(
+//            EmptyModel(""),
+//            EmptyModel(""),
+//            EmptyModel(""),
+//            EmptyModel("")
+//        )
+//        return emptyModelList
+//    }
 
     fun initListeners(listener: ItemClickListener, genresListener: GenresClickListener) {
         this.listener = listener
@@ -67,8 +70,8 @@ class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
         })
 
         movieGenres.observe(owner, Observer { t ->
-            genresAdapter.submitList(t as List<Any>?)
-            genresAdapter.notifyDataSetChanged()
+            //genresAdapter.submitList(t as List<Any>?)
+            //genresAdapter.notifyDataSetChanged()
         })
     }
 
@@ -80,19 +83,19 @@ class MoviesViewModel : ViewModel(), ItemClickListener, GenresClickListener {
     }
 
     fun getUpcomingMovies() {
-        repo.getUpcomingMovies()
+        //repo.getUpcomingMovies()
     }
 
     fun getTrendingMovies() {
-        repo.getTrendingMovies()
+        //repo.getTrendingMovies()
     }
 
     fun getMovieGenres() {
-        repo.getMovieGenres()
+        //repo.getMovieGenres()
     }
 
     fun getTopRatedMovies() {
-        repo.getTopRatedMovies()
+        //repo.getTopRatedMovies()
     }
 
     override fun onItemClick(movies: Movies) {

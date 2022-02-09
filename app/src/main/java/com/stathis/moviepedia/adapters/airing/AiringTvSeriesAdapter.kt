@@ -1,9 +1,11 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.adapters.airing
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.adapters.DiffUtilClass
+import com.stathis.moviepedia.adapters.PopularMoviesViewHolder
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.series.TvSeries
 

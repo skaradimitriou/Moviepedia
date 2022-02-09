@@ -18,67 +18,67 @@ class MoviesRepository {
     val movieGenres = MutableLiveData<List<MovieGenres>>()
     val topRatedMovies = MutableLiveData<List<Movies>>()
 
-    fun getUpcomingMovies() {
-        ApiClient.getCountries().enqueue(object : Callback<UpcomingMovies> {
-            override fun onResponse(
-                call: Call<UpcomingMovies>,
-                response: Response<UpcomingMovies>
-            ) {
-                Log.d("", response.body().toString())
-                upcomingMovies.postValue(response.body()?.results)
-            }
-
-            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
-                upcomingMovies.postValue(null)
-            }
-        })
-    }
-
-    fun getTrendingMovies() {
-        ApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
-            override fun onResponse(
-                call: Call<UpcomingMovies>,
-                response: Response<UpcomingMovies>
-            ) {
-                Log.d("", response.body().toString())
-                trendingMovies.postValue(response.body()?.results)
-            }
-
-            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
-                trendingMovies.postValue(null)
-            }
-        })
-    }
-
-    fun getMovieGenres() {
-        ApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
-            override fun onResponse(
-                call: Call<MovieGenresFeed>,
-                response: Response<MovieGenresFeed>
-            ) {
-                Log.d("", response.body().toString())
-                movieGenres.postValue(response.body()?.genres)
-            }
-
-            override fun onFailure(call: Call<MovieGenresFeed>, t: Throwable) {
-                movieGenres.postValue(null)
-            }
-        })
-    }
-
-    fun getTopRatedMovies() {
-        ApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
-            override fun onResponse(
-                call: Call<UpcomingMovies>,
-                response: Response<UpcomingMovies>
-            ) {
-                Log.d("", response.body().toString())
-                topRatedMovies.postValue(response.body()?.results)
-            }
-
-            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
-                topRatedMovies.postValue(null)
-            }
-        })
-    }
+//    fun getUpcomingMovies() {
+//        ApiClient.getCountries().enqueue(object : Callback<UpcomingMovies> {
+//            override fun onResponse(
+//                call: Call<UpcomingMovies>,
+//                response: Response<UpcomingMovies>
+//            ) {
+//                Log.d("", response.body().toString())
+//                upcomingMovies.postValue(response.body()?.results)
+//            }
+//
+//            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
+//                upcomingMovies.postValue(null)
+//            }
+//        })
+//    }
+//
+//    fun getTrendingMovies() {
+//        ApiClient.getTrendingMovies().enqueue(object : Callback<UpcomingMovies> {
+//            override fun onResponse(
+//                call: Call<UpcomingMovies>,
+//                response: Response<UpcomingMovies>
+//            ) {
+//                Log.d("", response.body().toString())
+//                trendingMovies.postValue(response.body()?.results)
+//            }
+//
+//            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
+//                trendingMovies.postValue(null)
+//            }
+//        })
+//    }
+//
+//    fun getMovieGenres() {
+//        ApiClient.getMovieGenres().enqueue(object : Callback<MovieGenresFeed> {
+//            override fun onResponse(
+//                call: Call<MovieGenresFeed>,
+//                response: Response<MovieGenresFeed>
+//            ) {
+//                Log.d("", response.body().toString())
+//                movieGenres.postValue(response.body()?.genres)
+//            }
+//
+//            override fun onFailure(call: Call<MovieGenresFeed>, t: Throwable) {
+//                movieGenres.postValue(null)
+//            }
+//        })
+//    }
+//
+//    fun getTopRatedMovies() {
+//        ApiClient.getTopRatedMovies().enqueue(object : Callback<UpcomingMovies> {
+//            override fun onResponse(
+//                call: Call<UpcomingMovies>,
+//                response: Response<UpcomingMovies>
+//            ) {
+//                Log.d("", response.body().toString())
+//                topRatedMovies.postValue(response.body()?.results)
+//            }
+//
+//            override fun onFailure(call: Call<UpcomingMovies>, t: Throwable) {
+//                topRatedMovies.postValue(null)
+//            }
+//        })
+//    }
 }

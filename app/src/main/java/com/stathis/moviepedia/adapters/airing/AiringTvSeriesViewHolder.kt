@@ -1,4 +1,4 @@
-package com.stathis.moviepedia.adapters
+package com.stathis.moviepedia.adapters.airing
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

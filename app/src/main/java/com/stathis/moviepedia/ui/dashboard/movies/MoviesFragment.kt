@@ -38,7 +38,7 @@ class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListene
         binding.upcomingMoviesRecView.adapter = viewModel.upcomingAdapter
         binding.popularRecView.adapter = viewModel.trendingAdapter
         binding.topRatedRecView.adapter = viewModel.topRatedAdapter
-        binding.genresRecView.adapter = viewModel.genresAdapter
+        //binding.genresRecView.adapter = viewModel.genresAdapter
 
         callApiForResults()
         viewModel.observeData(this)
@@ -56,10 +56,10 @@ class MoviesFragment : AbstractFragment(), ItemClickListener, GenresClickListene
     }
 
     private fun setShimmer() {
-        viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.genresAdapter.submitList(viewModel.setShimmer() as List<Any>?)
+//        viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
+//        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
+//        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
+//        viewModel.genresAdapter.submitList(viewModel.setShimmer())
     }
 
     override fun onItemClick(movies: Movies) {

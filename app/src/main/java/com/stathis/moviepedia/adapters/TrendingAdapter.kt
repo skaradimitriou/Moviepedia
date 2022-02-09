@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stathis.moviepedia.R
+import com.stathis.moviepedia.adapters.airing.AiringTvSeriesViewHolder
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.EmptyModel
 import com.stathis.moviepedia.models.LocalModel

@@ -19,16 +19,16 @@ import retrofit2.http.Query
 interface MoviepediaApi {
 
     @GET("movie/upcoming?$API_KEY")
-    fun getUpcomindMovies(): Call<UpcomingMovies>
+    suspend fun getUpcomindMovies(): Response<UpcomingMovies>
 
     @GET("trending/movie/day?$API_KEY")
-    fun getTrendingMovies(): Call<UpcomingMovies>
+    suspend fun getTrendingMovies(): Response<UpcomingMovies>
 
     @GET("genre/movie/list?$API_KEY")
-    fun getMovieGenres(): Call<MovieGenresFeed>
+    suspend fun getMovieGenres(): Response<MovieGenresFeed>
 
     @GET("movie/top_rated?$API_KEY")
-    fun getTopRatedMovies(): Call<UpcomingMovies>
+    suspend fun getTopRatedMovies(): Response<UpcomingMovies>
 
     @GET("tv/on_the_air?$API_KEY")
     fun getFeaturedTvSeries(): Call<TvSeriesFeed>

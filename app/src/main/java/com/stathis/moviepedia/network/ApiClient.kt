@@ -26,19 +26,19 @@ object ApiClient {
         .build()
         .create(MoviepediaApi::class.java)
 
-    fun getCountries(): Call<UpcomingMovies> {
+    suspend fun getCountries(): Response<UpcomingMovies> {
         return api.getUpcomindMovies()
     }
 
-    fun getTrendingMovies(): Call<UpcomingMovies> {
+    suspend fun getTrendingMovies(): Response<UpcomingMovies> {
         return api.getTrendingMovies()
     }
 
-    fun getMovieGenres(): Call<MovieGenresFeed> {
+    suspend fun getMovieGenres(): Response<MovieGenresFeed> {
         return api.getMovieGenres()
     }
 
-    fun getTopRatedMovies(): Call<UpcomingMovies> {
+    suspend fun getTopRatedMovies(): Response<UpcomingMovies> {
         return api.getTopRatedMovies()
     }
 

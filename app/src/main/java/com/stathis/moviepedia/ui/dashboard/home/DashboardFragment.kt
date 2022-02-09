@@ -2,95 +2,62 @@ package com.stathis.moviepedia.ui.dashboard.home
 
 import android.content.Intent
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.stathis.moviepedia.R
+import com.stathis.moviepedia.abstraction.AbstractBindingFragment
 import com.stathis.moviepedia.abstraction.AbstractFragment
 import com.stathis.moviepedia.ui.genres.GenresActivity
 import com.stathis.moviepedia.ui.movieDetails.MovieDetailsActivity
 import com.stathis.moviepedia.databinding.FragmentDashboardBinding
+import com.stathis.moviepedia.listeners.HomeScreenCallback
 import com.stathis.moviepedia.models.*
 import com.stathis.moviepedia.listeners.old.FavoriteClickListener
 import com.stathis.moviepedia.listeners.old.GenresClickListener
 import com.stathis.moviepedia.listeners.old.ItemClickListener
 import com.stathis.moviepedia.models.genres.MovieGenres
 import com.stathis.moviepedia.models.movies.Movies
+import com.stathis.moviepedia.models.movies.UpcomingMovies
 import com.stathis.moviepedia.models.series.TvSeries
 
 
-class DashboardFragment : AbstractFragment(), ItemClickListener, GenresClickListener, FavoriteClickListener {
+class DashboardFragment : AbstractBindingFragment<FragmentDashboardBinding>(R.layout.fragment_dashboard) {
 
     private lateinit var viewModel: MovAndTvSeriesViewModel
-    private lateinit var binding: FragmentDashboardBinding
 
-    override fun created(): View? {
-        binding = FragmentDashboardBinding.inflate(layoutInflater)
-        return binding.root
-    }
-
-    override fun initLayout(view: View) {
+    override fun init() {
         viewModel = ViewModelProvider(this).get(MovAndTvSeriesViewModel::class.java)
-        viewModel.initCallbacks(this, this, this)
+
+        binding.viewModel = viewModel
     }
 
-    override fun running() {
-        setShimmer()
-        callApiForResults()
-
-        binding.upcomingMoviesRecView.adapter = viewModel.upcomingAdapter
-        binding.popularRecView.adapter = viewModel.trendingAdapter
-        binding.genresRecView.adapter = viewModel.genresAdapter
-        binding.topRatedRecView.adapter = viewModel.topRatedAdapter
-
-        viewModel.observeData(this)
+    override fun startOps() {
+        viewModel.observeData(this, object : HomeScreenCallback{
+            override fun onUpcomingMovieTap(model: UpcomingMovies) = openUpcomingMovie(model)
+            override fun onMovieTap(model: Movies) = openMovie(model)
+            override fun onGenreTap(model: MovieGenres) = openGenre(model)
+        })
     }
 
-    private fun callApiForResults() {
-        viewModel.getUpcomingMovies()
-        viewModel.getTrendingMovies()
-        viewModel.getTopRatedMovies()
-        viewModel.getFavoriteMovies()
-        viewModel.getMovieGenres()
-    }
-
-    override fun stop() {
+    override fun stopOps() {
         viewModel.removeObservers(this)
     }
 
-    private fun setShimmer() {
-        viewModel.upcomingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.trendingAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.topRatedAdapter.submitList(viewModel.setShimmer() as List<LocalModel>?)
-        viewModel.genresAdapter.submitList(viewModel.setShimmer() as List<Any>?)
-    }
-
-    override fun onItemClick(movies: Movies) {
+    private fun openMovie(movies: Movies) {
         startActivity(Intent(activity, MovieDetailsActivity::class.java).also {
             it.putExtra("MOVIE",movies)
         })
     }
-
-    override fun onTvSeriesClick(tvSeries: TvSeries) {
-        // N/A in this case | Refactor soon
+    private fun openUpcomingMovie(movies: UpcomingMovies) {
+        startActivity(Intent(activity, MovieDetailsActivity::class.java).also {
+            //it.putExtra("MOVIE",movies)
+        })
     }
 
-    override fun onGenreClick(movieGenres: MovieGenres) {
+    private fun openGenre(model: MovieGenres) {
         startActivity(Intent(activity, GenresActivity::class.java).apply {
-            putExtra("GENRE_ID", movieGenres.id)
-            putExtra("GENRE_NAME", movieGenres.name)
+            putExtra("GENRE_ID", model.id)
+            putExtra("GENRE_NAME", model.name)
         })
-    }
-
-    override fun onFavoriteMoviesClick(favoriteMovies: FavoriteMovies) {
-        startActivity(Intent(activity, MovieDetailsActivity::class.java).apply {
-            putExtra("MOVIE_ID", favoriteMovies.id)
-            putExtra("MOVIE_NAME", favoriteMovies.title)
-            putExtra("MOVIE_PHOTO", favoriteMovies.photo)
-            putExtra("RELEASE_DATE", favoriteMovies.releaseDate)
-            putExtra("DESCRIPTION", favoriteMovies.description)
-            putExtra("RATING", favoriteMovies.movie_rating.toString())
-        })
-    }
-
-    override fun onFavoriteTvSeriesClick(favoriteTvSeries: FavoriteTvSeries) {
-        // N/A in this case | Refactor soon
     }
 }
