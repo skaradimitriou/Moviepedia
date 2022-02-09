@@ -9,7 +9,7 @@ import com.stathis.moviepedia.models.movies.UpcomingMovies
 import com.stathis.moviepedia.models.actor.Actor
 import com.stathis.moviepedia.models.actor.KnownMoviesFeed
 import com.stathis.moviepedia.models.cast.MovieCastFeed
-import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
+import com.stathis.moviepedia.ui.dashboard.search.models.SearchItemsFeed
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
@@ -46,7 +46,7 @@ interface MoviepediaApi {
     fun getTvGenres(): Call<MovieGenresFeed>
 
     @GET("search/multi?$API_KEY")
-    fun getQueryInfo(@Query("query") query: String): Call<SearchItemsFeed>
+    suspend fun getQueryInfo(@Query("query") query: String): Response<SearchItemsFeed>
 
     @GET("discover/movie?$API_KEY&with_genres=")
     fun getResultsForThisGenre(@Query("genreId") genreId: Int): Call<UpcomingMovies>

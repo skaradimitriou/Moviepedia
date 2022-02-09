@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.stathis.moviepedia.ui.dashboard.search.models.SearchItem" />
+
+        <variable
+            name="callback"
+            type="com.stathis.moviepedia.listeners.GenericCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10"
+        android:onClick="@{(view) -> callback.onItemTap(view)}"
+        android:tag="@{model}">
+
+        <View
+            android:id="@+id/white_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_50"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/searchImg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/searchImg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/searchName"
+            name="@{model.name}"
+            style="@style/paragraph_14_dark_bold"
+            title="@{model.title}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dimen_10"
+            android:paddingTop="@dimen/dimen_10"
+            app:layout_constraintEnd_toEndOf="@id/white_bg"
+            app:layout_constraintStart_toEndOf="@id/searchImg"
+            app:layout_constraintTop_toTopOf="@id/white_bg"
+            tools:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/searchType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dimen_10"
+            android:text="@{model.media_type}"
+            android:textColor="@color/dark_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/white_bg"
+            app:layout_constraintTop_toBottomOf="@+id/searchName"
+            tools:text="@string/app_name" />
+
+        <ImageView
+            android:id="@+id/searchImg"
+            image="@{model.poster_path}"
+            placeholder="@{@drawable/moviepedia_logo}"
+            android:layout_width="@dimen/image_90"
+            android:layout_height="@dimen/image_120"
+            android:scaleType="centerCrop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_success" />
+
+        <TextView
+            android:id="@+id/ratingTxt"
+            style="@style/paragraph_14_white_bold"
+            setMovieStarRating="@{model.vote_average}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rating_round_bg"
+            android:backgroundTint="@color/dark_light"
+            android:padding="@dimen/dimen_5"
+            app:layout_constraintEnd_toEndOf="@id/searchImg"
+            app:layout_constraintTop_toTopOf="@id/searchImg"
+            tools:text="@string/rating_star" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

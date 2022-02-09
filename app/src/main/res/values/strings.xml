@@ -54,6 +54,7 @@
 
     <!-- Search Fragment -->
     <string name="search_recent_searches">Recent searches</string>
+    <string name="search_results_for">"Results for %s</string>
 
     <!-- Movies Fragment -->
     <string name="movies_popular_header">Most Popular</string>

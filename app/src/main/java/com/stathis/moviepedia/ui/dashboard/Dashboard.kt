@@ -1,28 +1,18 @@
 package com.stathis.moviepedia.ui.dashboard
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 import com.stathis.moviepedia.R
 import com.stathis.moviepedia.databinding.ActivityDashboardBinding
-import com.stathis.moviepedia.ui.dashboard.fragments.search.SearchFragment
-import com.stathis.moviepedia.ui.userProfile.UserProfile
+import com.stathis.moviepedia.ui.dashboard.search.SearchFragment
 import com.stathis.moviepedia.ui.userProfile.UserViewModel
 
 class Dashboard : AppCompatActivity() {
 
-    private lateinit var searchFragment: SearchFragment
     private lateinit var binding: ActivityDashboardBinding
-    private var viewModel = UserViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,14 +62,6 @@ class Dashboard : AppCompatActivity() {
 //            }
 //        })
 
-        observeViewModel()
-    }
-
-    private fun observeViewModel() {
-//        viewModel.imageDownloadLink.observe(this, Observer<String> { img ->
-//            Log.d("profile image path", img.toString())
-//            Glide.with(this).load(img).into(binding.userProfileImg)
-//        })
     }
 
     override fun onBackPressed() {

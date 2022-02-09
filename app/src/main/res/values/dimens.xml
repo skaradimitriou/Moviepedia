@@ -34,5 +34,6 @@
     <dimen name="dimen_2">2dp</dimen>
     <dimen name="dimen_5">5dp</dimen>
     <dimen name="image_180">180dp</dimen>
+    <dimen name="image_90">90dp</dimen>
 
 </resources>

@@ -11,7 +11,7 @@ import com.stathis.moviepedia.models.movies.Movies
 import com.stathis.moviepedia.models.movies.UpcomingMovies
 import com.stathis.moviepedia.models.reviews.ReviewsFeed
 import com.stathis.moviepedia.models.series.TvSeriesFeed
-import com.stathis.moviepedia.ui.dashboard.fragments.search.models.SearchItemsFeed
+import com.stathis.moviepedia.ui.dashboard.search.models.SearchItemsFeed
 import okhttp3.OkHttpClient
 import retrofit2.*
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -42,7 +42,7 @@ object ApiClient {
         return api.getTopRatedMovies()
     }
 
-    fun getQueryInfo(query: String): Call<SearchItemsFeed> {
+    suspend fun getQueryInfo(query: String): Response<SearchItemsFeed> {
         return api.getQueryInfo(query)
     }
 

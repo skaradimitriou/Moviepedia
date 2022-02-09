@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1d1d1d"
-    tools:context=".ui.dashboard.fragments.tvSeries.TvSeriesFragment">
+    tools:context=".ui.dashboard.series.TvSeriesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
